@@ -1,0 +1,3706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="theme-color" content="#0f1310">
+<meta name="description" content="Pacific Northwest fishing field guide by Yassir Baza (YAB Official). Species, spots, rigs, knots, weather, and pro tips for fresh and salt water anglers across Washington and Oregon. Works offline.">
+<meta name="author" content="Yassir Baza · YAB Official">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PNW Angler">
+<meta name="mobile-web-app-capable" content="yes">
+<title>PNW Angler Field Guide</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --bg: #0f1310;
+  --bg-card: #1a2118;
+  --bg-elev: #232b21;
+  --bg-deep: #0a0d0a;
+  --accent: #d4a574;
+  --accent-bright: #f4c79b;
+  --salt: #6ba8b8;
+  --salt-bright: #8ec4d4;
+  --fresh: #7a9b5d;
+  --fresh-bright: #9bc176;
+  --danger: #c85a4a;
+  --warn: #d4a017;
+  --info: #5e8db8;
+  --text: #e8e4dc;
+  --text-dim: #9a9489;
+  --text-faint: #5e5a52;
+  --border: #2d3527;
+  --line: rgba(212, 165, 116, 0.15);
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+
+body {
+  background-image:
+    radial-gradient(at 20% 10%, rgba(212, 165, 116, 0.04) 0%, transparent 50%),
+    radial-gradient(at 80% 90%, rgba(107, 168, 184, 0.03) 0%, transparent 50%);
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+/* HEADER */
+header {
+  padding: 20px 16px 16px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: rgba(15, 19, 16, 0.96);
+  backdrop-filter: blur(12px);
+  z-index: 100;
+}
+
+.title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 30px;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+
+.header-meta {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text-faint);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 1px;
+}
+
+/* NAV TABS */
+.nav {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  padding: 10px 10px 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  position: sticky;
+  top: 82px;
+  z-index: 99;
+  scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display: none; }
+
+.nav-tab {
+  padding: 11px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s, border-color 0.2s;
+}
+.nav-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* SECTIONS */
+main { padding: 18px 14px; max-width: 900px; margin: 0 auto; }
+section { display: none; }
+section.active { display: block; animation: fadeIn 0.25s; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* SECTION HEADINGS */
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  color: var(--accent);
+  letter-spacing: 1.5px;
+  margin: 22px 0 6px;
+  line-height: 1;
+}
+.section-title:first-child { margin-top: 0; }
+
+.section-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+/* TODAY BANNER */
+.today-banner {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elev) 100%);
+  border-left: 3px solid var(--accent);
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  border-radius: 4px;
+}
+.today-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.today-text { font-size: 14px; color: var(--text); }
+.today-text strong { color: var(--accent-bright); }
+
+/* LOCATION SELECTOR */
+.loc-btn {
+  padding: 8px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.loc-btn:active { transform: scale(0.96); }
+.loc-btn.active {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  font-weight: 700;
+}
+.loc-btn.loading {
+  opacity: 0.6;
+}
+#location-selector::-webkit-scrollbar { display: none; }
+
+.bite-good { color: var(--fresh-bright) !important; }
+.bite-fair { color: var(--warn) !important; }
+.bite-poor { color: var(--danger) !important; }
+
+/* TIDE CARDS */
+.tide-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+.tide-card.high { border-left: 3px solid var(--salt); }
+.tide-card.low { border-left: 3px solid var(--accent); }
+.tide-card-type {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-faint);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.tide-card.high .tide-card-type { color: var(--salt-bright); }
+.tide-card.low .tide-card-type { color: var(--accent); }
+.tide-card-time {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: var(--text);
+  letter-spacing: 1px;
+  line-height: 1;
+}
+.tide-card-height {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* FORECAST GRID */
+.forecast-day {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 4px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.forecast-day:active { transform: scale(0.96); }
+.forecast-day.best { border-color: var(--fresh); background: rgba(122, 155, 93, 0.08); }
+.forecast-day.worst { border-color: var(--danger); opacity: 0.65; }
+.forecast-day-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-faint);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.forecast-day-icon {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+.forecast-day-temp {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1;
+}
+.forecast-day-temp .low {
+  color: var(--text-faint);
+  font-size: 11px;
+}
+.forecast-day-score {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+/* NEWSLETTER */
+.newsletter-box {
+  background: linear-gradient(135deg, rgba(212, 165, 116, 0.08) 0%, rgba(107, 168, 184, 0.06) 100%);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  padding: 20px 18px;
+  margin-top: 20px;
+  text-align: center;
+}
+.newsletter-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.newsletter-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  color: var(--accent-bright);
+  letter-spacing: 1.5px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.newsletter-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--text-dim);
+  font-style: italic;
+  margin-bottom: 12px;
+}
+.newsletter-pitch {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.6;
+  text-align: left;
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  background: var(--bg-deep);
+  border-radius: 6px;
+  border-left: 2px solid var(--accent);
+}
+.newsletter-pitch strong { color: var(--accent-bright); }
+
+.newsletter-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.newsletter-form input {
+  flex: 1;
+  padding: 12px 14px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  -webkit-appearance: none;
+}
+.newsletter-form input:focus { border-color: var(--accent); }
+.newsletter-form input::placeholder { color: var(--text-faint); }
+
+.newsletter-form button {
+  padding: 12px 18px;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.newsletter-form button:hover { background: var(--accent-bright); }
+.newsletter-form button:active { transform: scale(0.97); }
+.newsletter-form button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.newsletter-status {
+  font-size: 12px;
+  margin-top: 6px;
+  min-height: 18px;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.5px;
+}
+.newsletter-status.success { color: var(--fresh-bright); }
+.newsletter-status.error { color: var(--danger); }
+.newsletter-status.pending { color: var(--accent); }
+
+.newsletter-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 1px;
+  margin-top: 12px;
+}
+.newsletter-meta a { color: var(--accent); }
+
+@media (max-width: 480px) {
+  .newsletter-form { flex-direction: column; }
+  .newsletter-title { font-size: 26px; }
+  #forecast-grid { grid-template-columns: repeat(7, 1fr); }
+  .forecast-day-name, .forecast-day-temp .low { font-size: 8px; }
+}
+
+/* INFO CARDS GRID */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.info-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+}
+.info-card-icon {
+  font-size: 22px;
+  margin-bottom: 6px;
+  display: block;
+}
+.info-card-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-faint);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.info-card-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  color: var(--accent-bright);
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+}
+.info-card-detail {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 4px;
+  line-height: 1.45;
+}
+
+/* CONDITION DIAL */
+.condition-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.cond-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+.cond-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-faint);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.cond-gauge {
+  height: 6px;
+  background: var(--bg-deep);
+  border-radius: 3px;
+  position: relative;
+  margin: 8px 0 6px;
+  overflow: hidden;
+}
+.cond-fill { height: 100%; border-radius: 3px; }
+.cond-fill.poor { background: var(--danger); }
+.cond-fill.fair { background: var(--warn); }
+.cond-fill.good { background: var(--fresh); }
+.cond-status {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.status-good { color: var(--fresh-bright); }
+.status-fair { color: var(--warn); }
+.status-poor { color: var(--danger); }
+
+/* WEATHER INFOGRAPHIC */
+.weather-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.weather-block-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  color: var(--accent-bright);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.weather-block-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-faint);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+/* TEMP ZONES BAR */
+.temp-bar {
+  display: flex;
+  height: 32px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 12px 0 6px;
+  border: 1px solid var(--border);
+}
+.temp-zone {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  color: rgba(0,0,0,0.7);
+  letter-spacing: 0.5px;
+}
+.temp-cold { background: #6b95c4; }
+.temp-cool { background: #8eb8c4; }
+.temp-ideal { background: #9bc176; color: rgba(0,0,0,0.85); }
+.temp-warm { background: #d4a017; }
+.temp-hot { background: #c85a4a; color: rgba(255,255,255,0.9); }
+.temp-scale {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-faint);
+  letter-spacing: 0.5px;
+}
+
+/* PRESSURE DIAL */
+.pressure-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin: 10px 0;
+}
+.pressure-cell {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 8px;
+  text-align: center;
+}
+.pressure-cell.peak { background: rgba(155, 193, 118, 0.12); border-color: var(--fresh); }
+.pressure-cell.poor { background: rgba(200, 90, 74, 0.1); border-color: rgba(200,90,74,0.4); }
+.pressure-symbol {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+.pressure-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.pressure-rate {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+.pressure-cell.peak .pressure-rate { color: var(--fresh-bright); }
+.pressure-cell.poor .pressure-rate { color: var(--danger); }
+
+/* WIND DIRECTION */
+.wind-compass {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+.wind-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+}
+.wind-card.good { border-left: 3px solid var(--fresh); }
+.wind-card.bad { border-left: 3px solid var(--danger); }
+.wind-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.wind-detail { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+
+/* TIME OF DAY STRIP */
+.time-strip {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  margin: 12px 0;
+}
+.time-block {
+  text-align: center;
+  padding: 10px 4px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+}
+.time-block.prime { background: rgba(155, 193, 118, 0.15); border-color: var(--fresh); }
+.time-block.good { background: rgba(212, 165, 116, 0.1); border-color: var(--accent); }
+.time-block.slow { opacity: 0.5; }
+.time-icon { font-size: 18px; margin-bottom: 2px; display: block; }
+.time-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.time-bite {
+  font-size: 9px;
+  color: var(--text-faint);
+  margin-top: 2px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.time-block.prime .time-bite { color: var(--fresh-bright); }
+.time-block.good .time-bite { color: var(--accent); }
+
+/* MOON PHASE */
+.moon-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 10px 0;
+}
+.moon-cell {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 6px;
+  text-align: center;
+}
+.moon-cell.peak { background: rgba(212, 165, 116, 0.1); border-color: var(--accent); }
+.moon-icon { font-size: 18px; margin-bottom: 4px; display: block; }
+.moon-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.moon-rating {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  color: var(--accent-bright);
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+
+/* SPECIES TYPE TOGGLE */
+.type-toggle {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.type-btn {
+  flex: 1;
+  padding: 10px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.type-btn.active.fresh { background: rgba(122, 155, 93, 0.18); border-color: var(--fresh); color: var(--fresh-bright); }
+.type-btn.active.salt { background: rgba(107, 168, 184, 0.18); border-color: var(--salt); color: var(--salt-bright); }
+.type-btn.active.all { background: rgba(212, 165, 116, 0.15); border-color: var(--accent); color: var(--accent-bright); }
+
+/* SEARCH */
+.search-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.search-bar input {
+  flex: 1;
+  padding: 10px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+}
+.search-bar input:focus { border-color: var(--accent); }
+.search-bar input::placeholder { color: var(--text-faint); }
+
+/* SPECIES CARDS */
+.species-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.species-card.salt { border-left: 3px solid var(--salt); }
+.species-card.fresh { border-left: 3px solid var(--fresh); }
+
+.species-header {
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  background: var(--bg-elev);
+  border-bottom: 1px solid var(--border);
+}
+.species-header:active { background: #2a3326; }
+
+.species-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 1px;
+  color: var(--accent-bright);
+  line-height: 1;
+}
+.species-card.salt .species-name { color: var(--salt-bright); }
+.species-card.fresh .species-name { color: var(--fresh-bright); }
+.species-name-sci {
+  font-size: 10px;
+  color: var(--text-faint);
+  font-style: italic;
+  margin-top: 3px;
+  letter-spacing: 0.5px;
+}
+
+.species-tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.mini-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  padding: 2px 6px;
+  background: var(--bg-deep);
+  border-radius: 3px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.mini-tag.diff-1 { color: var(--fresh-bright); }
+.mini-tag.diff-2 { color: var(--accent); }
+.mini-tag.diff-3 { color: var(--danger); }
+
+.status-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 4px 8px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.status-open { background: rgba(122, 155, 93, 0.15); color: var(--fresh-bright); border: 1px solid rgba(122, 155, 93, 0.4); }
+.status-closed { background: rgba(200, 90, 74, 0.15); color: var(--danger); border: 1px solid rgba(200, 90, 74, 0.4); }
+.status-cr { background: rgba(212, 160, 23, 0.15); color: var(--warn); border: 1px solid rgba(212, 160, 23, 0.4); }
+.status-partial { background: rgba(212, 165, 116, 0.15); color: var(--accent); border: 1px solid rgba(212, 165, 116, 0.4); }
+
+.species-body {
+  padding: 14px 16px;
+  display: none;
+}
+.species-body.expanded { display: block; }
+
+.row {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.row:last-child { border-bottom: none; }
+.row-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-faint);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding-top: 2px;
+}
+.row-value { color: var(--text); line-height: 1.55; }
+.row-value strong { color: var(--accent-bright); font-weight: 600; }
+
+/* SEASON BAR */
+.season-bar {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2px;
+  margin-top: 4px;
+}
+.month {
+  text-align: center;
+  padding: 5px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+}
+.month.peak { background: var(--fresh); color: var(--bg); }
+.month.open { background: rgba(122, 155, 93, 0.3); color: var(--fresh-bright); }
+.month.closed { background: var(--bg-deep); color: var(--text-faint); }
+.month.cr { background: rgba(212, 160, 23, 0.3); color: var(--warn); }
+
+.expand-arrow {
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  transition: transform 0.2s;
+}
+.species-header.expanded .expand-arrow { transform: rotate(180deg); }
+
+/* REGION PILLS */
+.region-bar {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 4px 0 10px;
+  scrollbar-width: none;
+  margin-bottom: 4px;
+}
+.region-bar::-webkit-scrollbar { display: none; }
+.region-pill {
+  padding: 7px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.region-pill.active {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
+/* LOCATION CARDS */
+.location-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+.location-card.salt { border-left-color: var(--salt); }
+.location-card.fresh { border-left-color: var(--fresh); }
+.location-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  color: var(--text);
+  letter-spacing: 0.8px;
+  line-height: 1.1;
+  margin-bottom: 3px;
+}
+.location-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--accent);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.location-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  padding: 2px 7px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+.location-note {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+.location-note strong { color: var(--text); }
+
+/* RIG DIAGRAM */
+.rig-diagram {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+.rig-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  color: var(--accent-bright);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.rig-use {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-faint);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.rig-svg {
+  width: 100%;
+  background: var(--bg-deep);
+  border-radius: 6px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border);
+}
+.rig-parts { font-size: 12px; }
+.rig-part {
+  padding: 5px 0;
+  color: var(--text-dim);
+  display: flex;
+  gap: 8px;
+}
+.rig-part-num {
+  color: var(--accent);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* TABLES */
+.hook-table {
+  width: 100%;
+  font-size: 12px;
+  border-collapse: collapse;
+  background: var(--bg-card);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  table-layout: fixed;
+}
+.hook-table th {
+  background: var(--bg-elev);
+  color: var(--accent);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 10px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.hook-table td {
+  padding: 9px 8px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-dim);
+  vertical-align: top;
+  word-wrap: break-word;
+}
+.hook-table td strong { color: var(--text); }
+.hook-table tr:last-child td { border-bottom: none; }
+
+/* KNOT CARDS */
+.knot-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+.knot-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  color: var(--accent-bright);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.knot-use {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.knot-strength {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  padding: 2px 8px;
+  background: rgba(122, 155, 93, 0.15);
+  color: var(--fresh-bright);
+  border-radius: 3px;
+  margin-left: 8px;
+  letter-spacing: 0.5px;
+}
+.knot-steps { list-style: none; counter-reset: step; }
+.knot-steps li {
+  counter-increment: step;
+  padding: 6px 0 6px 26px;
+  position: relative;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.55;
+}
+.knot-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--bg);
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* TIPS */
+.tip-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.tip-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.tip-content { flex: 1; }
+.tip-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--accent-bright);
+  margin-bottom: 3px;
+}
+.tip-text { font-size: 13px; color: var(--text-dim); line-height: 1.55; }
+
+/* NOTE BOX */
+.note {
+  background: rgba(212, 160, 23, 0.08);
+  border-left: 2px solid var(--warn);
+  padding: 10px 12px;
+  margin: 10px 0;
+  font-size: 12px;
+  color: var(--text-dim);
+  border-radius: 3px;
+}
+.note strong { color: var(--warn); }
+.note.danger { background: rgba(200, 90, 74, 0.08); border-left-color: var(--danger); }
+.note.danger strong { color: var(--danger); }
+.note.info { background: rgba(94, 141, 184, 0.08); border-left-color: var(--info); }
+.note.info strong { color: var(--info); }
+
+/* LICENSE BOX */
+.license-box {
+  background: var(--bg-card);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.license-box h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  color: var(--accent);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+.license-box ul { list-style: none; }
+.license-box li {
+  padding: 5px 0 5px 16px;
+  position: relative;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.license-box li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+/* QUICK PICK GRID */
+.quick-pick {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+.qp-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+.qp-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-faint);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.qp-value {
+  font-size: 12px;
+  color: var(--text);
+}
+.qp-value strong { color: var(--accent-bright); }
+
+/* COLLAPSIBLE REGION GROUPS */
+.region-group {
+  margin-bottom: 14px;
+}
+.region-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 8px;
+}
+.region-header:active { background: #2a3326; }
+.region-header.expanded { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.region-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+.region-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+.region-body { display: none; }
+.region-body.expanded { display: block; }
+
+/* FOOTER */
+footer {
+  padding: 24px 16px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  margin-top: 32px;
+}
+.footer-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 1.5px;
+  line-height: 1.8;
+}
+.footer-text a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--accent);
+}
+
+@media (max-width: 480px) {
+  .row { grid-template-columns: 70px 1fr; }
+  .info-grid { grid-template-columns: repeat(2, 1fr); }
+  .condition-strip { grid-template-columns: 1fr; }
+  .time-strip { grid-template-columns: repeat(3, 1fr); }
+  .pressure-row { grid-template-columns: repeat(2, 1fr); }
+  .moon-row { grid-template-columns: repeat(2, 1fr); }
+  .wind-compass { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:14px;">
+    <img src="icons/logo-header-256.png" alt="PNW Fishing Guide" style="width:56px;height:56px;flex-shrink:0;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.4);">
+    <div style="flex:1;min-width:0;">
+      <div class="title">PNW ANGLER FIELD GUIDE</div>
+      <div class="subtitle">Pacific Northwest · Fresh + Salt · Est. 2026</div>
+      <div class="header-meta">BY YASSIR BAZA · @YAB.OFFICIAL · v2.2</div>
+    </div>
+  </div>
+  <div class="header-meta" style="margin-top:8px;padding-top:6px;border-top:1px solid var(--border);">CONFIRM REGS AT WDFW.GOV + MYODFW.COM</div>
+</header>
+
+<nav class="nav">
+  <button class="nav-tab active" data-tab="now">Right Now</button>
+  <button class="nav-tab" data-tab="conditions">Conditions</button>
+  <button class="nav-tab" data-tab="species">Species</button>
+  <button class="nav-tab" data-tab="spots">Spots</button>
+  <button class="nav-tab" data-tab="rigs">Rigs</button>
+  <button class="nav-tab" data-tab="hooks">Hooks</button>
+  <button class="nav-tab" data-tab="knots">Knots</button>
+  <button class="nav-tab" data-tab="tips">Tips</button>
+</nav>
+
+<main>
+
+<!-- ============================ NOW ============================ -->
+<section id="now" class="active">
+  <div class="section-title" style="margin-top:0;">RIGHT NOW</div>
+  <div class="section-subtitle">Live conditions + what's hot</div>
+
+  <div class="section-title">LIVE CONDITIONS</div>
+  <div class="section-subtitle" id="live-location-label">Loading your location...</div>
+
+  <div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;" id="location-selector">
+    <button class="loc-btn active" data-lat="45.6387" data-lng="-122.6615" data-name="Vancouver, WA">Vancouver WA</button>
+    <button class="loc-btn" data-lat="45.5152" data-lng="-122.6784" data-name="Portland, OR">Portland</button>
+    <button class="loc-btn" data-lat="47.6062" data-lng="-122.3321" data-name="Seattle">Seattle</button>
+    <button class="loc-btn" data-lat="46.8919" data-lng="-124.1043" data-name="Westport, WA">Westport</button>
+    <button class="loc-btn" data-lat="44.6368" data-lng="-124.0535" data-name="Newport, OR">Newport</button>
+    <button class="loc-btn" data-lat="47.9445" data-lng="-124.6178" data-name="Neah Bay, WA">Neah Bay</button>
+    <button class="loc-btn" data-lat="46.1879" data-lng="-123.8313" data-name="Astoria, OR">Astoria</button>
+    <button class="loc-btn" data-lat="47.8209" data-lng="-119.9667" data-name="Banks Lake">Banks Lake</button>
+    <button class="loc-btn" data-lat="48.0419" data-lng="-122.1817" data-name="Everett, WA">Everett</button>
+    <button class="loc-btn" id="use-my-location">📍 My Location</button>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <span class="info-card-icon">🌡️</span>
+      <div class="info-card-label">Air Temp</div>
+      <div class="info-card-value" id="live-temp">--</div>
+      <div class="info-card-detail" id="live-temp-detail">Loading...</div>
+    </div>
+    <div class="info-card">
+      <span class="info-card-icon">📊</span>
+      <div class="info-card-label">Pressure</div>
+      <div class="info-card-value" id="live-pressure">--</div>
+      <div class="info-card-detail" id="live-pressure-detail">Loading...</div>
+    </div>
+    <div class="info-card">
+      <span class="info-card-icon">💨</span>
+      <div class="info-card-label">Wind</div>
+      <div class="info-card-value" id="live-wind">--</div>
+      <div class="info-card-detail" id="live-wind-detail">Loading...</div>
+    </div>
+    <div class="info-card">
+      <span class="info-card-icon">☁️</span>
+      <div class="info-card-label">Sky</div>
+      <div class="info-card-value" id="live-sky">--</div>
+      <div class="info-card-detail" id="live-sky-detail">Loading...</div>
+    </div>
+    <div class="info-card">
+      <span class="info-card-icon">🌅</span>
+      <div class="info-card-label">Best Window Today</div>
+      <div class="info-card-value" id="live-window">--</div>
+      <div class="info-card-detail" id="live-window-detail">Loading...</div>
+    </div>
+    <div class="info-card">
+      <span class="info-card-icon">🎣</span>
+      <div class="info-card-label">Bite Score</div>
+      <div class="info-card-value" id="live-score">--</div>
+      <div class="info-card-detail" id="live-score-detail">Based on pressure, wind, sky</div>
+    </div>
+  </div>
+
+  <!-- TIDES (only shown for coastal locations) -->
+  <div id="tides-section" style="display:none;">
+    <div class="section-title">TIDES</div>
+    <div class="section-subtitle" id="tides-station-label">Loading station...</div>
+
+    <div class="info-grid" id="tides-grid">
+      <!-- populated by JS -->
+    </div>
+
+    <div class="note info" style="margin-top:6px;">
+      <strong>Best bite windows:</strong> last hour incoming + first hour outgoing. Slack tides (the 30 min around high or low) often slow the bite. Big tide swings move bait, which moves predators.
+    </div>
+  </div>
+
+  <!-- 7-DAY FORECAST -->
+  <div class="section-title">7-DAY FORECAST · BEST DAYS</div>
+  <div class="section-subtitle">Bite score, conditions, sun windows</div>
+  <div id="forecast-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:18px;">
+    <!-- populated by JS -->
+  </div>
+
+  <div class="section-title">SEASONAL FOCUS</div>
+  <div class="section-subtitle">What's hot in late spring</div>
+
+  <div class="today-banner">
+    <div class="today-label">May · What's Running</div>
+    <div class="today-text"><strong>Shad</strong> peak run on the Columbia. <strong>Spring Chinook</strong> open in short announced windows. <strong>Kokanee</strong> on Merwin and Lake Chelan. <strong>Lowland trout</strong> stocked statewide. <strong>Bass</strong> spawning shallow. <strong>Saltwater lingcod</strong> open along the coast. <strong>Surf perch</strong> hot from beaches.</div>
+  </div>
+
+  <div class="section-title">BIG 5 RIGHT NOW</div>
+  <div class="section-subtitle">If you only have one weekend</div>
+
+  <div class="quick-pick">
+    <div class="qp-card">
+      <div class="qp-label">Easy + Hot</div>
+      <div class="qp-value"><strong>Shad</strong> · Bonneville tailrace, no limit, no size min</div>
+    </div>
+    <div class="qp-card">
+      <div class="qp-label">Family + Stocked</div>
+      <div class="qp-value"><strong>Trout</strong> · Klineline, Henry Hagg, lowland lakes</div>
+    </div>
+    <div class="qp-card">
+      <div class="qp-label">Trophy Window</div>
+      <div class="qp-value"><strong>Spring Chinook</strong> · Columbia, Willamette (open days)</div>
+    </div>
+    <div class="qp-card">
+      <div class="qp-label">Spawn Sight-Fish</div>
+      <div class="qp-value"><strong>Largemouth</strong> · Tualatin, Vancouver Lake, Sammamish</div>
+    </div>
+    <div class="qp-card">
+      <div class="qp-label">Salt Quick Hit</div>
+      <div class="qp-value"><strong>Surf perch</strong> · Long Beach, Cannon Beach, Ocean Shores</div>
+    </div>
+  </div>
+
+  <div class="license-box">
+    <h3>LICENSE CHECKLIST</h3>
+    <ul>
+      <li>WA freshwater license $39.95 resident annual · ORegon resident annual $48</li>
+      <li>Combination fresh + salt $66.05 WA · saltwater shellfish $18.45 WA add-on</li>
+      <li>Columbia River salmon/steelhead endorsement +$8.75 (WA) if targeting either</li>
+      <li>Catch Record Card required for salmon, steelhead, sturgeon, halibut (free with license)</li>
+      <li>Discover Pass $30/yr ($10/day) for WA state parks. NW Forest Pass for some federal lands.</li>
+      <li>Two-day Combo for visitors: $30 WA · $34 OR</li>
+      <li>Kids under 15 fish free in WA. Kids under 12 fish free in OR.</li>
+    </ul>
+  </div>
+
+  <div class="note danger">
+    <strong>REGULATIONS CHANGE WEEKLY.</strong> Salmon openers, emergency closures, and bag limits shift fast. Always verify at <a href="https://wdfw.wa.gov" style="color:var(--danger);">wdfw.wa.gov</a> and <a href="https://myodfw.com" style="color:var(--danger);">myodfw.com</a> the day you fish. Carry the Fish WA or MyODFW app.
+  </div>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter-box">
+    <div class="newsletter-eyebrow">PNW FISHING MONTHLY · EST. 2026</div>
+    <div class="newsletter-title">The Monthly Letter</div>
+    <div class="newsletter-sub">What's running, what's opening, what's worth your weekend.</div>
+
+    <div class="newsletter-pitch">
+      One email a month from <strong>Yassir Baza</strong>. Hatchery stocking calendar, salmon and steelhead opener watch, kokanee depth charts, and one deep-dive on a PNW river or saltwater area. No spam. No affiliate noise. Unsubscribe any time.
+    </div>
+
+    <!-- BEEHIIV IFRAME EMBED (preferred when configured) -->
+    <div id="beehiiv-embed-container" style="display:none;">
+      <!--
+        After Beehiiv setup, replace the comment below with the iframe embed code
+        from Beehiiv dashboard > Audience > Subscribe forms > [your form] > Embed.
+        It will look like:
+        <iframe src="https://embeds.beehiiv.com/xxxxx" data-test-id="beehiiv-embed"
+                width="100%" height="320" frameborder="0" scrolling="no"
+                style="border-radius: 8px; background: transparent;"></iframe>
+      -->
+    </div>
+
+    <!-- FALLBACK NATIVE FORM (used until Beehiiv iframe is added) -->
+    <form id="newsletter-form" class="newsletter-form" onsubmit="return submitNewsletter(event)">
+      <input type="email" id="newsletter-email" placeholder="your@email.com" required autocomplete="email">
+      <button type="submit" id="newsletter-submit">Subscribe</button>
+    </form>
+    <div id="newsletter-status" class="newsletter-status"></div>
+
+    <div class="newsletter-meta">
+      Powered by Beehiiv · @yab.official · Read past issues at <a href="#" id="newsletter-archive-link" target="_blank" rel="noopener">the archive</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CONDITIONS ============================ -->
+<section id="conditions">
+  <div class="section-title">FISHING CONDITIONS</div>
+  <div class="section-subtitle">How weather drives the bite</div>
+
+  <!-- TODAY'S CONDITIONS -->
+  <div class="condition-strip">
+    <div class="cond-card">
+      <div class="cond-label">Pressure</div>
+      <div class="cond-gauge"><div class="cond-fill good" style="width:80%"></div></div>
+      <div class="cond-status status-good">Rising · feeding</div>
+    </div>
+    <div class="cond-card">
+      <div class="cond-label">Wind</div>
+      <div class="cond-gauge"><div class="cond-fill fair" style="width:55%"></div></div>
+      <div class="cond-status status-fair">SW 8-12 mph</div>
+    </div>
+    <div class="cond-card">
+      <div class="cond-label">Sky</div>
+      <div class="cond-gauge"><div class="cond-fill good" style="width:75%"></div></div>
+      <div class="cond-status status-good">Overcast · ideal</div>
+    </div>
+  </div>
+
+  <!-- WATER TEMP -->
+  <div class="weather-block">
+    <div class="weather-block-title">WATER TEMPERATURE</div>
+    <div class="weather-block-sub">The single biggest factor</div>
+    <div class="temp-bar">
+      <div class="temp-zone temp-cold">&lt;45°</div>
+      <div class="temp-zone temp-cool">45-55°</div>
+      <div class="temp-zone temp-ideal">55-68°</div>
+      <div class="temp-zone temp-warm">68-75°</div>
+      <div class="temp-zone temp-hot">75°+</div>
+    </div>
+    <div class="temp-scale">
+      <span>Dormant</span>
+      <span>Slow</span>
+      <span>Prime</span>
+      <span>Slow</span>
+      <span>Stressed</span>
+    </div>
+    <div class="quick-pick" style="margin-top:14px;">
+      <div class="qp-card">
+        <div class="qp-label">Trout / Steelhead</div>
+        <div class="qp-value">Best <strong>45-60°F</strong>. Stop fishing above 68°F (lethal stress).</div>
+      </div>
+      <div class="qp-card">
+        <div class="qp-label">Bass</div>
+        <div class="qp-value">Pre-spawn <strong>55-62°F</strong>. Spawn <strong>62-68°F</strong>. Peak <strong>68-78°F</strong>.</div>
+      </div>
+      <div class="qp-card">
+        <div class="qp-label">Walleye</div>
+        <div class="qp-value">Peak <strong>55-68°F</strong>. Slow above 75°F.</div>
+      </div>
+      <div class="qp-card">
+        <div class="qp-label">Salmon (river)</div>
+        <div class="qp-value">Spring run <strong>45-55°F</strong>. Fall run <strong>50-60°F</strong>.</div>
+      </div>
+      <div class="qp-card">
+        <div class="qp-label">Catfish</div>
+        <div class="qp-value">Active <strong>70-85°F</strong>. Heat lovers.</div>
+      </div>
+      <div class="qp-card">
+        <div class="qp-label">Panfish / Crappie</div>
+        <div class="qp-value">Spawn <strong>58-65°F</strong>. Active to 80°F.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BAROMETRIC PRESSURE -->
+  <div class="weather-block">
+    <div class="weather-block-title">BAROMETRIC PRESSURE</div>
+    <div class="weather-block-sub">Fish feel pressure changes hours before weather</div>
+    <div class="pressure-row">
+      <div class="pressure-cell peak">
+        <div class="pressure-symbol">📈</div>
+        <div class="pressure-label">Rising</div>
+        <div class="pressure-rate">PEAK</div>
+      </div>
+      <div class="pressure-cell">
+        <div class="pressure-symbol">⏸</div>
+        <div class="pressure-label">Stable High</div>
+        <div class="pressure-rate" style="color:var(--text);">FAIR</div>
+      </div>
+      <div class="pressure-cell">
+        <div class="pressure-symbol">⏸</div>
+        <div class="pressure-label">Stable Low</div>
+        <div class="pressure-rate" style="color:var(--warn);">SLOW</div>
+      </div>
+      <div class="pressure-cell poor">
+        <div class="pressure-symbol">📉</div>
+        <div class="pressure-label">Falling Fast</div>
+        <div class="pressure-rate">POOR</div>
+      </div>
+    </div>
+    <div class="tip-card" style="margin-top:10px;">
+      <div class="tip-icon">⚡</div>
+      <div class="tip-content">
+        <div class="tip-title">The Front Rule</div>
+        <div class="tip-text">Fish hard the day before a front arrives (falling pressure triggers feeding frenzy). Skip the day the front passes. Return when pressure starts rising again. 30.00 in is the dividing line: above = good, below = slow.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WIND -->
+  <div class="weather-block">
+    <div class="weather-block-title">WIND</div>
+    <div class="weather-block-sub">"Wind in your face, fish in your place"</div>
+    <div class="wind-compass">
+      <div class="wind-card good">
+        <div class="wind-title">↗ Light 5-12 mph</div>
+        <div class="wind-detail">Best conditions. Breaks surface tension. Baitfish push toward windward shore. Cast into wind.</div>
+      </div>
+      <div class="wind-card good">
+        <div class="wind-title">Wind from W or S</div>
+        <div class="wind-detail">Generally warmer, more humid. Active bite in PNW.</div>
+      </div>
+      <div class="wind-card bad">
+        <div class="wind-title">Dead calm</div>
+        <div class="wind-detail">Bright sun, calm water. Fish go deep and spook easily. Finesse or go home.</div>
+      </div>
+      <div class="wind-card bad">
+        <div class="wind-title">Heavy &gt;20 mph</div>
+        <div class="wind-detail">Dangerous on boats. Muddy water on banks. Wait it out or fish protected shorelines.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIME OF DAY -->
+  <div class="weather-block">
+    <div class="weather-block-title">TIME OF DAY</div>
+    <div class="weather-block-sub">When fish actually feed</div>
+    <div class="time-strip">
+      <div class="time-block prime">
+        <span class="time-icon">🌅</span>
+        <div class="time-label">Dawn</div>
+        <div class="time-bite">PRIME</div>
+      </div>
+      <div class="time-block good">
+        <span class="time-icon">☀️</span>
+        <div class="time-label">Morning</div>
+        <div class="time-bite">Good</div>
+      </div>
+      <div class="time-block slow">
+        <span class="time-icon">🥵</span>
+        <div class="time-label">Midday</div>
+        <div class="time-bite">Slow</div>
+      </div>
+      <div class="time-block good">
+        <span class="time-icon">🌤️</span>
+        <div class="time-label">Afternoon</div>
+        <div class="time-bite">Fair</div>
+      </div>
+      <div class="time-block prime">
+        <span class="time-icon">🌇</span>
+        <div class="time-label">Dusk</div>
+        <div class="time-bite">PRIME</div>
+      </div>
+      <div class="time-block good">
+        <span class="time-icon">🌙</span>
+        <div class="time-label">Night</div>
+        <div class="time-bite">Catfish/Walleye</div>
+      </div>
+    </div>
+    <div class="note info">
+      <strong>The Magic Hours:</strong> 60 minutes before sunrise to 90 minutes after. 90 minutes before sunset to 30 minutes after. Overcast days extend the bite all day.
+    </div>
+  </div>
+
+  <!-- MOON -->
+  <div class="weather-block">
+    <div class="weather-block-title">MOON PHASE</div>
+    <div class="weather-block-sub">Matters more for saltwater + bass spawn</div>
+    <div class="moon-row">
+      <div class="moon-cell peak">
+        <span class="moon-icon">🌑</span>
+        <div class="moon-name">New Moon</div>
+        <div class="moon-rating">★★★★★</div>
+      </div>
+      <div class="moon-cell">
+        <span class="moon-icon">🌓</span>
+        <div class="moon-name">First Qtr</div>
+        <div class="moon-rating">★★★</div>
+      </div>
+      <div class="moon-cell peak">
+        <span class="moon-icon">🌕</span>
+        <div class="moon-name">Full Moon</div>
+        <div class="moon-rating">★★★★★</div>
+      </div>
+      <div class="moon-cell">
+        <span class="moon-icon">🌗</span>
+        <div class="moon-name">Last Qtr</div>
+        <div class="moon-rating">★★★</div>
+      </div>
+    </div>
+    <div class="note">
+      <strong>Solunar windows:</strong> Major feeding 1-2 hrs around moonrise and moonset. Minor windows at moon overhead and underfoot. Strongest 3 days before to 3 days after new and full moons. Use Solunar.com or Fishbox app.
+    </div>
+  </div>
+
+  <!-- WATER CLARITY -->
+  <div class="weather-block">
+    <div class="weather-block-title">WATER CLARITY</div>
+    <div class="weather-block-sub">Match presentation to visibility</div>
+    <div class="quick-pick">
+      <div class="qp-card">
+        <div class="qp-label">Gin Clear &gt;6 ft</div>
+        <div class="qp-value"><strong>Natural colors:</strong> green pumpkin, smoke, watermelon. Light line (4-8 lb fluoro). Finesse.</div>
+      </div>
+      <div class="qp-card">
+        <div class="qp-label">Stained 2-5 ft</div>
+        <div class="qp-value"><strong>Mix:</strong> Junebug, black/blue, chartreuse skirts. 10-15 lb mainline OK.</div>
+      </div>
+      <div class="qp-card">
+        <div class="qp-label">Muddy &lt;2 ft</div>
+        <div class="qp-value"><strong>Loud + bright:</strong> chartreuse, white, fire tiger. Rattles. Scented baits. Heavy line.</div>
+      </div>
+      <div class="qp-card">
+        <div class="qp-label">Glacial blue</div>
+        <div class="qp-value"><strong>UV + flash:</strong> Common on PNW rivers in summer melt. Bright pinks and oranges cut through.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEASONAL CLOCK -->
+  <div class="weather-block">
+    <div class="weather-block-title">SEASONAL CLOCK · PNW</div>
+    <div class="weather-block-sub">When to chase what</div>
+    <div class="quick-pick">
+      <div class="qp-card">
+        <div class="qp-label">January-February</div>
+        <div class="qp-value">Winter steelhead, sturgeon, ice fishing E. WA/OR</div>
+      </div>
+      <div class="qp-card">
+        <div class="qp-label">March-April</div>
+        <div class="qp-value">Spring Chinook, trout opener, walleye pre-spawn</div>
+      </div>
+      <div class="qp-card">
+        <div class="qp-label">May-June</div>
+        <div class="qp-value">Shad, bass spawn, kokanee, summer steelhead arrives</div>
+      </div>
+      <div class="qp-card">
+        <div class="qp-label">July-August</div>
+        <div class="qp-value">Salt salmon, halibut, lingcod, sockeye, bass topwater</div>
+      </div>
+      <div class="qp-card">
+        <div class="qp-label">September-October</div>
+        <div class="qp-value">Fall Chinook, coho, fall trout, prime bass</div>
+      </div>
+      <div class="qp-card">
+        <div class="qp-label">November-December</div>
+        <div class="qp-value">Winter steelhead begins, late coho, big browns spawn</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ SPECIES ============================ -->
+<section id="species">
+  <div class="section-title">SPECIES GUIDE</div>
+  <div class="section-subtitle">Tap any species to expand</div>
+
+  <div class="type-toggle">
+    <button class="type-btn active all" data-type="all">All</button>
+    <button class="type-btn fresh" data-type="fresh">Freshwater</button>
+    <button class="type-btn salt" data-type="salt">Saltwater</button>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" id="species-search" placeholder="Search species or bait...">
+  </div>
+
+  <div id="species-container"><!-- populated by JS --></div>
+</section>
+
+<!-- ============================ SPOTS ============================ -->
+<section id="spots">
+  <div class="section-title">SPOTS BY REGION</div>
+  <div class="section-subtitle">Tap a region to see locations</div>
+
+  <div id="spots-container"><!-- populated by JS --></div>
+</section>
+
+<!-- ============================ RIGS ============================ -->
+<section id="rigs">
+  <div class="section-title">RIG DIAGRAMS</div>
+  <div class="section-subtitle">Top-down view · how to tie it</div>
+
+  <!-- DROP SHOT -->
+  <div class="rig-diagram">
+    <div class="rig-title">▸ Drop Shot</div>
+    <div class="rig-use">Bass, walleye, perch · finesse · clear water</div>
+    <svg class="rig-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
+      <line x1="160" y1="10" x2="160" y2="80" stroke="#d4a574" stroke-width="1.5"/>
+      <text x="170" y="30" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 8-12 lb fluoro</text>
+      <circle cx="160" cy="80" r="3" fill="#d4a574"/>
+      <text x="170" y="84" fill="#9a9489" font-family="JetBrains Mono" font-size="9">② Palomar knot</text>
+      <line x1="160" y1="80" x2="200" y2="80" stroke="#d4a574" stroke-width="1"/>
+      <path d="M 200 75 L 210 78 L 200 81 Z" fill="#f4c79b"/>
+      <text x="215" y="84" fill="#9a9489" font-family="JetBrains Mono" font-size="9">③ Size 1 hook + soft plastic</text>
+      <line x1="160" y1="80" x2="160" y2="140" stroke="#d4a574" stroke-width="1"/>
+      <ellipse cx="160" cy="145" rx="5" ry="8" fill="#5e5a52"/>
+      <text x="100" y="148" fill="#9a9489" font-family="JetBrains Mono" font-size="9">④ 1/4 oz drop shot weight</text>
+    </svg>
+    <div class="rig-parts">
+      <div class="rig-part"><span class="rig-part-num">①</span>8-12 lb fluoro main, tied direct or with leader</div>
+      <div class="rig-part"><span class="rig-part-num">②</span>Palomar knot, leave a long tag (8-18")</div>
+      <div class="rig-part"><span class="rig-part-num">③</span>Hook point facing UP · soft plastic worm or minnow</div>
+      <div class="rig-part"><span class="rig-part-num">④</span>Cylinder drop shot weight on tag end</div>
+    </div>
+  </div>
+
+  <!-- TEXAS RIG -->
+  <div class="rig-diagram">
+    <div class="rig-title">▸ Texas Rig</div>
+    <div class="rig-use">Bass · weedless · heavy cover</div>
+    <svg class="rig-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
+      <line x1="10" y1="40" x2="120" y2="80" stroke="#d4a574" stroke-width="1.5"/>
+      <text x="20" y="30" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 12-17 lb fluoro/braid</text>
+      <polygon points="120,70 135,85 120,90" fill="#888" stroke="#9a9489"/>
+      <text x="100" y="110" fill="#9a9489" font-family="JetBrains Mono" font-size="9">② Bullet weight</text>
+      <path d="M 140 80 C 160 80, 180 95, 220 90 L 280 88" stroke="#7a9b5d" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M 145 78 Q 155 78 158 85" stroke="#d4a574" stroke-width="1" fill="none"/>
+      <text x="160" y="115" fill="#9a9489" font-family="JetBrains Mono" font-size="9">③ EWG hook · ④ Soft plastic</text>
+    </svg>
+    <div class="rig-parts">
+      <div class="rig-part"><span class="rig-part-num">①</span>12-17 lb fluoro or 30-50 lb braid for cover</div>
+      <div class="rig-part"><span class="rig-part-num">②</span>Tungsten bullet weight 3/16-1/2 oz (pegged for cover)</div>
+      <div class="rig-part"><span class="rig-part-num">③</span>3/0-4/0 EWG worm hook</div>
+      <div class="rig-part"><span class="rig-part-num">④</span>Soft plastic worm or creature, hook point tucked back into body</div>
+    </div>
+  </div>
+
+  <!-- NED RIG -->
+  <div class="rig-diagram">
+    <div class="rig-title">▸ Ned Rig</div>
+    <div class="rig-use">Smallmouth, finicky bass · finesse magic</div>
+    <svg class="rig-svg" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="40" x2="140" y2="75" stroke="#d4a574" stroke-width="1.5"/>
+      <text x="30" y="30" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 6-10 lb fluoro</text>
+      <ellipse cx="155" cy="78" rx="14" ry="9" fill="#888"/>
+      <path d="M 155 87 Q 158 95 162 100" stroke="#666" stroke-width="2" fill="none"/>
+      <text x="170" y="72" fill="#9a9489" font-family="JetBrains Mono" font-size="9">② 1/10-1/6 oz mushroom head</text>
+      <path d="M 169 78 L 240 80" stroke="#7a9b5d" stroke-width="8" stroke-linecap="round" fill="none"/>
+      <text x="200" y="105" fill="#9a9489" font-family="JetBrains Mono" font-size="9">③ Stick worm (TRD, half Senko)</text>
+    </svg>
+    <div class="rig-parts">
+      <div class="rig-part"><span class="rig-part-num">①</span>6-10 lb fluoro spinning gear</div>
+      <div class="rig-part"><span class="rig-part-num">②</span>Mushroom-head jig 1/10-1/6 oz · light wire EWG</div>
+      <div class="rig-part"><span class="rig-part-num">③</span>2-3" stick worm (Z-Man TRD, half a Senko)</div>
+    </div>
+  </div>
+
+  <!-- KOKANEE TROLL -->
+  <div class="rig-diagram">
+    <div class="rig-title">▸ Kokanee Trolling Rig</div>
+    <div class="rig-use">Lake Merwin, Yale, Lake Chelan</div>
+    <svg class="rig-svg" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+      <line x1="10" y1="50" x2="100" y2="80" stroke="#d4a574" stroke-width="1.5"/>
+      <text x="20" y="40" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 8-10 lb main</text>
+      <polygon points="100,70 130,75 130,90 100,95" fill="#c0c0c0" stroke="#9a9489"/>
+      <text x="100" y="115" fill="#9a9489" font-family="JetBrains Mono" font-size="9">② Dodger 4"</text>
+      <line x1="130" y1="82" x2="260" y2="90" stroke="#d4a574" stroke-width="1"/>
+      <text x="155" y="78" fill="#9a9489" font-family="JetBrains Mono" font-size="9">③ 12-18" leader 10 lb</text>
+      <ellipse cx="265" cy="92" rx="5" ry="3" fill="#f4c79b"/>
+      <line x1="265" y1="95" x2="263" y2="105" stroke="#f4c79b"/>
+      <line x1="268" y1="95" x2="268" y2="105" stroke="#f4c79b"/>
+      <line x1="270" y1="95" x2="273" y2="105" stroke="#f4c79b"/>
+      <text x="225" y="130" fill="#9a9489" font-family="JetBrains Mono" font-size="9">④ Hoochie + corn</text>
+    </svg>
+    <div class="rig-parts">
+      <div class="rig-part"><span class="rig-part-num">①</span>8-10 lb main from trolling rod</div>
+      <div class="rig-part"><span class="rig-part-num">②</span>4" dodger (silver, copper, pink, watermelon)</div>
+      <div class="rig-part"><span class="rig-part-num">③</span>12-18" leader (short = more action)</div>
+      <div class="rig-part"><span class="rig-part-num">④</span>Pink/UV hoochie or small spinner + shoepeg corn cured in scent</div>
+    </div>
+  </div>
+
+  <!-- STEELHEAD FLOAT -->
+  <div class="rig-diagram">
+    <div class="rig-title">▸ Float + Jig (Steelhead)</div>
+    <div class="rig-use">Most versatile steelhead presentation</div>
+    <svg class="rig-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="20" x2="160" y2="40" stroke="#d4a574" stroke-width="1.5"/>
+      <text x="30" y="14" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 12-15 lb mainline</text>
+      <ellipse cx="170" cy="45" rx="12" ry="6" fill="#c85a4a" stroke="#9a9489"/>
+      <text x="190" y="42" fill="#9a9489" font-family="JetBrains Mono" font-size="9">② Slip float</text>
+      <line x1="170" y1="50" x2="170" y2="110" stroke="#d4a574" stroke-width="1"/>
+      <circle cx="170" cy="80" r="3" fill="#888"/>
+      <text x="180" y="84" fill="#9a9489" font-family="JetBrains Mono" font-size="9">③ Split shot</text>
+      <ellipse cx="170" cy="118" rx="6" ry="4" fill="#f4c79b"/>
+      <path d="M 170 122 L 168 130" stroke="#f4c79b"/>
+      <text x="115" y="142" fill="#9a9489" font-family="JetBrains Mono" font-size="9">④ 1/8 oz jig + bead</text>
+    </svg>
+    <div class="rig-parts">
+      <div class="rig-part"><span class="rig-part-num">①</span>12-15 lb mono main, bobber stopper at depth</div>
+      <div class="rig-part"><span class="rig-part-num">②</span>Slip float (Thill Pro Series or Beau Mac)</div>
+      <div class="rig-part"><span class="rig-part-num">③</span>2-3 split shot below float, 18" above jig</div>
+      <div class="rig-part"><span class="rig-part-num">④</span>1/8 oz marabou jig in pink, peach, black + bead</div>
+    </div>
+  </div>
+
+  <!-- SURF PERCH -->
+  <div class="rig-diagram">
+    <div class="rig-title">▸ Surf Perch Rig</div>
+    <div class="rig-use">Coast beaches · pier · jetty</div>
+    <svg class="rig-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="20" x2="160" y2="80" stroke="#d4a574" stroke-width="1.5"/>
+      <text x="30" y="14" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 10-15 lb mono main</text>
+      <circle cx="160" cy="80" r="4" fill="#999"/>
+      <line x1="165" y1="80" x2="220" y2="55" stroke="#d4a574" stroke-width="1"/>
+      <circle cx="222" cy="55" r="3" fill="#f4c79b"/>
+      <text x="225" y="50" fill="#9a9489" font-family="JetBrains Mono" font-size="9">② Top dropper hook</text>
+      <line x1="165" y1="80" x2="220" y2="105" stroke="#d4a574" stroke-width="1"/>
+      <circle cx="222" cy="105" r="3" fill="#f4c79b"/>
+      <text x="225" y="110" fill="#9a9489" font-family="JetBrains Mono" font-size="9">③ Bottom dropper hook</text>
+      <line x1="160" y1="84" x2="160" y2="140" stroke="#d4a574" stroke-width="1"/>
+      <polygon points="155,140 165,140 162,152 158,152" fill="#5e5a52"/>
+      <text x="80" y="150" fill="#9a9489" font-family="JetBrains Mono" font-size="9">④ Pyramid 1-3 oz</text>
+    </svg>
+    <div class="rig-parts">
+      <div class="rig-part"><span class="rig-part-num">①</span>10-15 lb mono mainline (mono floats over swells)</div>
+      <div class="rig-part"><span class="rig-part-num">②</span>Top dropper · size 4 baitholder, 6" leader</div>
+      <div class="rig-part"><span class="rig-part-num">③</span>Bottom dropper · same, 8" leader</div>
+      <div class="rig-part"><span class="rig-part-num">④</span>Pyramid sinker 1-3 oz (matches surf · use more in heavy waves)</div>
+      <div class="rig-part"><span class="rig-part-num">⑤</span>Bait: sand crab, mussel, raw shrimp, Berkley Gulp! sandworm</div>
+    </div>
+  </div>
+
+  <!-- SALMON MOOCHING -->
+  <div class="rig-diagram">
+    <div class="rig-title">▸ Mooching Rig (Salt Salmon)</div>
+    <div class="rig-use">Puget Sound coho, Chinook · drift / slow troll</div>
+    <svg class="rig-svg" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+      <line x1="10" y1="30" x2="110" y2="55" stroke="#d4a574" stroke-width="1.5"/>
+      <text x="20" y="22" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 20 lb mono</text>
+      <ellipse cx="115" cy="62" rx="10" ry="6" fill="#888"/>
+      <text x="80" y="85" fill="#9a9489" font-family="JetBrains Mono" font-size="9">② Crescent banana 2-6 oz</text>
+      <line x1="125" y1="62" x2="280" y2="68" stroke="#d4a574" stroke-width="1"/>
+      <text x="140" y="58" fill="#9a9489" font-family="JetBrains Mono" font-size="9">③ 6 ft leader 20 lb</text>
+      <ellipse cx="270" cy="68" rx="5" ry="2" fill="#aaa"/>
+      <line x1="270" y1="70" x2="285" y2="80" stroke="#888"/>
+      <text x="200" y="100" fill="#9a9489" font-family="JetBrains Mono" font-size="9">④ Cut-plug herring</text>
+    </svg>
+    <div class="rig-parts">
+      <div class="rig-part"><span class="rig-part-num">①</span>20 lb mono main (mooching rod 10-11 ft)</div>
+      <div class="rig-part"><span class="rig-part-num">②</span>Banana/crescent sinker 2-6 oz</div>
+      <div class="rig-part"><span class="rig-part-num">③</span>6 ft mono leader, 20 lb</div>
+      <div class="rig-part"><span class="rig-part-num">④</span>Cut-plug herring on tandem 4/0 hooks · angled cut creates spin</div>
+    </div>
+  </div>
+
+  <!-- HALIBUT -->
+  <div class="rig-diagram">
+    <div class="rig-title">▸ Halibut Spreader</div>
+    <div class="rig-use">WA/OR coast offshore · 100-300 ft</div>
+    <svg class="rig-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
+      <line x1="160" y1="10" x2="160" y2="55" stroke="#d4a574" stroke-width="1.5"/>
+      <text x="170" y="22" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 65-80 lb braid main</text>
+      <line x1="100" y1="65" x2="220" y2="65" stroke="#888" stroke-width="2"/>
+      <circle cx="160" cy="60" r="4" fill="#999"/>
+      <text x="170" y="60" fill="#9a9489" font-family="JetBrains Mono" font-size="9">② Wire spreader bar</text>
+      <line x1="100" y1="65" x2="100" y2="110" stroke="#d4a574" stroke-width="1"/>
+      <polygon points="95,115 105,115 102,135 98,135" fill="#5e5a52"/>
+      <text x="20" y="130" fill="#9a9489" font-family="JetBrains Mono" font-size="9">③ Cannonball 16-32 oz</text>
+      <line x1="220" y1="65" x2="280" y2="100" stroke="#d4a574" stroke-width="1"/>
+      <circle cx="282" cy="103" r="4" fill="#f4c79b"/>
+      <text x="220" y="125" fill="#9a9489" font-family="JetBrains Mono" font-size="9">④ Circle hook + bait</text>
+    </svg>
+    <div class="rig-parts">
+      <div class="rig-part"><span class="rig-part-num">①</span>65-80 lb braid main, heavy boat rod</div>
+      <div class="rig-part"><span class="rig-part-num">②</span>Wire spreader bar 12" keeps bait off bottom</div>
+      <div class="rig-part"><span class="rig-part-num">③</span>Cannonball 16-32 oz (depth + current dependent)</div>
+      <div class="rig-part"><span class="rig-part-num">④</span>16/0 circle hook on 3 ft leader, herring or salmon belly</div>
+    </div>
+  </div>
+
+  <!-- ROCKFISH JIG -->
+  <div class="rig-diagram">
+    <div class="rig-title">▸ Rockfish/Lingcod Jig</div>
+    <div class="rig-use">Vertical jig · 40-200 ft rocky bottom</div>
+    <svg class="rig-svg" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+      <line x1="160" y1="10" x2="160" y2="60" stroke="#d4a574" stroke-width="1.5"/>
+      <text x="170" y="22" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 50-65 lb braid</text>
+      <line x1="160" y1="60" x2="160" y2="90" stroke="#9a9489" stroke-width="1" stroke-dasharray="2,2"/>
+      <text x="170" y="80" fill="#9a9489" font-family="JetBrains Mono" font-size="9">② 30 lb fluoro leader</text>
+      <polygon points="155,95 165,95 168,115 152,115" fill="#c0c0c0"/>
+      <line x1="160" y1="118" x2="158" y2="125" stroke="#888"/>
+      <text x="180" y="115" fill="#9a9489" font-family="JetBrains Mono" font-size="9">③ Diamond jig 4-12 oz</text>
+    </svg>
+    <div class="rig-parts">
+      <div class="rig-part"><span class="rig-part-num">①</span>50-65 lb braid (sensitivity at depth)</div>
+      <div class="rig-part"><span class="rig-part-num">②</span>30 lb fluoro leader 4-6 ft</div>
+      <div class="rig-part"><span class="rig-part-num">③</span>Diamond or knife jig 4-12 oz · drop to bottom, lift-fall</div>
+      <div class="rig-part"><span class="rig-part-num">④</span>Add a swimbait teaser 18" above for double-headers</div>
+    </div>
+  </div>
+
+  <!-- STURGEON -->
+  <div class="rig-diagram">
+    <div class="rig-title">▸ Sturgeon Anchor Rig</div>
+    <div class="rig-use">Columbia C&R · barbless circle required</div>
+    <svg class="rig-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="30" x2="140" y2="80" stroke="#d4a574" stroke-width="2"/>
+      <text x="30" y="22" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 50-65 lb braid</text>
+      <line x1="140" y1="80" x2="140" y2="130" stroke="#d4a574" stroke-width="1"/>
+      <polygon points="130,135 150,135 145,155 135,155" fill="#5e5a52"/>
+      <text x="65" y="150" fill="#9a9489" font-family="JetBrains Mono" font-size="9">② Pyramid 4-12 oz</text>
+      <line x1="145" y1="80" x2="260" y2="75" stroke="#d4a574" stroke-width="1.5"/>
+      <text x="160" y="68" fill="#9a9489" font-family="JetBrains Mono" font-size="9">③ 60-80 lb leader 18"</text>
+      <path d="M 258 75 C 268 78, 270 88, 260 90" stroke="#f4c79b" stroke-width="2" fill="none"/>
+      <text x="200" y="105" fill="#9a9489" font-family="JetBrains Mono" font-size="9">④ Circle hook 5/0-8/0</text>
+    </svg>
+    <div class="rig-parts">
+      <div class="rig-part"><span class="rig-part-num">①</span>50-65 lb braid main, heavy sturgeon rod</div>
+      <div class="rig-part"><span class="rig-part-num">②</span>Pyramid weight 4-12 oz on slider above swivel</div>
+      <div class="rig-part"><span class="rig-part-num">③</span>60-80 lb mono leader 12-18"</div>
+      <div class="rig-part"><span class="rig-part-num">④</span><strong>Required:</strong> 5/0-8/0 single barbless circle hook, snelled</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ HOOKS ============================ -->
+<section id="hooks">
+  <div class="section-title">HOOK + TACKLE CHART</div>
+  <div class="section-subtitle">Size by species · fresh + salt</div>
+
+  <div class="rig-diagram" style="margin-bottom:18px;">
+    <div class="rig-title">▸ Hook Size Reference</div>
+    <div style="color:var(--text-dim);font-size:12px;margin-bottom:8px;">After #1, sizes count up with /0 suffix. Smaller numbers = larger hooks until you hit /0, then larger numbers = larger hooks.</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text);line-height:1.8;overflow-x:auto;">
+      <strong style="color:var(--accent);">SMALL →</strong> 18 · 14 · 10 · 8 · 6 · 4 · 2 · 1 · 1/0 · 2/0 · 3/0 · 4/0 · 5/0 · 6/0 · 8/0 · 10/0 · 16/0 <strong style="color:var(--accent);">→ LARGE</strong>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Bebas Neue';font-size:18px;color:var(--fresh-bright);letter-spacing:1px;margin:18px 0 8px;">FRESHWATER</h3>
+  <table class="hook-table">
+    <thead>
+      <tr><th style="width:34%">Species</th><th style="width:20%">Hook</th><th style="width:30%">Type</th><th style="width:16%">Line</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Bluegill / Sunfish</strong></td><td>10-12</td><td>Long shank, aberdeen</td><td>4-6 lb</td></tr>
+      <tr><td><strong>Crappie</strong></td><td>6-8</td><td>Aberdeen, jig 1/32-1/16 oz</td><td>4-6 lb</td></tr>
+      <tr><td><strong>Yellow Perch</strong></td><td>6-8</td><td>Baitholder, jig 1/16-1/8 oz</td><td>4-8 lb</td></tr>
+      <tr><td><strong>Trout (stocker)</strong></td><td>8-12</td><td>Treble (PowerBait), baitholder (worm)</td><td>4-6 lb</td></tr>
+      <tr><td><strong>Trout (lake)</strong></td><td>6-10</td><td>Baitholder, single inline</td><td>6-8 lb</td></tr>
+      <tr><td><strong>Cutthroat</strong></td><td>8-10</td><td>Single barbless, fly</td><td>4-8 lb</td></tr>
+      <tr><td><strong>Kokanee</strong></td><td>6-8 tandem</td><td>Pre-tied kokanee rigs</td><td>8-10 lb</td></tr>
+      <tr><td><strong>Smallmouth Bass</strong></td><td>1-2/0</td><td>Drop shot, jig 1/4-3/8 oz</td><td>8-12 lb</td></tr>
+      <tr><td><strong>Largemouth Bass</strong></td><td>2/0-4/0</td><td>EWG worm hook</td><td>12-17 lb</td></tr>
+      <tr><td><strong>Walleye</strong></td><td>2-4</td><td>Octopus harness, 1/4-1/2 oz jig</td><td>8-12 lb</td></tr>
+      <tr><td><strong>Channel Catfish</strong></td><td>2/0-5/0</td><td>Circle</td><td>15-25 lb</td></tr>
+      <tr><td><strong>Shad</strong></td><td>4-6</td><td>Shad dart, curly tail jig</td><td>10-15 lb</td></tr>
+      <tr><td><strong>Steelhead</strong></td><td>1-1/0</td><td>Octopus, single barbless</td><td>10-15 lb</td></tr>
+      <tr><td><strong>Coho (river)</strong></td><td>1/0-2/0</td><td>Octopus, single barbless</td><td>15-20 lb</td></tr>
+      <tr><td><strong>Chinook (river)</strong></td><td>2/0-3/0</td><td>Octopus, single barbless</td><td>20-25 lb</td></tr>
+      <tr><td><strong>Sturgeon C&R</strong></td><td>5/0-8/0</td><td><strong style="color:var(--warn);">Circle, barbless required</strong></td><td>50-65 lb braid</td></tr>
+      <tr><td><strong>Tiger Muskie</strong></td><td>5/0-7/0</td><td>Single, barbless</td><td>50-80 lb braid + 80 lb leader</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-family:'Bebas Neue';font-size:18px;color:var(--salt-bright);letter-spacing:1px;margin:18px 0 8px;">SALTWATER</h3>
+  <table class="hook-table">
+    <thead>
+      <tr><th style="width:34%">Species</th><th style="width:20%">Hook</th><th style="width:30%">Type</th><th style="width:16%">Line</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Surf Perch</strong></td><td>4-6</td><td>Baitholder, hi-low dropper rig</td><td>10-15 lb mono</td></tr>
+      <tr><td><strong>Pile Perch / Striped</strong></td><td>4-6</td><td>Same as surf perch</td><td>10-15 lb</td></tr>
+      <tr><td><strong>Rockfish</strong></td><td>3/0-5/0</td><td>Circle, swimbait jig 2-6 oz</td><td>50-65 lb braid + 30 lb leader</td></tr>
+      <tr><td><strong>Lingcod</strong></td><td>5/0-8/0</td><td>Circle, swimbait jig 4-12 oz</td><td>50-65 lb braid + 50 lb leader</td></tr>
+      <tr><td><strong>Halibut</strong></td><td>12/0-16/0</td><td>Circle on spreader</td><td>65-80 lb braid + 80 lb leader</td></tr>
+      <tr><td><strong>Coho (salt)</strong></td><td>2/0-3/0 tandem</td><td>Octopus, mooching tandem</td><td>20 lb mono</td></tr>
+      <tr><td><strong>Chinook (salt)</strong></td><td>4/0-5/0 tandem</td><td>Octopus tandem, treble on plug</td><td>25-30 lb mono</td></tr>
+      <tr><td><strong>Pink Salmon</strong></td><td>1/0-2/0</td><td>Octopus, Buzz Bomb hooks</td><td>10-15 lb</td></tr>
+      <tr><td><strong>Albacore Tuna</strong></td><td>5/0-7/0</td><td>Live bait circle, troll heads</td><td>40-65 lb mono</td></tr>
+      <tr><td><strong>Cabezon</strong></td><td>3/0-5/0</td><td>Circle, jig with bait</td><td>30-50 lb braid</td></tr>
+      <tr><td><strong>Greenling</strong></td><td>2-4</td><td>Baitholder</td><td>8-15 lb</td></tr>
+      <tr><td><strong>Dungeness Crab</strong></td><td>—</td><td>Crab pots / ring nets · chicken, fish carcass</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title" style="margin-top:24px;">SINKER GUIDE</div>
+  <table class="hook-table">
+    <thead><tr><th>Use</th><th>Type</th><th>Weight</th></tr></thead>
+    <tbody>
+      <tr><td>Trout slip rig</td><td>Egg sinker</td><td>1/8-1/4 oz</td></tr>
+      <tr><td>Bass Texas rig</td><td>Tungsten bullet</td><td>3/16-1/2 oz</td></tr>
+      <tr><td>Bass drop shot</td><td>Drop shot cylinder</td><td>1/4-3/8 oz</td></tr>
+      <tr><td>Walleye bottom bouncer</td><td>Wire bouncer</td><td>1-3 oz</td></tr>
+      <tr><td>Shad</td><td>Bank or pencil</td><td>1-2 oz</td></tr>
+      <tr><td>Salmon plunking</td><td>Pyramid or cannonball</td><td>2-4 oz</td></tr>
+      <tr><td>Salmon mooching</td><td>Crescent/banana</td><td>2-6 oz</td></tr>
+      <tr><td>Salmon downrigger ball</td><td>Cannonball</td><td>8-16 lb</td></tr>
+      <tr><td>Sturgeon anchor</td><td>Pyramid (slider)</td><td>4-12 oz</td></tr>
+      <tr><td>Surf perch</td><td>Pyramid</td><td>1-3 oz</td></tr>
+      <tr><td>Halibut</td><td>Cannonball</td><td>16-32 oz</td></tr>
+      <tr><td>Rockfish/Ling jig</td><td>Lead diamond/iron</td><td>4-12 oz</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================ KNOTS ============================ -->
+<section id="knots">
+  <div class="section-title">ESSENTIAL KNOTS</div>
+  <div class="section-subtitle">These 6 cover 95% of fishing</div>
+
+  <div class="knot-card">
+    <div class="knot-name">Arbor Knot <span class="knot-strength">SPOOL ONLY</span></div>
+    <div class="knot-use">Line to reel spool</div>
+    <ol class="knot-steps">
+      <li>Pass line around the spool arbor.</li>
+      <li>Tie an overhand knot around the main line with the tag end.</li>
+      <li>Tie a second overhand knot in the tag end only (this becomes the stopper).</li>
+      <li>Pull main line tight. The second knot acts as a stopper against the first.</li>
+      <li>Trim tag end close.</li>
+    </ol>
+  </div>
+
+  <div class="knot-card">
+    <div class="knot-name">Improved Clinch <span class="knot-strength">85% STRENGTH</span></div>
+    <div class="knot-use">Hook, lure, swivel to line · mono/fluoro</div>
+    <ol class="knot-steps">
+      <li>Pass tag end through hook eye.</li>
+      <li>Wrap tag end around main line 5-7 times.</li>
+      <li>Pass tag end through the small loop above the eye.</li>
+      <li>Pass tag end back through the big loop you just formed.</li>
+      <li>Wet the knot. Pull main line slowly to tighten. Trim tag.</li>
+    </ol>
+  </div>
+
+  <div class="knot-card">
+    <div class="knot-name">Palomar Knot <span class="knot-strength">95% STRENGTH</span></div>
+    <div class="knot-use">Strongest with braid · hooks and swivels</div>
+    <ol class="knot-steps">
+      <li>Double 6" of line and pass the loop through hook eye.</li>
+      <li>Tie a loose overhand knot with the doubled line.</li>
+      <li>Pass the hook entirely through the loop.</li>
+      <li>Wet. Pull both tag and main line to tighten.</li>
+      <li>Trim tag close.</li>
+    </ol>
+  </div>
+
+  <div class="knot-card">
+    <div class="knot-name">Double Uni <span class="knot-strength">90% STRENGTH</span></div>
+    <div class="knot-use">Braid to mono/fluoro leader · easy braid-to-leader</div>
+    <ol class="knot-steps">
+      <li>Overlap the two lines about 6".</li>
+      <li>Form a loop with one line. Wrap tag 4-5 times around both lines and through the loop.</li>
+      <li>Wet and pull tag to tighten this first knot.</li>
+      <li>Repeat on the other line, mirroring the first knot.</li>
+      <li>Pull both main lines apart slowly. The two knots slide together. Trim tags.</li>
+    </ol>
+  </div>
+
+  <div class="knot-card">
+    <div class="knot-name">FG Knot <span class="knot-strength">99% STRENGTH</span></div>
+    <div class="knot-use">Slimmest braid-to-fluoro · passes through guides</div>
+    <ol class="knot-steps">
+      <li>Hold leader under tension (clip it or have a partner hold).</li>
+      <li>Cross-wrap braid over the leader 20 times each direction.</li>
+      <li>Half-hitch 5-6 times around both lines to lock the wraps.</li>
+      <li>Half-hitch over braid alone 3 times.</li>
+      <li>Pull everything tight. Trim leader close, leave tiny tag on braid.</li>
+    </ol>
+  </div>
+
+  <div class="knot-card">
+    <div class="knot-name">Snell Knot <span class="knot-strength">100% W/ CIRCLE</span></div>
+    <div class="knot-use">Mandatory for sturgeon circle hooks · best for salmon eggs</div>
+    <ol class="knot-steps">
+      <li>Pass leader through hook eye from front, run back along shank.</li>
+      <li>Form a loop on the back side of the hook.</li>
+      <li>Wrap the leader around the hook shank and through the loop 6-8 times, working from eye downward.</li>
+      <li>Hold wraps tight against shank. Pull standing line to cinch wraps in line with shank.</li>
+      <li>Wet and tighten fully. Trim tag.</li>
+    </ol>
+  </div>
+
+  <div class="note" style="margin-top:18px;">
+    <strong>Universal rule:</strong> Always wet your knots with spit or water before tightening. Friction from a dry knot weakens line by up to 50%. The pros lose more fish to bad knots than bad luck.
+  </div>
+</section>
+
+<!-- ============================ TIPS ============================ -->
+<section id="tips">
+  <div class="section-title">FIELD TIPS</div>
+  <div class="section-subtitle">What the pros do that beginners miss</div>
+
+  <h3 style="font-family:'Bebas Neue';font-size:18px;color:var(--accent);letter-spacing:1px;margin:18px 0 10px;">PRESENTATION</h3>
+
+  <div class="tip-card">
+    <div class="tip-icon">🎯</div>
+    <div class="tip-content">
+      <div class="tip-title">Match the hatch</div>
+      <div class="tip-text">Look at what's in the water. Baitfish color, crawfish shades, insect hatches. Match size first, then color. A 3" baitfish gets a 3" bait, not a 5".</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">🐌</div>
+    <div class="tip-content">
+      <div class="tip-title">Slow down</div>
+      <div class="tip-text">Most anglers retrieve too fast. Cold water demands slower. If nothing bites, cut your speed in half and pause more. The bite often comes on the pause.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">↗️</div>
+    <div class="tip-content">
+      <div class="tip-title">Work the angles</div>
+      <div class="tip-text">Cast past your target, retrieve through the strike zone. A bait appearing from nowhere is more convincing than one landing on a fish's head. Skipping baits under docks and overhangs unlocks fish nobody else reaches.</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Bebas Neue';font-size:18px;color:var(--accent);letter-spacing:1px;margin:22px 0 10px;">TACKLE</h3>
+
+  <div class="tip-card">
+    <div class="tip-icon">🪢</div>
+    <div class="tip-content">
+      <div class="tip-title">Line matters more than most admit</div>
+      <div class="tip-text">Fluorocarbon for clear water finesse (invisible underwater). Braid for sensitivity and heavy cover (zero stretch). Mono for topwater (it floats). Most anglers run one type and lose fish to it.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">🔍</div>
+    <div class="tip-content">
+      <div class="tip-title">Check your leader every trip</div>
+      <div class="tip-text">A nick above the knot loses fish. Run your fingertips down the last 3 feet before every session. If anything feels rough, retie. Takes 30 seconds. Saves the trip.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">🪝</div>
+    <div class="tip-content">
+      <div class="tip-title">Sharp hooks are non-negotiable</div>
+      <div class="tip-text">New hooks out of the pack are often dull. Test with a fingernail: sharp drags, dull slides. Touch up with a file or replace after every solid fish. Steelhead and salmon anglers retie at every hookset.</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Bebas Neue';font-size:18px;color:var(--accent);letter-spacing:1px;margin:22px 0 10px;">ON THE WATER</h3>
+
+  <div class="tip-card">
+    <div class="tip-icon">📍</div>
+    <div class="tip-content">
+      <div class="tip-title">Don't leave fish to find fish</div>
+      <div class="tip-text">If you're catching, stay. Even when the bite slows, work the area thoroughly. Most schools have a 15-30 minute window. Move only when a productive spot goes truly cold.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">🤫</div>
+    <div class="tip-content">
+      <div class="tip-title">Be quiet</div>
+      <div class="tip-text">Footsteps on aluminum, gear banging the hull, slamming a tackle box. Fish feel vibration through water and ground. Approach banks slowly, especially in clear water. Wear neutral colors.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">📓</div>
+    <div class="tip-content">
+      <div class="tip-title">Log your trips</div>
+      <div class="tip-text">Water temp, time of day, bait, depth, weather, what worked, what didn't. Patterns emerge over seasons. The best anglers on any water fish data as much as instinct. Apps: Fishidy, Fishbrain, Anglr.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">👀</div>
+    <div class="tip-content">
+      <div class="tip-title">Read the water</div>
+      <div class="tip-text">Diving birds = baitfish on surface. Nervous water with no wind = predators below. Bubble trails on still mornings = feeding fish. Color changes = depth or current breaks where fish stage.</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Bebas Neue';font-size:18px;color:var(--accent);letter-spacing:1px;margin:22px 0 10px;">BEGINNER WINS</h3>
+
+  <div class="tip-card">
+    <div class="tip-icon">🎓</div>
+    <div class="tip-content">
+      <div class="tip-title">Start with one technique, one species</div>
+      <div class="tip-text">Master a worm-and-bobber for panfish before chasing salmon. Catching builds skill faster than learning rigs that haven't put fish in the boat yet.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">📚</div>
+    <div class="tip-content">
+      <div class="tip-title">Free resources that actually help</div>
+      <div class="tip-text">YouTube: TacticalBassin (bass), Jay Siemens (Canada/PNW), Addicted Fishing (PNW salmon/steelhead), Salt Strong (saltwater). WDFW stocking reports tell you exactly where trout were dumped. Fishbrain shows what's being caught near you.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">🤝</div>
+    <div class="tip-content">
+      <div class="tip-title">Hire a guide once</div>
+      <div class="tip-text">$200-400 for a half-day puts you 2 years ahead. Guides show you spots, technique, gear, and timing in 6 hours that takes solo learners seasons to figure out. Tip well, ask questions, take notes.</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Bebas Neue';font-size:18px;color:var(--accent);letter-spacing:1px;margin:22px 0 10px;">CATCH & RELEASE</h3>
+
+  <div class="tip-card">
+    <div class="tip-icon">💧</div>
+    <div class="tip-content">
+      <div class="tip-title">Wet hands. Horizontal hold. 30 seconds.</div>
+      <div class="tip-text">Wet your hands before touching any fish. Slime layer is their immune system. Keep them horizontal (dropping a bass with the jaw bent vertically can paralyze it). Out of water under 30 seconds when possible.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">🌡️</div>
+    <div class="tip-content">
+      <div class="tip-title">Skip warm-water C&R</div>
+      <div class="tip-text">When water hits 70°F+, even quick releases stress trout and salmon past survival. Target warm-water species (bass, panfish, catfish, walleye) and leave the cold-water fish until temps drop.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">🔄</div>
+    <div class="tip-content">
+      <div class="tip-title">Revive properly</div>
+      <div class="tip-text">In moving water, face the fish upstream. In still water, gently move it side-to-side (never back and forth · gills only push one direction). Hold upright until it kicks free on its own.</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Bebas Neue';font-size:18px;color:var(--accent);letter-spacing:1px;margin:22px 0 10px;">SAFETY</h3>
+
+  <div class="tip-card">
+    <div class="tip-icon">🦺</div>
+    <div class="tip-content">
+      <div class="tip-title">PFD always</div>
+      <div class="tip-text">PNW water is cold year-round. Hypothermia kicks in fast even in summer. Inflatable PFDs are comfortable enough that there's no excuse. The Coast Guard requires one per person on every boat regardless.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">📱</div>
+    <div class="tip-content">
+      <div class="tip-title">File a float plan</div>
+      <div class="tip-text">Text someone where you're going and when you'll be back. Carry a fully charged phone or VHF for saltwater. Garmin inReach for remote rivers. Cell service is spotty across most of the PNW backcountry.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">🌊</div>
+    <div class="tip-content">
+      <div class="tip-title">Respect the bar and surf</div>
+      <div class="tip-text">Columbia Bar, Tillamook Bar, La Push, Westport. These bars kill experienced boaters every year. Check the bar report. Sneaker waves on PNW beaches are not a myth. Never turn your back on the ocean.</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-text">
+    ALWAYS VERIFY CURRENT REGULATIONS<br>
+    <a href="https://wdfw.wa.gov/fishing/regulations" target="_blank">wdfw.wa.gov/fishing/regulations</a><br>
+    <a href="https://myodfw.com" target="_blank">myodfw.com</a><br>
+    FISH WA APP · MYODFW APP<br>
+    WDFW 360-902-2700 · ODFW 503-947-6000<br><br>
+    PNW ANGLER FIELD GUIDE V2.0 · MAY 2026
+  </div>
+  <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border);">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);letter-spacing:2px;line-height:1;">
+      YASSIR BAZA
+    </div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent-bright);letter-spacing:2px;margin-top:4px;">
+      AKA YAB OFFICIAL
+    </div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-faint);letter-spacing:1.5px;margin-top:8px;line-height:1.6;">
+      RESEARCHED · WRITTEN · DESIGNED<br>
+      © 2026 · ALL RIGHTS RESERVED
+    </div>
+  </div>
+</footer>
+
+<script>
+// ============ SPECIES DATA ============
+const speciesData = [
+  // ===== FRESHWATER =====
+  { type: 'fresh', name: 'Rainbow Trout', sci: 'Oncorhynchus mykiss', status: 'open', statusText: 'Open',
+    tags: ['Beginner', 'Stocked', 'Year-round'],
+    season: { J:'open', F:'open', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'open', Au:'open', S:'open', O:'peak', N:'peak', D:'peak' },
+    seasonNote: 'Year-round on most lakes. Lowland opener late April. Best 2-7 days after stocking.',
+    where: 'Klineline, Battle Ground, Lacamas, Yale, Merwin (WA) · Henry Hagg, Detroit, Diamond Lake (OR)',
+    rig: 'Bait rig: 6-8 lb main, slip sinker 1/4 oz, 18" leader 4-6 lb fluoro · Lure: Rooster Tail 1/16-1/8 oz, Kastmaster 1/4 oz',
+    hook: 'Size 8-12 baitholder or treble (PowerBait)',
+    bait: 'PowerBait (rainbow, chartreuse), Trout Nuggets, nightcrawlers, salmon eggs',
+    limit: '5/day WA · 5/day OR (varies by water)' },
+
+  { type: 'fresh', name: 'Cutthroat Trout', sci: 'O. clarkii · Coastal/Sea-run',
+    status: 'open', statusText: 'Open',
+    tags: ['Native', 'Streams'],
+    season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'open', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'closed', D:'closed' },
+    seasonNote: 'Lakes year-round. Rivers/streams typically June 1 to Oct 31. Verify.',
+    where: 'Yale Reservoir, Lewis system (WA) · coast range streams (OR) · Tillamook Bay sea-runs',
+    rig: 'Light spinning, 6 lb main, small spinners (Mepps #1-2, Panther Martin), wet flies, nightcrawlers',
+    hook: 'Size 8-10, single barbless on selective gear waters',
+    bait: 'Worms, eggs, small spinners',
+    limit: 'Varies; many waters C&R or 2/day min 14"' },
+
+  { type: 'fresh', name: 'Steelhead', sci: 'O. mykiss · sea-run rainbow',
+    status: 'partial', statusText: 'Partial',
+    tags: ['Trophy', 'Hatchery only'],
+    season: { J:'peak', F:'peak', M:'open', A:'closed', My:'closed', Jn:'open', Jl:'open', Au:'open', S:'open', O:'open', N:'peak', D:'peak' },
+    seasonNote: 'Winter run Dec-Mar (peak). Summer run Jun-Oct. Hatchery only retention. Wild release required.',
+    where: 'Cowlitz, Lewis, Kalama, Washougal, Klickitat (WA) · Sandy, Clackamas, Deschutes, Rogue, Siletz, Wilson, Nestucca (OR)',
+    rig: 'Drift fishing: 12-15 lb main, 8-10 lb leader, yarn/corkie + bait · Float fishing: bobber + 1/8 oz jig · Plug pulling: Hot Shot or Mag Lip',
+    hook: 'Size 1 to 1/0 octopus, single barbless',
+    bait: 'Cured eggs, sand shrimp, prawn tails, jigs, beads',
+    limit: '2 hatchery adults/day typical. Wild release.' },
+
+  { type: 'fresh', name: 'Spring Chinook', sci: 'O. tshawytscha',
+    status: 'partial', statusText: 'Short Windows',
+    tags: ['Trophy', 'Premium table'],
+    season: { J:'closed', F:'closed', M:'open', A:'peak', My:'peak', Jn:'open', Jl:'closed', Au:'closed', S:'closed', O:'closed', N:'closed', D:'closed' },
+    seasonNote: 'Mar-Jun. Openers announced in short windows. Verify daily during season.',
+    where: 'Lower Columbia, Willamette (Portland), Cowlitz, Lewis, Sandy, Clackamas',
+    rig: 'Plunking: 25-30 lb main, 4 oz pyramid, Spin-N-Glo + cured egg · Trolling: herring or Kwikfish + sardine wrap',
+    hook: 'Size 2/0-3/0 octopus, single barbless',
+    bait: 'Cured eggs, sand shrimp, herring, prawn tails, Kwikfish',
+    limit: '1-2/day with endorsement. Verify open days.' },
+
+  { type: 'fresh', name: 'Fall Chinook', sci: 'O. tshawytscha',
+    status: 'open', statusText: 'Sept Peak',
+    tags: ['Bigger fish', 'Heavier gear'],
+    season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'closed', Jl:'open', Au:'open', S:'peak', O:'peak', N:'open', D:'closed' },
+    seasonNote: 'Aug-Nov. Peak September. Buoy 10 fishery world-class.',
+    where: 'Buoy 10 (Columbia mouth), Cowlitz, Lewis, Wind River (WA) · Tillamook, Nehalem, Siuslaw, Rogue (OR)',
+    rig: 'Buoy 10: trolling herring or spinner with downrigger 20-50 ft · River: backbouncing eggs, plug pulling',
+    hook: 'Size 2/0-3/0 octopus, single barbless',
+    bait: 'Cured roe, herring, sand shrimp',
+    limit: 'Varies by river and date. CRC required.' },
+
+  { type: 'fresh', name: 'Coho Salmon', sci: 'O. kisutch · Silver',
+    status: 'open', statusText: 'Sept-Nov',
+    tags: ['Aggressive', 'Light gear OK'],
+    season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'closed', Jl:'closed', Au:'open', S:'peak', O:'peak', N:'open', D:'closed' },
+    seasonNote: 'Aug-Nov. Aggressive on spinners and jigs in rivers.',
+    where: 'Lower Columbia, Cowlitz, Lewis, Washougal (WA) · Tillamook, Nestucca, Sandy, Trask, Wilson, Coos (OR)',
+    rig: 'River: float + jig (pink/chartreuse), spinners (Blue Fox #4-5) · Estuary: trolling herring',
+    hook: 'Size 1/0-2/0 octopus, single barbless',
+    bait: 'Cured eggs, sand shrimp, jigs, spinners',
+    limit: 'Varies by river. Hatchery only typical.' },
+
+  { type: 'fresh', name: 'Sockeye', sci: 'O. nerka',
+    status: 'partial', statusText: 'Summer',
+    tags: ['Targeted run', 'Specialty'],
+    season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'open', Jl:'peak', Au:'peak', S:'closed', O:'closed', N:'closed', D:'closed' },
+    seasonNote: 'Late June through August. Brief openers when run is strong.',
+    where: 'Columbia (Brewster Pool, Wells Dam), Baker Lake, Lake Wenatchee, Lake Washington',
+    rig: 'Trolling pink hoochies behind dodger 4-12 ft deep, slow speed 0.8-1.2 mph',
+    hook: 'Pre-tied tandem 4-6',
+    bait: 'Pink, red, UV hoochies. Sometimes scent-tipped.',
+    limit: 'Set when run exceeds escapement. Watch announcements.' },
+
+  { type: 'fresh', name: 'Kokanee', sci: 'O. nerka · landlocked sockeye',
+    status: 'open', statusText: 'Peak Now',
+    tags: ['Trolling', 'Family-friendly boat'],
+    season: { J:'open', F:'open', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'open', O:'open', N:'closed', D:'closed' },
+    seasonNote: 'Apr-Aug peak. Adults spawn out late October.',
+    where: 'Lake Merwin (best near Vancouver WA), Yale, Riffe, Lake Chelan (E. WA · trophy class), Detroit Lake (OR)',
+    rig: 'Trolling only. Dodger/flasher + small hoochie or spinner tipped with corn. Downrigger May+ as fish go deep. 1.0-1.5 mph.',
+    hook: 'Size 6-8 in tandem on pre-tied kokanee rigs',
+    bait: 'White shoepeg corn (cured in scent), small pieces of worm',
+    limit: '10/day Merwin · 16/day Chelan (no min size at Chelan)' },
+
+  { type: 'fresh', name: 'Shad', sci: 'Alosa sapidissima',
+    status: 'open', statusText: 'Open Now',
+    tags: ['Beginner', 'No limit', 'Hard fight'],
+    season: { J:'closed', F:'closed', M:'closed', A:'open', My:'peak', Jn:'peak', Jl:'open', Au:'closed', S:'closed', O:'closed', N:'closed', D:'closed' },
+    seasonNote: 'May-June peak. Bonneville Dam tailrace is mecca.',
+    where: 'Columbia (Bonneville tailrace, Camas, Washougal), lower Willamette',
+    rig: 'Shad rig: 10-15 lb main, 1-2 oz sinker, 2-3 ft dropper leader, tandem shad darts or curly tail grubs',
+    hook: 'Size 4-6 shad darts, 1/8-1/4 oz',
+    bait: 'None. Shad darts in white, chartreuse, pink. Curly tail grubs on jig heads.',
+    limit: 'No limit. No minimum size.' },
+
+  { type: 'fresh', name: 'White Sturgeon', sci: 'Acipenser transmontanus',
+    status: 'cr', statusText: 'C&R Below Bonneville',
+    tags: ['Heavy gear', 'Trophy'],
+    season: { J:'cr', F:'cr', M:'cr', A:'cr', My:'cr', Jn:'cr', Jl:'cr', Au:'cr', S:'cr', O:'cr', N:'cr', D:'cr' },
+    seasonNote: 'C&R year-round below Bonneville. Retention opens above Bonneville on specific days.',
+    where: 'Columbia (Vancouver to Bonneville and above), lower Willamette, Snake River impoundments',
+    rig: 'Anchor rig: 50-65 lb main, 60-80 lb leader 12-18", slider weight or pyramid 4-12 oz',
+    hook: 'Required: single barbless circle hook, 5/0-8/0. Snell to leader.',
+    bait: 'Sand shrimp, smelt, lamprey, salmon parts (legal in season), squid',
+    limit: '0 retention below Bonneville. Annual limit 2 white sturgeon statewide WA (size slot in open areas).' },
+
+  { type: 'fresh', name: 'Largemouth Bass', sci: 'Micropterus salmoides',
+    status: 'open', statusText: 'Open',
+    tags: ['Year-round', 'Spawn now'],
+    season: { J:'open', F:'open', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'open', D:'open' },
+    seasonNote: 'Year-round. Peak May-Sept. Spawn April-June.',
+    where: 'Vancouver Lake, Silver Lake, Sammamish, Potholes (WA) · Tualatin, Henry Hagg, Tenmile, Siltcoos (OR)',
+    rig: 'Texas rig: bullet weight, EWG, plastic worm · Topwater: frog/popper dawn-dusk · Jig: 3/8 oz football + trailer',
+    hook: '2/0-4/0 EWG worm hook, 1/0 weedless',
+    bait: 'Senkos, creature baits, crankbaits, spinnerbaits, live nightcrawlers',
+    limit: '5/day, no min size statewide. Encouraged C&R for larger fish.' },
+
+  { type: 'fresh', name: 'Smallmouth Bass', sci: 'Micropterus dolomieu',
+    status: 'open', statusText: 'Open',
+    tags: ['Hard fight', 'No limit Columbia'],
+    season: { J:'open', F:'open', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'peak', O:'peak', N:'open', D:'open' },
+    seasonNote: 'Year-round. Peak May-Sept. Pre-spawn April-May is prime.',
+    where: 'Columbia River (Bonneville to McNary), John Day Pool, Willamette below the Falls, Snake River',
+    rig: 'Drop shot: 1/4 oz weight, 4" worm 12" above · Ned rig: mushroom jig + half stick worm · Tube jig 3-4"',
+    hook: 'Size 1 to 2/0 finesse hook',
+    bait: 'Soft plastics in green pumpkin, smoke, crawfish. Live crayfish where legal.',
+    limit: 'Columbia: no limit/no min (invasive control). Lakes: 5/day.' },
+
+  { type: 'fresh', name: 'Walleye', sci: 'Sander vitreus',
+    status: 'open', statusText: 'Open',
+    tags: ['Eating fish', 'No limit Columbia'],
+    season: { J:'open', F:'open', M:'peak', A:'peak', My:'peak', Jn:'open', Jl:'open', Au:'open', S:'peak', O:'peak', N:'open', D:'open' },
+    seasonNote: 'Year-round, peak April-May (pre-spawn) and fall.',
+    where: 'Columbia pools above Bonneville. The Dalles, John Day, McNary, Lake Roosevelt, Banks Lake',
+    rig: 'Bottom bouncer 1-3 oz + spinner harness with worm · Jig 1/4-3/8 oz + plastic tipped with crawler',
+    hook: 'Size 2-4 octopus on harness, jigs 1/4-1/2 oz',
+    bait: 'Nightcrawlers, leeches, plastics in fire tiger/perch',
+    limit: 'Columbia: no limit/no min (invasive). Other waters 8/day.' },
+
+  { type: 'fresh', name: 'Bluegill / Sunfish', sci: 'Lepomis spp.',
+    status: 'open', statusText: 'Open',
+    tags: ['Beginner', 'Kid-friendly'],
+    season: { J:'open', F:'open', M:'open', A:'open', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'open', O:'open', N:'open', D:'open' },
+    seasonNote: 'Year-round. Peak May-Sept. Spring spawn in shallows.',
+    where: 'Vancouver Lake, Battle Ground, Lacamas, Klineline, Silver Lake (WA) · Henry Hagg, Tenmile (OR)',
+    rig: 'Bobber rig: small float, split shot, hook with worm. Fish 3-6 ft deep near docks/weeds. Jig 1/32-1/16 oz.',
+    hook: 'Size 6-10 long shank or aberdeen',
+    bait: 'Worm pieces, mealworms, crickets, crappie tubes, small jigs',
+    limit: 'No limit on most waters.' },
+
+  { type: 'fresh', name: 'Crappie', sci: 'Pomoxis spp.',
+    status: 'open', statusText: 'Open',
+    tags: ['Eating fish', 'Schools tight'],
+    season: { J:'open', F:'open', M:'peak', A:'peak', My:'peak', Jn:'open', Jl:'open', Au:'open', S:'open', O:'open', N:'open', D:'open' },
+    seasonNote: 'Spring spawn shallow. Summer deep. Schools tight, find one find many.',
+    where: 'Silver Lake, Vancouver Lake, Potholes (WA) · Tenmile Lakes, Henry Hagg (OR)',
+    rig: '1/32-1/16 oz crappie jig under slip float at 4-12 ft. Live minnow on size 6 hook also classic.',
+    hook: 'Size 6-8 aberdeen, jig heads',
+    bait: 'Curly tail grubs (white, chartreuse, pink), live minnows',
+    limit: '10/day typical WA. Verify per water.' },
+
+  { type: 'fresh', name: 'Yellow Perch', sci: 'Perca flavescens',
+    status: 'open', statusText: 'Open',
+    tags: ['Eating fish', 'Ice fishing'],
+    season: { J:'peak', F:'peak', M:'open', A:'open', My:'open', Jn:'open', Jl:'open', Au:'open', S:'open', O:'open', N:'open', D:'peak' },
+    seasonNote: 'Year-round. Ice fishing in E. WA. Schools deep in summer, shallow in spring.',
+    where: 'Banks Lake, Potholes, Moses Lake (E. WA) · Lake Sammamish, Lake Washington',
+    rig: 'Small jig 1/16-1/8 oz + minnow or worm. Drop shot also works.',
+    hook: 'Size 6-8 baitholder',
+    bait: 'Small minnows, worm pieces, jigs in perch colors',
+    limit: '25/day E. WA typical' },
+
+  { type: 'fresh', name: 'Channel Catfish', sci: 'Ictalurus punctatus',
+    status: 'open', statusText: 'Heating up',
+    tags: ['Night bite', 'Heavy gear'],
+    season: { J:'closed', F:'closed', M:'open', A:'open', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'closed', D:'closed' },
+    seasonNote: 'Active May-Oct. Peak summer night bite.',
+    where: 'Vancouver Lake, Silver Lake (WA) · Willamette below Falls, Tualatin, Snake River (OR)',
+    rig: 'Carolina rig: egg sinker, swivel, 18" leader, circle hook. Fish on bottom in holes and channels.',
+    hook: 'Size 2/0-5/0 circle',
+    bait: 'Chicken liver, cut bait, stink bait, nightcrawlers, hot dogs',
+    limit: '5/day WA' },
+
+  { type: 'fresh', name: 'Tiger Muskie', sci: 'Esox masquinongy × E. lucius',
+    status: 'open', statusText: 'Trophy',
+    tags: ['50" min', 'Trophy only'],
+    season: { J:'open', F:'open', M:'open', A:'open', My:'open', Jn:'peak', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'open', D:'open' },
+    seasonNote: 'Year-round. Peak June-September.',
+    where: 'Lake Merwin (near Vancouver), Mayfield Lake, Curlew Lake, Newman Lake',
+    rig: 'Heavy musky rod, 50-80 lb braid, 12" steel/fluoro leader 80 lb+, bucktails, jerkbaits, swimbaits 6-12"',
+    hook: 'Single point hooks 5/0-7/0; pinch barbs for release',
+    bait: 'Large bucktails (Cowgirl, Bull Dawg), jerkbaits, swimbaits',
+    limit: '50" minimum, 1/day. Anything under 50" released.' },
+
+  { type: 'fresh', name: 'Carp', sci: 'Cyprinus carpio',
+    status: 'open', statusText: 'Open',
+    tags: ['Strong fight', 'No limit'],
+    season: { J:'closed', F:'closed', M:'open', A:'open', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'open', O:'open', N:'closed', D:'closed' },
+    seasonNote: 'Active when water warms. Peak summer.',
+    where: 'Vancouver Lake, Columbia backwaters, Willamette Slough',
+    rig: 'Hair rig with boilie, corn, or bread. Method feeder or freelined.',
+    hook: 'Size 4-8 carp hook',
+    bait: 'Sweet corn, bread, boilies, dough balls',
+    limit: 'No limit (non-native)' },
+
+  // ===== SALTWATER =====
+  { type: 'salt', name: 'Coho Salmon (salt)', sci: 'O. kisutch',
+    status: 'open', statusText: 'Summer Peak',
+    tags: ['Aggressive', 'Topwater takes'],
+    season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'open', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'closed', D:'closed' },
+    seasonNote: 'Jul-Oct. Puget Sound MA 9, 10, 11 most popular.',
+    where: 'Puget Sound (Possession Bar, Jefferson Head, Point No Point), Westport, Ilwaco, Newport, Garibaldi',
+    rig: 'Mooching cut-plug herring with crescent sinker 2-4 oz · Trolling with flasher + Coyote spoon or hoochie · Buzz Bomb jig',
+    hook: 'Size 2/0-3/0 tandem, single barbless required',
+    bait: 'Cut-plug herring, anchovies, hoochies, spoons',
+    limit: 'Varies by MA and quota. Often 2/day with marked hatchery requirement.' },
+
+  { type: 'salt', name: 'Chinook Salmon (salt)', sci: 'O. tshawytscha',
+    status: 'partial', statusText: 'Open w/ Quotas',
+    tags: ['King', 'Downrigger'],
+    season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'open', Jn:'peak', Jl:'peak', Au:'peak', S:'open', O:'closed', N:'closed', D:'closed' },
+    seasonNote: 'Summer fishery. Quota-driven openers. Watch WDFW announcements.',
+    where: 'Westport, Ilwaco, Sekiu, Neah Bay, Puget Sound MA 5-13 (WA) · Newport, Depoe Bay, Garibaldi (OR)',
+    rig: 'Downrigger troll: flasher + cut-plug herring or hoochie 30-80 ft · Mooching same as coho but deeper',
+    hook: 'Size 4/0-5/0 tandem, single barbless',
+    bait: 'Whole herring, anchovies, hoochies, spoons (Coyote, Kingfisher)',
+    limit: 'Varies by MA. CRC required.' },
+
+  { type: 'salt', name: 'Pink Salmon', sci: 'O. gorbuscha',
+    status: 'partial', statusText: 'Odd Years Only',
+    tags: ['Odd years', 'Easy bite'],
+    season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'closed', Jl:'open', Au:'peak', S:'peak', O:'closed', N:'closed', D:'closed' },
+    seasonNote: 'ODD YEARS ONLY (2025, 2027). Massive runs every 2 years in Puget Sound.',
+    where: 'Puget Sound (Skagit Bay, Skykomish, Stillaguamish, Snohomish)',
+    rig: 'Pink Buzz Bombs, pink jigs under floats, pink mini squids on downrigger',
+    hook: 'Size 1/0-2/0 octopus',
+    bait: 'Pink everything. Small spoons. Pink hoochies.',
+    limit: 'Generous. 4/day typical odd-year openers.' },
+
+  { type: 'salt', name: 'Lingcod', sci: 'Ophiodon elongatus',
+    status: 'open', statusText: 'Mid-Mar to Oct',
+    tags: ['Eating fish', 'Bottom'],
+    season: { J:'closed', F:'closed', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'closed', D:'closed' },
+    seasonNote: 'Mid-March to mid-October typical. Verify season opens by MA.',
+    where: 'WA coast (Westport, La Push, Neah Bay), OR coast (Newport, Depoe Bay, Garibaldi, Charleston), Puget Sound MA 4-13',
+    rig: 'Vertical jig 4-12 oz diamond/iron · Live bait (small rockfish or greenling) on 5/0-8/0 circle · Swimbait + jig head',
+    hook: 'Size 5/0-8/0 circle, treble on jigs',
+    bait: 'Live small rockfish/greenling, large swimbaits, herring, squid',
+    limit: '2/day WA (22" min) · 2/day OR (22" min)' },
+
+  { type: 'salt', name: 'Rockfish', sci: 'Sebastes spp.',
+    status: 'open', statusText: 'Varies by Depth',
+    tags: ['Bottom', 'Multiple species'],
+    season: { J:'closed', F:'closed', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'closed', D:'closed' },
+    seasonNote: 'Spring through fall typical. Depth restrictions vary (no fishing below 240 ft in many WA areas).',
+    where: 'WA coast and Puget Sound nearshore rocks · OR coast all the way to CA border',
+    rig: 'Diamond jig 2-6 oz with bait teaser · Shrimp fly + bait rig · Soft plastic swimbaits',
+    hook: 'Size 3/0-5/0 circle',
+    bait: 'Squid strips, herring chunks, swimbaits, shrimp flies',
+    limit: '7/day OR · varies by MA in WA. Many depth restrictions.' },
+
+  { type: 'salt', name: 'Pacific Halibut', sci: 'Hippoglossus stenolepis',
+    status: 'partial', statusText: 'Limited Openers',
+    tags: ['Trophy', 'Quota-driven'],
+    season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'peak', Jn:'peak', Jl:'peak', Au:'open', S:'closed', O:'closed', N:'closed', D:'closed' },
+    seasonNote: 'May-August. Quota-driven openers (specific days). Sells out fast.',
+    where: 'WA coast (Westport, La Push, Neah Bay, MA 1-4), OR coast (Garibaldi, Newport, Charleston), Strait of Juan de Fuca',
+    rig: 'Spreader bar with cannonball 16-32 oz, 3 ft leader, 12/0-16/0 circle hook + herring/salmon belly',
+    hook: 'Size 12/0-16/0 circle',
+    bait: 'Whole herring, salmon belly, octopus, squid',
+    limit: '1/day on open days. CRC required. Size/weight slot may apply.' },
+
+  { type: 'salt', name: 'Albacore Tuna', sci: 'Thunnus alalunga',
+    status: 'open', statusText: 'Jul-Oct',
+    tags: ['Offshore', 'Boat needed'],
+    season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'closed', Jl:'open', Au:'peak', S:'peak', O:'open', N:'closed', D:'closed' },
+    seasonNote: 'Jul-Oct. Need to run 30-60 miles offshore. Charter or capable private boat.',
+    where: 'Offshore Westport, Ilwaco, Newport, Charleston, Brookings · 60-80°F surface temps',
+    rig: 'Troll cedar plugs, Zukers, daisy chains at 6-8 knots · Live bait sardine on circle when school stops',
+    hook: 'Size 5/0-7/0 circle for live bait, J-hooks on troll lures',
+    bait: 'Live sardines, cedar plugs, feathers, daisy chains',
+    limit: '25/day no min size · most regions' },
+
+  { type: 'salt', name: 'Surf Perch', sci: 'Embiotocidae spp.',
+    status: 'open', statusText: 'Year-Round',
+    tags: ['Beginner', 'Beach', 'No boat'],
+    season: { J:'open', F:'open', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'open', D:'open' },
+    seasonNote: 'Year-round. Best 2 hrs before to 2 hrs after high tide.',
+    where: 'Long Beach, Ocean Shores, Westport jetties (WA) · Cannon Beach, Lincoln City, Pacific City, Bandon (OR)',
+    rig: 'High-low dropper rig: 2 hook leaders off main line above pyramid sinker 1-3 oz',
+    hook: 'Size 4-6 baitholder',
+    bait: 'Sand crabs, mussels, raw shrimp, Berkley Gulp! sandworm/camo',
+    limit: '15/day WA · 15/day OR' },
+
+  { type: 'salt', name: 'Cabezon', sci: 'Scorpaenichthys marmoratus',
+    status: 'open', statusText: 'Open',
+    tags: ['Bottom', 'Eat the white meat'],
+    season: { J:'closed', F:'closed', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'closed', D:'closed' },
+    seasonNote: 'Spring through fall. Often caught while rockfishing.',
+    where: 'WA and OR coast rocky areas, jetties, near-shore rocks',
+    rig: 'Same as rockfish/lingcod. Diamond jig or swimbait with bait.',
+    hook: 'Size 3/0-5/0 circle',
+    bait: 'Squid, herring, crab',
+    limit: '1/day WA · 1/day OR (16" min)' },
+
+  { type: 'salt', name: 'Dungeness Crab', sci: 'Metacarcinus magister',
+    status: 'partial', statusText: 'Varies by Area',
+    tags: ['Pots', 'Eating'],
+    season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'open', Jl:'peak', Au:'peak', S:'peak', O:'peak', N:'open', D:'closed' },
+    seasonNote: 'Recreational season varies by MA. Puget Sound summer mid-July to early-Sept typical. Coast Dec-Apr.',
+    where: 'Puget Sound (north Sound best), Hood Canal, WA coast (Willapa, Grays Harbor), OR coast bays',
+    rig: 'Crab pots or ring nets · 4-12 traps allowed depending on area',
+    hook: 'No hook · bait box in pot',
+    bait: 'Chicken parts, fish carcass (salmon heads especially), squid',
+    limit: '5/day WA male only 6.25" carapace · 12/day OR male only 5.75" carapace. CRC required WA.' },
+
+  { type: 'salt', name: 'Razor Clams', sci: 'Siliqua patula',
+    status: 'partial', statusText: 'Dig Openers',
+    tags: ['Beach dig', 'WDFW announce'],
+    season: { J:'open', F:'open', M:'open', A:'open', My:'closed', Jn:'closed', Jl:'closed', Au:'closed', S:'closed', O:'open', N:'open', D:'open' },
+    seasonNote: 'Specific evening tides Oct-April announced 1-2 weeks ahead. Toxin tests must pass.',
+    where: 'Long Beach, Twin Harbors, Copalis, Mocrocks, Kalaloch (WA coast only)',
+    rig: 'Clam shovel or clam gun · find the dimple/show, dig fast',
+    hook: '—',
+    bait: '—',
+    limit: '15/day, first 15 you dig (cannot release). Shellfish license required.' },
+];
+
+// ============ SPOTS DATA ============
+const spotsData = [
+  // ===== SW WA / VANCOUVER =====
+  { region: 'SW Washington · Vancouver Area', type: 'fresh',
+    spots: [
+      { name: 'Columbia River · Vancouver Waterfront', meta: 'Downtown · Bank · Year-round',
+        tags: ['Salmon', 'Steelhead', 'Sturgeon C&R', 'Shad', 'Bass'],
+        note: 'Wintler Park, Marine Park, Frenchman\'s Bar. Pay parking. Spring chinook plunking Apr-May, shad May-Jun, sturgeon C&R year-round.' },
+      { name: 'Klineline Pond (Salmon Creek Park)', meta: '10 min · 12 ac · Bank only',
+        tags: ['Trout', 'Bass', 'Stocked', 'Family'],
+        note: 'No floating devices. Stocked frequently with rainbow including jumbos. Small largemouth population. Best 2-7 days after stocking.' },
+      { name: 'Battle Ground Lake State Park', meta: '25 min · 28 ac · Bank + small boat',
+        tags: ['Trout', 'Bass', 'Panfish', 'Pier'],
+        note: 'Crater lake, wind-protected. Fishing pier. Stocked rainbows. Bass and bluegill summer. Discover Pass required.' },
+      { name: 'Lacamas Lake (Camas)', meta: '20 min · 320 ac · Boat/bank',
+        tags: ['Bass', 'Trout', 'Panfish'],
+        note: 'Largemouth bass fishery. Stocked trout. Bank access Heritage Park, Lacamas Park. Best mornings/evenings.' },
+      { name: 'Vancouver Lake', meta: '10 min · 2,300 ac · Bank + boat',
+        tags: ['Bass', 'Panfish', 'Catfish', 'Carp'],
+        note: 'Shallow, warm-water. Spring largemouth bass spawn. Crappie and bluegill all summer. Watch algae blooms late summer.' },
+      { name: 'Lake Merwin', meta: '45 min · 3,800 ac · Boat only',
+        tags: ['Kokanee', 'Tiger Muskie', 'Cutthroat'],
+        note: 'PacifiCorp ramps at Speelyai and Cresap Bay (weekend fee). Premier kokanee Apr-Aug. Tiger muskie 50" min. Limited shore access.' },
+      { name: 'Yale Reservoir', meta: '55 min · 3,600 ac · Boat',
+        tags: ['Kokanee', 'Cutthroat'],
+        note: 'Kokanee Apr-Oct. Cutthroat near Siouxon Creek mouth in spring and fall.' },
+      { name: 'Lewis River (North Fork)', meta: '30 min · River',
+        tags: ['Steelhead', 'Chinook', 'Coho', 'Trout'],
+        note: 'Below Merwin Dam, 15 fishable miles to Columbia. Winter steelhead Dec-Mar. Spring Chinook Apr-May. Fall Chinook + coho Sep-Nov. Hatchery only.' },
+      { name: 'Cowlitz River (Kelso/Castle Rock)', meta: '45 min · River',
+        tags: ['Steelhead', 'Chinook', 'Coho'],
+        note: 'One of the best salmon/steelhead rivers in WA. Drift fishing, plunking, plug pulling. Year-round opportunity for some species.' },
+      { name: 'Kalama River', meta: '35 min · River',
+        tags: ['Steelhead', 'Salmon'],
+        note: 'Winter and summer steelhead. Smaller, intimate river. Selective gear rules in upper sections.' },
+      { name: 'Silver Lake (Cowlitz)', meta: '55 min · 3,000 ac · Boat/bank',
+        tags: ['Bass', 'Crappie', 'Trout'],
+        note: 'Trophy largemouth bass fishery. Excellent crappie. Shallow weedy lake near Mt. St. Helens.' },
+    ]},
+
+  // ===== PORTLAND METRO =====
+  { region: 'Portland Metro · NW Oregon', type: 'fresh',
+    spots: [
+      { name: 'Willamette River (Portland)', meta: '15-30 min · OR license',
+        tags: ['Salmon', 'Steelhead', 'Sturgeon', 'Bass'],
+        note: 'Oregon license required. Spring Chinook peaks late May-Jun. Excellent smallmouth bass below Willamette Falls. Sturgeon C&R.' },
+      { name: 'Sandy River', meta: '30 min · River',
+        tags: ['Steelhead', 'Salmon', 'Trout'],
+        note: 'Winter steelhead Dec-Mar, summer steelhead May-Oct, spring/fall Chinook, coho. Lewis & Clark and Oxbow Park access.' },
+      { name: 'Clackamas River', meta: '30-45 min · River',
+        tags: ['Steelhead', 'Salmon', 'Trout'],
+        note: 'Year-round opportunity. Winter steelhead peak Feb. Spring Chinook Apr-May. Bonnie Lure SP, Carver, McIver SP access.' },
+      { name: 'Tualatin River + Henry Hagg Lake', meta: '30-45 min',
+        tags: ['Bass', 'Trout', 'Panfish'],
+        note: 'Henry Hagg is the metro\'s best stocked trout + warm water lake. Bank and boat access. Tualatin known for smallmouth.' },
+      { name: 'Multnomah Channel', meta: '20-30 min',
+        tags: ['Bass', 'Walleye', 'Catfish'],
+        note: 'Backwater of the Columbia. Trophy largemouth in lily pads. Underrated walleye and channel catfish.' },
+      { name: 'Estacada Lake / Faraday', meta: '45 min',
+        tags: ['Bass', 'Trout'],
+        note: 'Stocked trout. Small impoundments on the Clackamas. Bank-friendly.' },
+    ]},
+
+  // ===== PUGET SOUND / SEATTLE =====
+  { region: 'Puget Sound · Seattle Metro', type: 'fresh',
+    spots: [
+      { name: 'Lake Washington', meta: 'Seattle east · 22,000 ac',
+        tags: ['Smallmouth', 'Cutthroat', 'Sockeye', 'Perch'],
+        note: 'Big-fish smallmouth. Cutthroat trolling. Sockeye fishery when run is strong (June-July, brief openers). Multiple public ramps.' },
+      { name: 'Lake Sammamish', meta: 'Issaquah · 4,900 ac',
+        tags: ['Smallmouth', 'Largemouth', 'Yellow Perch', 'Cutthroat'],
+        note: 'Smallmouth and yellow perch year-round. Largemouth spawn shallow May-Jun. State park access.' },
+      { name: 'Snoqualmie River', meta: '30-45 min E of Seattle',
+        tags: ['Trout', 'Steelhead', 'Salmon'],
+        note: 'Three forks plus mainstem. Summer steelhead. Selective gear rules apply.' },
+      { name: 'Skykomish + Snohomish Rivers', meta: '45-60 min',
+        tags: ['Salmon', 'Steelhead', 'Sea-Run Cutthroat'],
+        note: 'Major Puget Sound salmon system. Pink salmon massive in odd years. Coho fall. Winter and summer steelhead.' },
+      { name: 'Green River + Howard Hanson area', meta: '30 min S of Seattle',
+        tags: ['Steelhead', 'Salmon', 'Trout'],
+        note: 'Winter steelhead lower river. Trout above the dam. Selective gear rules in upper.' },
+    ]},
+  { region: 'Puget Sound · Saltwater', type: 'salt',
+    spots: [
+      { name: 'MA 10 · Seattle / Bremerton (Central Sound)', meta: 'Public ramps Shilshole, Edmonds, Pt Defiance',
+        tags: ['Chinook', 'Coho', 'Pink (odd yr)'],
+        note: 'Jefferson Head, West Point, Possession Bar. Year-round Chinook openers when quota allows. Mooching + downrigger.' },
+      { name: 'MA 9 · Possession Sound / Whidbey', meta: 'Everett, Mukilteo',
+        tags: ['Chinook', 'Coho'],
+        note: 'Possession Bar is famous resident Chinook grounds. Often opens before other MAs in summer.' },
+      { name: 'MA 11 · Tacoma / Vashon', meta: 'Pt Defiance, Pt Robinson',
+        tags: ['Chinook', 'Coho', 'Bottom'],
+        note: 'Slack tides near Pt Defiance. Bottom fishery for flounder and rockfish (where open).' },
+      { name: 'MA 13 · South Sound', meta: 'Olympia + Steilacoom area',
+        tags: ['Coho', 'Cutthroat', 'Bottom'],
+        note: 'Late summer coho. Resident silvers spring. Crab in summer when open.' },
+      { name: 'Hood Canal (MA 12)', meta: 'Hoodsport, Quilcene',
+        tags: ['Crab', 'Shrimp', 'Salmon'],
+        note: 'Major shrimp fishery (spot prawn season has special pots and days). Crab when open. Chum salmon late fall classic.' },
+      { name: 'Sekiu + Neah Bay (MA 5)', meta: 'NW Olympic Peninsula',
+        tags: ['Chinook', 'Coho', 'Halibut', 'Lingcod'],
+        note: 'Premier WA saltwater destination. Halibut openers spring. Salmon mid-summer. Bottomfishing world-class.' },
+    ]},
+
+  // ===== WA COAST =====
+  { region: 'Washington Coast', type: 'salt',
+    spots: [
+      { name: 'Westport (MA 2)', meta: 'Charter capital · ramp',
+        tags: ['Salmon', 'Tuna', 'Halibut', 'Ling', 'Rock'],
+        note: 'Largest charter fleet. Salmon, halibut, lingcod, rockfish, albacore tuna 30-60 mi offshore. Bar can be brutal.' },
+      { name: 'Ilwaco / Buoy 10', meta: 'Columbia mouth',
+        tags: ['Salmon (Fall)', 'Sturgeon'],
+        note: 'Buoy 10 fall Chinook fishery world-class Aug-early Sep. Coho Sept. Heavy boat traffic during peak.' },
+      { name: 'La Push (MA 3)', meta: 'Quileute Reservation',
+        tags: ['Salmon', 'Halibut', 'Ling'],
+        note: 'Native-owned charter ramp. Halibut openers in spring. Coho summer. Small but productive.' },
+      { name: 'Long Beach Peninsula', meta: 'Surf fishing',
+        tags: ['Surf Perch', 'Razor Clams'],
+        note: 'World-class razor clam beach. Surf perch year-round. Crab in Willapa Bay.' },
+      { name: 'Ocean Shores / Twin Harbors', meta: 'Surf + jetty',
+        tags: ['Surf Perch', 'Razor Clams', 'Salmon'],
+        note: 'Razor clam digs announced. Surf perch jetty. Salmon at the south jetty in late summer.' },
+    ]},
+
+  // ===== OREGON COAST =====
+  { region: 'Oregon Coast', type: 'salt',
+    spots: [
+      { name: 'Astoria / Lower Columbia (OR side)', meta: 'Buoy 10',
+        tags: ['Salmon (Fall)', 'Sturgeon'],
+        note: 'Same Buoy 10 fishery as Ilwaco. OR license. Excellent ramps at Hammond and Warrenton.' },
+      { name: 'Garibaldi / Tillamook Bay', meta: 'Bay + offshore',
+        tags: ['Salmon', 'Ling', 'Surf Perch', 'Crab'],
+        note: 'Strong fall Chinook in the bay. Crabbing in summer. Lingcod offshore. Tillamook estuary sea-runs in fall.' },
+      { name: 'Newport / Yaquina Bay', meta: 'Most popular OR port',
+        tags: ['Salmon', 'Halibut', 'Tuna', 'Rock', 'Crab'],
+        note: 'Charter hub. Halibut May-Jul. Salmon mid-summer. Albacore Aug-Sep. Yaquina Bay crabbing year-round.' },
+      { name: 'Depoe Bay', meta: 'Smallest US harbor',
+        tags: ['Salmon', 'Rock', 'Ling'],
+        note: 'Quick access to deep water. Strong rockfish/lingcod fishery. Smaller charter fleet, more personal.' },
+      { name: 'Charleston / Coos Bay', meta: 'South coast major port',
+        tags: ['Salmon', 'Tuna', 'Halibut', 'Crab', 'Bottom'],
+        note: 'Underrated bottomfishing. Albacore close to shore in fall. Crab in Coos Bay year-round.' },
+      { name: 'Pacific City / Cape Kiwanda', meta: 'Dory beach',
+        tags: ['Salmon', 'Bottom', 'Surf Perch'],
+        note: 'Famous dory fleet launches off the beach. Bottomfishing close-in. Surf perch and salmon at the cape.' },
+      { name: 'Brookings / Chetco Bay', meta: 'Far south',
+        tags: ['Salmon (Fall)', 'Tuna'],
+        note: 'Fall Chinook in Chetco late Oct-Nov is legendary. Tuna close in late summer.' },
+    ]},
+
+  // ===== CENTRAL OR =====
+  { region: 'Central Oregon · High Desert', type: 'fresh',
+    spots: [
+      { name: 'Deschutes River (Lower)', meta: 'Maupin · Warm Springs',
+        tags: ['Trout', 'Steelhead', 'Salmon'],
+        note: 'Blue-ribbon wild trout. Summer steelhead Aug-Oct. Native fish only above Sherars Falls (selective gear).' },
+      { name: 'Crooked River', meta: 'Below Bowman Dam',
+        tags: ['Trout'],
+        note: 'Year-round trout in tailwater. Crooked River canyon. Dry fly heaven.' },
+      { name: 'Metolius River', meta: 'Camp Sherman',
+        tags: ['Trout', 'Bull Trout'],
+        note: 'Spring-fed crystal clear. Native bull trout (C&R only). Brown trout. Fly only on most sections.' },
+      { name: 'East Lake / Paulina Lake', meta: 'Newberry Caldera',
+        tags: ['Trout', 'Kokanee', 'Brown Trout'],
+        note: 'Trophy trout. Twin caldera lakes. Brown trout to 25lb+. Kokanee plentiful.' },
+      { name: 'Wickiup + Crane Prairie', meta: 'Cascade Lakes',
+        tags: ['Trout', 'Kokanee', 'Brown'],
+        note: 'Big browns in Wickiup. Crane Prairie famous for rainbow. High elevation summer fishery.' },
+    ]},
+
+  // ===== EAST WA =====
+  { region: 'Eastern Washington', type: 'fresh',
+    spots: [
+      { name: 'Banks Lake', meta: 'Grand Coulee · 27,000 ac',
+        tags: ['Walleye', 'Smallmouth', 'Perch', 'Burbot'],
+        note: 'Walleye factory. Trophy smallmouth. Burbot fishing in winter. Multiple campgrounds and ramps.' },
+      { name: 'Potholes Reservoir', meta: 'Moses Lake area · 30,000 ac',
+        tags: ['Walleye', 'Largemouth', 'Crappie', 'Perch'],
+        note: 'Walleye, bass, crappie. Sand dunes. The MarDon Resort area. Spring spawning bass classic.' },
+      { name: 'Lake Roosevelt', meta: 'Columbia · 130 mi long',
+        tags: ['Walleye', 'Kokanee', 'Rainbow', 'Smallmouth'],
+        note: 'Massive impoundment. Walleye, big triploid rainbows, kokanee. Multiple ramps Wilbur to Kettle Falls.' },
+      { name: 'Lake Chelan', meta: '55 mi long alpine lake',
+        tags: ['Kokanee', 'Lake Trout (Mackinaw)', 'Burbot'],
+        note: 'Trophy kokanee (1-3 lb common). Lake trout to 10+ lb. Deep water trolling. Chelan town ramp.' },
+      { name: 'Yakima River', meta: 'Blue-ribbon trout',
+        tags: ['Trout'],
+        note: 'Year-round wild rainbow + cutthroat. Float fishing classic. Catch and release only on most sections.' },
+      { name: 'Snake River + Hells Canyon', meta: 'WA/OR/ID border',
+        tags: ['Smallmouth', 'Sturgeon', 'Steelhead', 'Catfish'],
+        note: 'World-class smallmouth (no limit/no min). Trophy sturgeon C&R. Steelhead. Remote.' },
+    ]},
+
+  // ===== OLYMPIC PENINSULA =====
+  { region: 'Olympic Peninsula', type: 'fresh',
+    spots: [
+      { name: 'Hoh River', meta: 'Olympic NP river',
+        tags: ['Steelhead', 'Salmon'],
+        note: 'Trophy wild winter steelhead (C&R only). One of the last great wild steelhead rivers. Dec-Apr peak.' },
+      { name: 'Sol Duc River', meta: 'NW Olympic',
+        tags: ['Steelhead', 'Salmon', 'Sea-Run Cutthroat'],
+        note: 'Winter steelhead Dec-Apr. Coho fall. Tidewater sea-run cutthroat. Selective gear sections.' },
+      { name: 'Quinault River', meta: 'Tribal river · permits',
+        tags: ['Steelhead', 'Salmon'],
+        note: 'Lower Quinault requires tribal permit. Trophy winter steelhead.' },
+      { name: 'Bogachiel + Calawah', meta: 'Forks area',
+        tags: ['Steelhead', 'Salmon'],
+        note: 'Forks rivers, classic winter steelhead. Multiple access points. Hatchery and wild fish.' },
+    ]},
+
+  // ===== CENTRAL OR INLAND / SE =====
+  { region: 'Southern Oregon · Inland', type: 'fresh',
+    spots: [
+      { name: 'Rogue River', meta: 'Medford to coast',
+        tags: ['Steelhead', 'Chinook', 'Trout'],
+        note: 'Half-pounder steelhead Aug-Oct legendary. Spring + fall Chinook. Wild and Scenic upper river.' },
+      { name: 'Umpqua River (North & South)', meta: 'Roseburg',
+        tags: ['Steelhead', 'Smallmouth', 'Salmon'],
+        note: 'North Umpqua fly-only summer steelhead is iconic. South Umpqua great smallmouth. Mainstem big runs.' },
+      { name: 'Diamond Lake', meta: 'Highway 230 · 3,000 ac',
+        tags: ['Trout'],
+        note: 'Heavily stocked rainbow trout fishery. Family destination. Cabins and resorts. Ice fishing in winter.' },
+      { name: 'Klamath Lake (Upper)', meta: 'Klamath Falls',
+        tags: ['Trout', 'Bass'],
+        note: 'Trophy Klamath redband trout. Massive system. Bass in the lower marshes.' },
+    ]},
+];
+
+// ============ RENDER SPECIES ============
+function renderSpecies(filter = 'all', search = '') {
+  const container = document.getElementById('species-container');
+  const months = ['J','F','M','A','My','Jn','Jl','Au','S','O','N','D'];
+  const monthLabels = ['J','F','M','A','M','J','J','A','S','O','N','D'];
+  let html = '';
+  const filtered = speciesData.filter(s => {
+    if (filter !== 'all' && s.type !== filter) return false;
+    if (search) {
+      const q = search.toLowerCase();
+      return s.name.toLowerCase().includes(q) ||
+             (s.bait && s.bait.toLowerCase().includes(q)) ||
+             (s.tags && s.tags.some(t => t.toLowerCase().includes(q)));
+    }
+    return true;
+  });
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="note">No species match that search.</div>';
+    return;
+  }
+  filtered.forEach(s => {
+    const seasonHtml = months.map((m, i) => {
+      const status = s.season[m] || 'closed';
+      return `<div class="month ${status}">${monthLabels[i]}</div>`;
+    }).join('');
+    const tagsHtml = s.tags ? `<div class="species-tags">${s.tags.map(t => `<span class="mini-tag">${t}</span>`).join('')}</div>` : '';
+    html += `
+      <div class="species-card ${s.type}">
+        <div class="species-header" onclick="toggleSpecies(this)">
+          <div>
+            <div class="species-name">${s.name.toUpperCase()}</div>
+            <div class="species-name-sci">${s.sci}</div>
+            ${tagsHtml}
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="status-pill status-${s.status}">${s.statusText}</span>
+            <span class="expand-arrow">▼</span>
+          </div>
+        </div>
+        <div class="species-body">
+          <div class="row"><div class="row-label">Season</div><div class="row-value">
+            <div class="season-bar">${seasonHtml}</div>
+            <div style="margin-top:8px;font-size:12px;color:var(--text-dim);">${s.seasonNote}</div>
+          </div></div>
+          <div class="row"><div class="row-label">Where</div><div class="row-value">${s.where}</div></div>
+          <div class="row"><div class="row-label">Rig</div><div class="row-value">${s.rig}</div></div>
+          <div class="row"><div class="row-label">Hook</div><div class="row-value">${s.hook}</div></div>
+          <div class="row"><div class="row-label">Bait</div><div class="row-value">${s.bait}</div></div>
+          <div class="row"><div class="row-label">Limit</div><div class="row-value">${s.limit}</div></div>
+        </div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+// ============ RENDER SPOTS ============
+function renderSpots() {
+  const container = document.getElementById('spots-container');
+  let html = '';
+  spotsData.forEach((region, idx) => {
+    html += `
+      <div class="region-group">
+        <div class="region-header" onclick="toggleRegion(this)">
+          <div class="region-name">${region.region.toUpperCase()}</div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="region-count">${region.spots.length} SPOTS</span>
+            <span class="expand-arrow">▼</span>
+          </div>
+        </div>
+        <div class="region-body" ${idx === 0 ? 'class="region-body expanded"' : ''}>
+          ${region.spots.map(spot => `
+            <div class="location-card ${region.type}">
+              <div class="location-name">${spot.name}</div>
+              <div class="location-meta">${spot.meta}</div>
+              <div class="location-tags">${spot.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+              <div class="location-note">${spot.note}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+  // Expand first region by default
+  const firstBody = container.querySelector('.region-body');
+  const firstHeader = container.querySelector('.region-header');
+  if (firstBody && firstHeader) {
+    firstBody.classList.add('expanded');
+    firstHeader.classList.add('expanded');
+  }
+}
+
+// ============ INTERACTIONS ============
+function toggleSpecies(header) {
+  const body = header.nextElementSibling;
+  body.classList.toggle('expanded');
+  header.classList.toggle('expanded');
+}
+
+function toggleRegion(header) {
+  const body = header.nextElementSibling;
+  body.classList.toggle('expanded');
+  header.classList.toggle('expanded');
+}
+
+// Tab switching
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(target).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+// Type filter
+document.querySelectorAll('.type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const search = document.getElementById('species-search').value;
+    renderSpecies(btn.dataset.type, search);
+  });
+});
+
+// Search
+document.getElementById('species-search').addEventListener('input', e => {
+  const activeBtn = document.querySelector('.type-btn.active');
+  const type = activeBtn ? activeBtn.dataset.type : 'all';
+  renderSpecies(type, e.target.value);
+});
+
+// Initial render
+renderSpecies();
+renderSpots();
+
+// ============ LIVE WEATHER (Open-Meteo, no API key) ============
+const DEFAULT_LOCATION = { lat: 45.6387, lng: -122.6615, name: 'Vancouver, WA' };
+let currentLocation = DEFAULT_LOCATION;
+
+// NOAA CO-OPS tide station IDs for coastal PNW locations
+// Source: tidesandcurrents.noaa.gov station listings
+const TIDE_STATIONS = {
+  'Westport, WA': { id: '9441102', name: 'Westport, WA' },
+  'Newport, OR':  { id: '9435380', name: 'Newport (South Beach), OR' },
+  'Neah Bay, WA': { id: '9443090', name: 'Neah Bay, WA' },
+  'Astoria, OR':  { id: '9439040', name: 'Astoria, OR' },
+};
+
+async function fetchWeather(lat, lng) {
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}` +
+    `&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,` +
+    `precipitation,cloud_cover,pressure_msl,wind_speed_10m,wind_direction_10m,wind_gusts_10m,weather_code` +
+    `&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,weather_code,` +
+    `wind_speed_10m_max,precipitation_sum,pressure_msl_mean,cloud_cover_mean` +
+    `&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch` +
+    `&timezone=auto&forecast_days=7`;
+
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Weather API failed');
+    return await res.json();
+  } catch (err) {
+    console.error('[Weather] Fetch failed:', err);
+    return null;
+  }
+}
+
+async function fetchTides(stationId) {
+  // NOAA CO-OPS predictions, next 24 hours of high/low tides
+  const today = new Date();
+  const tomorrow = new Date(today.getTime() + 36 * 60 * 60 * 1000);
+  const fmt = (d) => d.toISOString().slice(0, 10).replace(/-/g, '');
+
+  const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?` +
+    `product=predictions&application=PNWAnglerGuide` +
+    `&begin_date=${fmt(today)}&end_date=${fmt(tomorrow)}` +
+    `&datum=MLLW&station=${stationId}&time_zone=lst_ldt` +
+    `&units=english&interval=hilo&format=json`;
+
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error('NOAA tide API failed');
+    const data = await res.json();
+    return data.predictions || [];
+  } catch (err) {
+    console.error('[Tides] Fetch failed:', err);
+    return null;
+  }
+}
+
+function pressureStatus(hpa) {
+  // Convert hPa to inHg and assess
+  const inHg = (hpa * 0.02953).toFixed(2);
+  let status, detail, cls;
+  if (hpa >= 1020) {
+    status = `${inHg} in`;
+    detail = 'High pressure. Fair bite. Watch for change.';
+    cls = 'bite-fair';
+  } else if (hpa >= 1013) {
+    status = `${inHg} in`;
+    detail = 'Stable, moderate. Good baseline conditions.';
+    cls = 'bite-good';
+  } else if (hpa >= 1005) {
+    status = `${inHg} in`;
+    detail = 'Below average. Fish may feed before front arrives.';
+    cls = 'bite-fair';
+  } else {
+    status = `${inHg} in`;
+    detail = 'Low pressure. Front nearby. Bite often slows.';
+    cls = 'bite-poor';
+  }
+  return { status, detail, cls };
+}
+
+function windStatus(mph, gusts, dirDeg) {
+  // Convert degrees to cardinal
+  const dirs = ['N','NE','E','SE','S','SW','W','NW'];
+  const cardinal = dirs[Math.round(dirDeg / 45) % 8];
+  let detail, cls;
+  if (mph < 5) {
+    detail = 'Dead calm. Tough for surface bite, finesse below.';
+    cls = 'bite-fair';
+  } else if (mph <= 12) {
+    detail = `From ${cardinal}. Ideal ripple. Cast into the wind.`;
+    cls = 'bite-good';
+  } else if (mph <= 20) {
+    detail = `From ${cardinal}. Fishable but pick sheltered shorelines.`;
+    cls = 'bite-fair';
+  } else {
+    detail = `From ${cardinal}. Heavy. Stay off open water.`;
+    cls = 'bite-poor';
+  }
+  return { value: `${Math.round(mph)} mph`, detail, cls };
+}
+
+function skyStatus(cloudPct, weatherCode) {
+  // Weather codes: 0=clear, 1-3=partial, 45-48=fog, 51-67=drizzle/rain, 71-77=snow, 80-82=showers, 95-99=thunder
+  let label, detail, cls;
+  if (weatherCode >= 95) {
+    label = 'Storm';
+    detail = 'Thunder. Get off the water.';
+    cls = 'bite-poor';
+  } else if (weatherCode >= 71 && weatherCode <= 77) {
+    label = 'Snow';
+    detail = 'Winter conditions. Bundle up.';
+    cls = 'bite-fair';
+  } else if (weatherCode >= 51) {
+    label = 'Rain';
+    detail = 'Overcast + rain. Often the best fishing.';
+    cls = 'bite-good';
+  } else if (weatherCode >= 45) {
+    label = 'Fog';
+    detail = 'Low light. Salmon and trout active.';
+    cls = 'bite-good';
+  } else if (cloudPct > 70) {
+    label = 'Overcast';
+    detail = 'Cloud cover keeps fish active all day.';
+    cls = 'bite-good';
+  } else if (cloudPct > 30) {
+    label = 'Partly cloudy';
+    detail = 'Mixed conditions. Standard windows.';
+    cls = 'bite-fair';
+  } else {
+    label = 'Clear';
+    detail = 'Bright sun. Fish dawn/dusk or go deep.';
+    cls = 'bite-fair';
+  }
+  return { label, detail, cls };
+}
+
+function calculateBiteScore(data) {
+  const c = data.current;
+  let score = 50;
+
+  // Pressure (most important)
+  const hpa = c.pressure_msl;
+  if (hpa >= 1013 && hpa < 1020) score += 20;
+  else if (hpa >= 1005) score += 10;
+  else if (hpa < 1005) score -= 10;
+
+  // Wind
+  const w = c.wind_speed_10m;
+  if (w >= 5 && w <= 12) score += 15;
+  else if (w > 20) score -= 15;
+  else if (w < 3) score -= 5;
+
+  // Sky / clouds
+  const cloud = c.cloud_cover;
+  if (cloud > 70) score += 15;
+  else if (cloud > 30) score += 5;
+  else score -= 5;
+
+  // Weather code adjustments
+  const wc = c.weather_code;
+  if (wc >= 95) score -= 30;
+  else if (wc >= 51 && wc <= 67) score += 10;
+  else if (wc >= 45 && wc <= 48) score += 8;
+
+  // Clamp
+  score = Math.max(0, Math.min(100, score));
+  return score;
+}
+
+function biteLabel(score) {
+  if (score >= 75) return { label: 'EXCELLENT', cls: 'bite-good', detail: 'Drop everything and go.' };
+  if (score >= 55) return { label: 'GOOD', cls: 'bite-good', detail: 'Solid window today.' };
+  if (score >= 35) return { label: 'FAIR', cls: 'bite-fair', detail: 'Workable. Pick best hours.' };
+  return { label: 'SLOW', cls: 'bite-poor', detail: 'Tough conditions. Wait it out.' };
+}
+
+function formatWindow(sunrise, sunset) {
+  // Best window: -30 min before sunrise to +90 min after, and -90 min before sunset to +30 min after
+  const sr = new Date(sunrise);
+  const ss = new Date(sunset);
+  const fmt = (d) => d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  const srStart = new Date(sr.getTime() - 30 * 60000);
+  const ssStart = new Date(ss.getTime() - 90 * 60000);
+  return {
+    primary: `${fmt(srStart)} & ${fmt(ssStart)}`,
+    detail: `Sunrise ${fmt(sr)} · Sunset ${fmt(ss)}`
+  };
+}
+
+async function updateLiveWeather(location) {
+  // Mark loading state
+  ['live-temp', 'live-pressure', 'live-wind', 'live-sky', 'live-window', 'live-score'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = '...';
+  });
+  document.getElementById('live-location-label').textContent = `Loading ${location.name}...`;
+
+  const data = await fetchWeather(location.lat, location.lng);
+  if (!data || !data.current) {
+    document.getElementById('live-location-label').textContent = `Offline · last known for ${location.name}`;
+    return;
+  }
+
+  const c = data.current;
+  const d = data.daily;
+
+  // Temp
+  document.getElementById('live-temp').textContent = `${Math.round(c.temperature_2m)}°F`;
+  document.getElementById('live-temp-detail').textContent =
+    `Feels ${Math.round(c.apparent_temperature)}°F. High ${Math.round(d.temperature_2m_max[0])}°F, low ${Math.round(d.temperature_2m_min[0])}°F.`;
+
+  // Pressure
+  const p = pressureStatus(c.pressure_msl);
+  document.getElementById('live-pressure').textContent = p.status;
+  document.getElementById('live-pressure-detail').textContent = p.detail;
+  document.getElementById('live-pressure').className = 'info-card-value ' + p.cls;
+
+  // Wind
+  const w = windStatus(c.wind_speed_10m, c.wind_gusts_10m, c.wind_direction_10m);
+  document.getElementById('live-wind').textContent = w.value;
+  document.getElementById('live-wind-detail').textContent =
+    w.detail + (c.wind_gusts_10m > c.wind_speed_10m + 5 ? ` Gusts ${Math.round(c.wind_gusts_10m)}.` : '');
+  document.getElementById('live-wind').className = 'info-card-value ' + w.cls;
+
+  // Sky
+  const s = skyStatus(c.cloud_cover, c.weather_code);
+  document.getElementById('live-sky').textContent = s.label;
+  document.getElementById('live-sky-detail').textContent = `${Math.round(c.cloud_cover)}% clouds. ${s.detail}`;
+  document.getElementById('live-sky').className = 'info-card-value ' + s.cls;
+
+  // Best window
+  const win = formatWindow(d.sunrise[0], d.sunset[0]);
+  document.getElementById('live-window').textContent = win.primary;
+  document.getElementById('live-window-detail').textContent = win.detail;
+
+  // Bite score
+  const score = calculateBiteScore(data);
+  const bl = biteLabel(score);
+  document.getElementById('live-score').textContent = `${score}`;
+  document.getElementById('live-score').className = 'info-card-value ' + bl.cls;
+  document.getElementById('live-score-detail').textContent = `${bl.label} · ${bl.detail}`;
+
+  // Update label with timestamp
+  const updated = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  document.getElementById('live-location-label').textContent =
+    `${location.name} · updated ${updated}`;
+
+  // 7-day forecast
+  renderForecast(data);
+
+  // Tides (only for coastal locations)
+  renderTides(location);
+}
+
+// ============ 7-DAY FORECAST ============
+function calculateDailyBiteScore(daily, dayIdx) {
+  // Estimate a daily score from daily aggregates
+  let score = 50;
+
+  const pressureMean = daily.pressure_msl_mean ? daily.pressure_msl_mean[dayIdx] : 1013;
+  if (pressureMean >= 1013 && pressureMean < 1020) score += 20;
+  else if (pressureMean >= 1005) score += 10;
+  else if (pressureMean < 1005) score -= 10;
+
+  const wMax = daily.wind_speed_10m_max[dayIdx];
+  if (wMax >= 5 && wMax <= 15) score += 10;
+  else if (wMax > 25) score -= 15;
+
+  const cloud = daily.cloud_cover_mean ? daily.cloud_cover_mean[dayIdx] : 50;
+  if (cloud > 70) score += 15;
+  else if (cloud > 30) score += 5;
+  else score -= 5;
+
+  const wc = daily.weather_code[dayIdx];
+  if (wc >= 95) score -= 30;
+  else if (wc >= 51 && wc <= 67) score += 8;
+
+  const precip = daily.precipitation_sum[dayIdx];
+  if (precip > 1.0) score -= 10;
+
+  return Math.max(0, Math.min(100, score));
+}
+
+function weatherIcon(code) {
+  if (code === 0) return '☀️';
+  if (code <= 3) return '⛅';
+  if (code <= 48) return '🌫️';
+  if (code <= 67) return '🌧️';
+  if (code <= 77) return '❄️';
+  if (code <= 82) return '🌦️';
+  if (code <= 86) return '🌨️';
+  if (code >= 95) return '⛈️';
+  return '🌤️';
+}
+
+function renderForecast(data) {
+  const d = data.daily;
+  const container = document.getElementById('forecast-grid');
+  if (!container || !d || !d.time) return;
+
+  // Calculate scores for all 7 days
+  const scores = d.time.map((_, i) => calculateDailyBiteScore(d, i));
+  const maxScore = Math.max(...scores);
+  const minScore = Math.min(...scores);
+
+  let html = '';
+  d.time.forEach((dateStr, i) => {
+    const date = new Date(dateStr + 'T12:00:00');
+    const dayName = i === 0 ? 'Today' : date.toLocaleDateString('en-US', { weekday: 'short' });
+    const high = Math.round(d.temperature_2m_max[i]);
+    const low = Math.round(d.temperature_2m_min[i]);
+    const icon = weatherIcon(d.weather_code[i]);
+    const score = scores[i];
+
+    let scoreClass = 'bite-fair';
+    if (score >= 60) scoreClass = 'bite-good';
+    else if (score < 35) scoreClass = 'bite-poor';
+
+    let dayClass = 'forecast-day';
+    if (score === maxScore && score >= 55) dayClass += ' best';
+    if (score === minScore && score < 35) dayClass += ' worst';
+
+    html += `
+      <div class="${dayClass}">
+        <div class="forecast-day-name">${dayName}</div>
+        <div class="forecast-day-icon">${icon}</div>
+        <div class="forecast-day-temp">${high}° <span class="low">${low}°</span></div>
+        <div class="forecast-day-score ${scoreClass}">${score}</div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+// ============ TIDES ============
+async function renderTides(location) {
+  const section = document.getElementById('tides-section');
+  const stationInfo = TIDE_STATIONS[location.name];
+
+  if (!stationInfo) {
+    section.style.display = 'none';
+    return;
+  }
+
+  section.style.display = 'block';
+  document.getElementById('tides-station-label').textContent = `Loading ${stationInfo.name}...`;
+
+  const tides = await fetchTides(stationInfo.id);
+  if (!tides || tides.length === 0) {
+    document.getElementById('tides-station-label').textContent = `Tide data offline · ${stationInfo.name}`;
+    document.getElementById('tides-grid').innerHTML = '';
+    return;
+  }
+
+  document.getElementById('tides-station-label').textContent = `${stationInfo.name} · NOAA station ${stationInfo.id}`;
+
+  // Show next 4 tides
+  const now = new Date();
+  const upcoming = tides
+    .map(t => ({
+      time: new Date(t.t.replace(' ', 'T')),
+      height: parseFloat(t.v),
+      type: t.type  // 'H' or 'L'
+    }))
+    .filter(t => t.time > now)
+    .slice(0, 4);
+
+  if (upcoming.length === 0) {
+    document.getElementById('tides-grid').innerHTML = '<div class="note">No upcoming tide predictions available.</div>';
+    return;
+  }
+
+  let html = '';
+  upcoming.forEach(t => {
+    const isHigh = t.type === 'H';
+    const cls = isHigh ? 'high' : 'low';
+    const typeLabel = isHigh ? 'High Tide' : 'Low Tide';
+    const timeStr = t.time.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    const dateLabel = t.time.toDateString() === now.toDateString() ? 'Today' :
+                      t.time.toDateString() === new Date(now.getTime() + 86400000).toDateString() ? 'Tomorrow' :
+                      t.time.toLocaleDateString('en-US', { weekday: 'short' });
+
+    html += `
+      <div class="tide-card ${cls}">
+        <div class="tide-card-type">${typeLabel}</div>
+        <div class="tide-card-time">${timeStr}</div>
+        <div class="tide-card-height">${t.height.toFixed(1)} ft · ${dateLabel}</div>
+      </div>
+    `;
+  });
+  document.getElementById('tides-grid').innerHTML = html;
+}
+
+// Wire up location buttons
+document.querySelectorAll('.loc-btn').forEach(btn => {
+  if (btn.id === 'use-my-location') {
+    btn.addEventListener('click', () => {
+      if (!navigator.geolocation) {
+        alert('Geolocation not available. Pick a city from the list.');
+        return;
+      }
+      btn.classList.add('loading');
+      btn.textContent = '⏳ Finding...';
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          document.querySelectorAll('.loc-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          btn.classList.remove('loading');
+          btn.textContent = '📍 My Location';
+          currentLocation = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+            name: 'My location'
+          };
+          updateLiveWeather(currentLocation);
+        },
+        (err) => {
+          btn.classList.remove('loading');
+          btn.textContent = '📍 My Location';
+          alert('Could not get location. Pick a city instead.');
+        },
+        { timeout: 10000 }
+      );
+    });
+  } else if (btn.dataset.lat) {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.loc-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentLocation = {
+        lat: parseFloat(btn.dataset.lat),
+        lng: parseFloat(btn.dataset.lng),
+        name: btn.dataset.name
+      };
+      updateLiveWeather(currentLocation);
+    });
+  }
+});
+
+// Initial weather load
+updateLiveWeather(currentLocation);
+
+// Refresh weather every 15 minutes if tab is visible
+setInterval(() => {
+  if (!document.hidden) updateLiveWeather(currentLocation);
+}, 15 * 60 * 1000);
+
+// Refresh on visibility (e.g. user opens app from background)
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) updateLiveWeather(currentLocation);
+});
+
+// ============ NEWSLETTER (Beehiiv) ============
+// CONFIGURATION: Two ways to wire this up after creating your Beehiiv account.
+//
+// METHOD 1 (RECOMMENDED): Use Beehiiv's iframe embed.
+//   1. In Beehiiv: Audience > Subscribe forms > Create form > Embed > copy iframe code
+//   2. In index.html: find <!-- BEEHIIV IFRAME EMBED --> block and paste the iframe
+//   3. The native form below will auto-hide
+//
+// METHOD 2 (FALLBACK): Native form posts to Beehiiv via the legacy endpoint.
+//   Less reliable since Beehiiv changed their embed builder April 30, 2026.
+//   Only use if iframe styling doesn't fit your design.
+//
+// UNTIL EITHER IS CONFIGURED: emails queue in browser localStorage.
+// Run window.exportNewsletterQueue() in console to extract them as CSV.
+
+const BEEHIIV_ARCHIVE_URL = 'https://yab.beehiiv.com';  // <-- replace with your archive URL
+
+// Check on load: if a Beehiiv iframe is present, hide the native form
+document.addEventListener('DOMContentLoaded', () => {
+  const embedContainer = document.getElementById('beehiiv-embed-container');
+  const nativeForm = document.getElementById('newsletter-form');
+  const statusEl = document.getElementById('newsletter-status');
+
+  if (embedContainer && embedContainer.querySelector('iframe')) {
+    // Iframe is present, use that and hide native form
+    embedContainer.style.display = 'block';
+    if (nativeForm) nativeForm.style.display = 'none';
+    if (statusEl) statusEl.style.display = 'none';
+  }
+
+  // Wire archive link
+  const archiveLink = document.getElementById('newsletter-archive-link');
+  if (archiveLink && BEEHIIV_ARCHIVE_URL) {
+    archiveLink.href = BEEHIIV_ARCHIVE_URL;
+  }
+});
+
+async function submitNewsletter(event) {
+  event.preventDefault();
+  const emailInput = document.getElementById('newsletter-email');
+  const submitBtn = document.getElementById('newsletter-submit');
+  const statusEl = document.getElementById('newsletter-status');
+  const email = emailInput.value.trim().toLowerCase();
+
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    statusEl.className = 'newsletter-status error';
+    statusEl.textContent = 'Please enter a valid email.';
+    return false;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Saving...';
+  statusEl.className = 'newsletter-status pending';
+  statusEl.textContent = 'Subscribing...';
+
+  // Fallback: store locally so signups aren't lost before Beehiiv is configured
+  try {
+    const queue = JSON.parse(localStorage.getItem('newsletter-queue') || '[]');
+    if (queue.some(s => s.email === email)) {
+      statusEl.className = 'newsletter-status success';
+      statusEl.textContent = "You're already on the list. Welcome back.";
+    } else {
+      queue.push({ email, submittedAt: new Date().toISOString(), source: 'pwa' });
+      localStorage.setItem('newsletter-queue', JSON.stringify(queue));
+      showNewsletterSuccess();
+      emailInput.value = '';
+    }
+  } catch (e) {
+    statusEl.className = 'newsletter-status error';
+    statusEl.textContent = 'Something broke. Try again in a moment.';
+  }
+
+  submitBtn.disabled = false;
+  submitBtn.textContent = 'Subscribe';
+  return false;
+}
+
+function showNewsletterSuccess() {
+  const statusEl = document.getElementById('newsletter-status');
+  statusEl.className = 'newsletter-status success';
+  statusEl.textContent = '✓ On the list. First letter lands in your inbox shortly.';
+  setTimeout(() => {
+    statusEl.textContent = '';
+    statusEl.className = 'newsletter-status';
+  }, 8000);
+}
+
+// Utility: log queued subscribers to console (for manual export during pre-launch)
+window.exportNewsletterQueue = function() {
+  const queue = JSON.parse(localStorage.getItem('newsletter-queue') || '[]');
+  if (queue.length === 0) {
+    console.log('No queued newsletter signups.');
+    return [];
+  }
+  console.table(queue);
+  const csv = 'email,submitted_at,source\n' +
+    queue.map(s => `${s.email},${s.submittedAt},${s.source}`).join('\n');
+  console.log('--- CSV ---');
+  console.log(csv);
+  return queue;
+};
+
+// Utility: clear the queue after you've imported to Beehiiv
+window.clearNewsletterQueue = function() {
+  if (confirm('Clear all queued signups? (Only do this after importing to Beehiiv)')) {
+    localStorage.removeItem('newsletter-queue');
+    console.log('Queue cleared.');
+  }
+};
+
+// ============ PWA: SERVICE WORKER REGISTRATION ============
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then((reg) => {
+        console.log('[PWA] Service worker registered:', reg.scope);
+        // Check for updates every time the page loads
+        reg.update();
+
+        // Listen for new service worker waiting to activate
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New version available; show update banner
+              showUpdateBanner(newWorker);
+            }
+          });
+        });
+      })
+      .catch((err) => console.log('[PWA] Service worker registration failed:', err));
+
+    // Reload page when new service worker takes control
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
+    });
+  });
+}
+
+// ============ PWA: INSTALL PROMPT ============
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  showInstallBanner();
+});
+
+window.addEventListener('appinstalled', () => {
+  console.log('[PWA] App installed');
+  hideInstallBanner();
+  deferredPrompt = null;
+});
+
+function showInstallBanner() {
+  // Don't show if user dismissed within the last 7 days
+  const dismissed = localStorage.getItem('install-dismissed');
+  if (dismissed && (Date.now() - parseInt(dismissed)) < 7 * 24 * 60 * 60 * 1000) return;
+
+  const banner = document.createElement('div');
+  banner.id = 'install-banner';
+  banner.innerHTML = `
+    <div style="
+      position: fixed; bottom: 16px; left: 16px; right: 16px;
+      background: #1a2118; border: 1px solid #d4a574; border-radius: 10px;
+      padding: 14px 16px; display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5); z-index: 1000;
+      font-family: 'Inter', sans-serif; max-width: 500px; margin: 0 auto;
+      animation: slideUp 0.3s ease-out;
+    ">
+      <div style="font-size: 28px;">📲</div>
+      <div style="flex: 1; font-size: 13px; color: #e8e4dc; line-height: 1.4;">
+        <strong style="color: #f4c79b; display: block; margin-bottom: 2px;">Install PNW Angler</strong>
+        <span style="color: #9a9489;">Add to home screen for offline access</span>
+      </div>
+      <button onclick="installApp()" style="
+        background: #d4a574; color: #0f1310; border: none; border-radius: 6px;
+        padding: 8px 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+        font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+      ">Install</button>
+      <button onclick="dismissInstall()" style="
+        background: transparent; color: #5e5a52; border: none; font-size: 20px;
+        cursor: pointer; padding: 0 4px; line-height: 1;
+      ">×</button>
+    </div>
+    <style>
+      @keyframes slideUp {
+        from { transform: translateY(100%); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+    </style>
+  `;
+  document.body.appendChild(banner);
+}
+
+function hideInstallBanner() {
+  const banner = document.getElementById('install-banner');
+  if (banner) banner.remove();
+}
+
+function installApp() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then((choice) => {
+    if (choice.outcome === 'accepted') {
+      console.log('[PWA] User accepted install');
+    }
+    deferredPrompt = null;
+    hideInstallBanner();
+  });
+}
+
+function dismissInstall() {
+  localStorage.setItem('install-dismissed', Date.now().toString());
+  hideInstallBanner();
+}
+
+// ============ PWA: UPDATE BANNER ============
+function showUpdateBanner(newWorker) {
+  const banner = document.createElement('div');
+  banner.id = 'update-banner';
+  banner.innerHTML = `
+    <div style="
+      position: fixed; top: 16px; left: 16px; right: 16px;
+      background: #1a2118; border: 1px solid #7a9b5d; border-radius: 10px;
+      padding: 12px 14px; display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5); z-index: 1001;
+      font-family: 'Inter', sans-serif; max-width: 500px; margin: 0 auto;
+    ">
+      <div style="font-size: 22px;">🔄</div>
+      <div style="flex: 1; font-size: 13px; color: #e8e4dc;">
+        <strong style="color: #9bc176;">New version available</strong>
+      </div>
+      <button onclick="applyUpdate()" style="
+        background: #7a9b5d; color: #0f1310; border: none; border-radius: 6px;
+        padding: 7px 12px; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+        font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+      ">Update</button>
+    </div>
+  `;
+  banner.dataset.worker = 'pending';
+  window.__pendingWorker = newWorker;
+  document.body.appendChild(banner);
+}
+
+function applyUpdate() {
+  if (window.__pendingWorker) {
+    window.__pendingWorker.postMessage({ type: 'SKIP_WAITING' });
+  }
+}
+</script>
+
+</body>
+</html>
