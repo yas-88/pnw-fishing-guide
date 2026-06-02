@@ -3064,7 +3064,8 @@ function renderSpots() {
 
 // ============ INTERACTIONS ============
 function toggleSpecies(header) {
-  const body = header.nextElementSibling;
+  function toggleSpecies(header) {
+  const body = header.parentElement.querySelector('.species-body');
   body.classList.toggle('expanded');
   header.classList.toggle('expanded');
 }
