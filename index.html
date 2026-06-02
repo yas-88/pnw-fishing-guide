@@ -784,7 +784,27 @@ section.active { display: block; animation: fadeIn 0.25s; }
 .status-cr { background: rgba(212, 160, 23, 0.15); color: var(--warn); border: 1px solid rgba(212, 160, 23, 0.4); }
 .status-partial { background: rgba(212, 165, 116, 0.15); color: var(--accent); border: 1px solid rgba(212, 165, 116, 0.4); }
 
-.species-body {
+.species-thumb {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0 0 4px 4px;
+  border-top: 1px solid var(--border);
+  display: block;
+  filter: brightness(0.92) saturate(1.1);
+}
+.species-hero {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  filter: brightness(0.92) saturate(1.1);
+}
+  .species-body {
   padding: 14px 16px;
   display: none;
 }
@@ -2386,6 +2406,7 @@ footer {
 const speciesData = [
   // ===== FRESHWATER =====
   { type: 'fresh', name: 'Rainbow Trout', sci: 'Oncorhynchus mykiss', status: 'open', statusText: 'Open',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Rainbow_Trout_detailed_pictures_2.jpg/640px-Rainbow_Trout_detailed_pictures_2.jpg',
     tags: ['Beginner', 'Stocked', 'Year-round'],
     season: { J:'open', F:'open', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'open', Au:'open', S:'open', O:'peak', N:'peak', D:'peak' },
     seasonNote: 'Year-round on most lakes. Lowland opener late April. Best 2-7 days after stocking.',
@@ -2395,8 +2416,8 @@ const speciesData = [
     bait: 'PowerBait (rainbow, chartreuse), Trout Nuggets, nightcrawlers, salmon eggs',
     limit: '5/day WA · 5/day OR (varies by water)' },
 
-  { type: 'fresh', name: 'Cutthroat Trout', sci: 'O. clarkii · Coastal/Sea-run',
-    status: 'open', statusText: 'Open',
+  { type: 'fresh', name: 'Cutthroat Trout', sci: 'O. clarkii · Coastal/Sea-run', status: 'open', statusText: 'Open',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Coastal_cutthroat_trout.jpg/640px-Coastal_cutthroat_trout.jpg',
     tags: ['Native', 'Streams'],
     season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'open', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'closed', D:'closed' },
     seasonNote: 'Lakes year-round. Rivers/streams typically June 1 to Oct 31. Verify.',
@@ -2406,8 +2427,8 @@ const speciesData = [
     bait: 'Worms, eggs, small spinners',
     limit: 'Varies; many waters C&R or 2/day min 14"' },
 
-  { type: 'fresh', name: 'Steelhead', sci: 'O. mykiss · sea-run rainbow',
-    status: 'partial', statusText: 'Partial',
+  { type: 'fresh', name: 'Steelhead', sci: 'O. mykiss · sea-run rainbow', status: 'partial', statusText: 'Partial',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Steelhead_Trout_USFWS.jpg/640px-Steelhead_Trout_USFWS.jpg',
     tags: ['Trophy', 'Hatchery only'],
     season: { J:'peak', F:'peak', M:'open', A:'closed', My:'closed', Jn:'open', Jl:'open', Au:'open', S:'open', O:'open', N:'peak', D:'peak' },
     seasonNote: 'Winter run Dec-Mar (peak). Summer run Jun-Oct. Hatchery only retention. Wild release required.',
@@ -2417,8 +2438,8 @@ const speciesData = [
     bait: 'Cured eggs, sand shrimp, prawn tails, jigs, beads',
     limit: '2 hatchery adults/day typical. Wild release.' },
 
-  { type: 'fresh', name: 'Spring Chinook', sci: 'O. tshawytscha',
-    status: 'partial', statusText: 'Short Windows',
+  { type: 'fresh', name: 'Spring Chinook', sci: 'O. tshawytscha', status: 'partial', statusText: 'Short Windows',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Chinook_Salmon_USFWS.jpg/640px-Chinook_Salmon_USFWS.jpg',
     tags: ['Trophy', 'Premium table'],
     season: { J:'closed', F:'closed', M:'open', A:'peak', My:'peak', Jn:'open', Jl:'closed', Au:'closed', S:'closed', O:'closed', N:'closed', D:'closed' },
     seasonNote: 'Mar-Jun. Openers announced in short windows. Verify daily during season.',
@@ -2428,8 +2449,8 @@ const speciesData = [
     bait: 'Cured eggs, sand shrimp, herring, prawn tails, Kwikfish',
     limit: '1-2/day with endorsement. Verify open days.' },
 
-  { type: 'fresh', name: 'Fall Chinook', sci: 'O. tshawytscha',
-    status: 'open', statusText: 'Sept Peak',
+  { type: 'fresh', name: 'Fall Chinook', sci: 'O. tshawytscha', status: 'open', statusText: 'Sept Peak',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Chinook_Salmon_USFWS.jpg/640px-Chinook_Salmon_USFWS.jpg',
     tags: ['Bigger fish', 'Heavier gear'],
     season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'closed', Jl:'open', Au:'open', S:'peak', O:'peak', N:'open', D:'closed' },
     seasonNote: 'Aug-Nov. Peak September. Buoy 10 fishery world-class.',
@@ -2439,8 +2460,8 @@ const speciesData = [
     bait: 'Cured roe, herring, sand shrimp',
     limit: 'Varies by river and date. CRC required.' },
 
-  { type: 'fresh', name: 'Coho Salmon', sci: 'O. kisutch · Silver',
-    status: 'open', statusText: 'Sept-Nov',
+  { type: 'fresh', name: 'Coho Salmon', sci: 'O. kisutch · Silver', status: 'open', statusText: 'Sept-Nov',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Coho_salmon_USFWS.jpg/640px-Coho_salmon_USFWS.jpg',
     tags: ['Aggressive', 'Light gear OK'],
     season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'closed', Jl:'closed', Au:'open', S:'peak', O:'peak', N:'open', D:'closed' },
     seasonNote: 'Aug-Nov. Aggressive on spinners and jigs in rivers.',
@@ -2450,8 +2471,8 @@ const speciesData = [
     bait: 'Cured eggs, sand shrimp, jigs, spinners',
     limit: 'Varies by river. Hatchery only typical.' },
 
-  { type: 'fresh', name: 'Sockeye', sci: 'O. nerka',
-    status: 'partial', statusText: 'Summer',
+  { type: 'fresh', name: 'Sockeye', sci: 'O. nerka', status: 'partial', statusText: 'Summer',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Sockeye_salmon_USFWS.jpg/640px-Sockeye_salmon_USFWS.jpg',
     tags: ['Targeted run', 'Specialty'],
     season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'open', Jl:'peak', Au:'peak', S:'closed', O:'closed', N:'closed', D:'closed' },
     seasonNote: 'Late June through August. Brief openers when run is strong.',
@@ -2461,8 +2482,8 @@ const speciesData = [
     bait: 'Pink, red, UV hoochies. Sometimes scent-tipped.',
     limit: 'Set when run exceeds escapement. Watch announcements.' },
 
-  { type: 'fresh', name: 'Kokanee', sci: 'O. nerka · landlocked sockeye',
-    status: 'open', statusText: 'Peak Now',
+  { type: 'fresh', name: 'Kokanee', sci: 'O. nerka · landlocked sockeye', status: 'open', statusText: 'Peak Now',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Sockeye_salmon_USFWS.jpg/640px-Sockeye_salmon_USFWS.jpg',
     tags: ['Trolling', 'Family-friendly boat'],
     season: { J:'open', F:'open', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'open', O:'open', N:'closed', D:'closed' },
     seasonNote: 'Apr-Aug peak. Adults spawn out late October.',
@@ -2472,8 +2493,8 @@ const speciesData = [
     bait: 'White shoepeg corn (cured in scent), small pieces of worm',
     limit: '10/day Merwin · 16/day Chelan (no min size at Chelan)' },
 
-  { type: 'fresh', name: 'Shad', sci: 'Alosa sapidissima',
-    status: 'open', statusText: 'Open Now',
+  { type: 'fresh', name: 'Shad', sci: 'Alosa sapidissima', status: 'open', statusText: 'Open Now',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/American_shad.jpg/640px-American_shad.jpg',
     tags: ['Beginner', 'No limit', 'Hard fight'],
     season: { J:'closed', F:'closed', M:'closed', A:'open', My:'peak', Jn:'peak', Jl:'open', Au:'closed', S:'closed', O:'closed', N:'closed', D:'closed' },
     seasonNote: 'May-June peak. Bonneville Dam tailrace is mecca.',
@@ -2483,8 +2504,8 @@ const speciesData = [
     bait: 'None. Shad darts in white, chartreuse, pink. Curly tail grubs on jig heads.',
     limit: 'No limit. No minimum size.' },
 
-  { type: 'fresh', name: 'White Sturgeon', sci: 'Acipenser transmontanus',
-    status: 'cr', statusText: 'C&R Below Bonneville',
+  { type: 'fresh', name: 'White Sturgeon', sci: 'Acipenser transmontanus', status: 'cr', statusText: 'C&R Below Bonneville',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/White_sturgeon.jpg/640px-White_sturgeon.jpg',
     tags: ['Heavy gear', 'Trophy'],
     season: { J:'cr', F:'cr', M:'cr', A:'cr', My:'cr', Jn:'cr', Jl:'cr', Au:'cr', S:'cr', O:'cr', N:'cr', D:'cr' },
     seasonNote: 'C&R year-round below Bonneville. Retention opens above Bonneville on specific days.',
@@ -2494,8 +2515,8 @@ const speciesData = [
     bait: 'Sand shrimp, smelt, lamprey, salmon parts (legal in season), squid',
     limit: '0 retention below Bonneville. Annual limit 2 white sturgeon statewide WA (size slot in open areas).' },
 
-  { type: 'fresh', name: 'Largemouth Bass', sci: 'Micropterus salmoides',
-    status: 'open', statusText: 'Open',
+  { type: 'fresh', name: 'Largemouth Bass', sci: 'Micropterus salmoides', status: 'open', statusText: 'Open',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Largemouth_bass_USFWS.jpg/640px-Largemouth_bass_USFWS.jpg',
     tags: ['Year-round', 'Spawn now'],
     season: { J:'open', F:'open', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'open', D:'open' },
     seasonNote: 'Year-round. Peak May-Sept. Spawn April-June.',
@@ -2505,8 +2526,8 @@ const speciesData = [
     bait: 'Senkos, creature baits, crankbaits, spinnerbaits, live nightcrawlers',
     limit: '5/day, no min size statewide. Encouraged C&R for larger fish.' },
 
-  { type: 'fresh', name: 'Smallmouth Bass', sci: 'Micropterus dolomieu',
-    status: 'open', statusText: 'Open',
+  { type: 'fresh', name: 'Smallmouth Bass', sci: 'Micropterus dolomieu', status: 'open', statusText: 'Open',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Micropterus_dolomieu_USFWS.jpg/640px-Micropterus_dolomieu_USFWS.jpg',
     tags: ['Hard fight', 'No limit Columbia'],
     season: { J:'open', F:'open', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'peak', O:'peak', N:'open', D:'open' },
     seasonNote: 'Year-round. Peak May-Sept. Pre-spawn April-May is prime.',
@@ -2516,8 +2537,8 @@ const speciesData = [
     bait: 'Soft plastics in green pumpkin, smoke, crawfish. Live crayfish where legal.',
     limit: 'Columbia: no limit/no min (invasive control). Lakes: 5/day.' },
 
-  { type: 'fresh', name: 'Walleye', sci: 'Sander vitreus',
-    status: 'open', statusText: 'Open',
+  { type: 'fresh', name: 'Walleye', sci: 'Sander vitreus', status: 'open', statusText: 'Open',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Walleye_USFWS.jpg/640px-Walleye_USFWS.jpg',
     tags: ['Eating fish', 'No limit Columbia'],
     season: { J:'open', F:'open', M:'peak', A:'peak', My:'peak', Jn:'open', Jl:'open', Au:'open', S:'peak', O:'peak', N:'open', D:'open' },
     seasonNote: 'Year-round, peak April-May (pre-spawn) and fall.',
@@ -2527,8 +2548,8 @@ const speciesData = [
     bait: 'Nightcrawlers, leeches, plastics in fire tiger/perch',
     limit: 'Columbia: no limit/no min (invasive). Other waters 8/day.' },
 
-  { type: 'fresh', name: 'Bluegill / Sunfish', sci: 'Lepomis spp.',
-    status: 'open', statusText: 'Open',
+  { type: 'fresh', name: 'Bluegill / Sunfish', sci: 'Lepomis spp.', status: 'open', statusText: 'Open',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Lepomis_macrochirus_USFWS.jpg/640px-Lepomis_macrochirus_USFWS.jpg',
     tags: ['Beginner', 'Kid-friendly'],
     season: { J:'open', F:'open', M:'open', A:'open', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'open', O:'open', N:'open', D:'open' },
     seasonNote: 'Year-round. Peak May-Sept. Spring spawn in shallows.',
@@ -2538,8 +2559,8 @@ const speciesData = [
     bait: 'Worm pieces, mealworms, crickets, crappie tubes, small jigs',
     limit: 'No limit on most waters.' },
 
-  { type: 'fresh', name: 'Crappie', sci: 'Pomoxis spp.',
-    status: 'open', statusText: 'Open',
+  { type: 'fresh', name: 'Crappie', sci: 'Pomoxis spp.', status: 'open', statusText: 'Open',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Black_crappie.jpg/640px-Black_crappie.jpg',
     tags: ['Eating fish', 'Schools tight'],
     season: { J:'open', F:'open', M:'peak', A:'peak', My:'peak', Jn:'open', Jl:'open', Au:'open', S:'open', O:'open', N:'open', D:'open' },
     seasonNote: 'Spring spawn shallow. Summer deep. Schools tight, find one find many.',
@@ -2549,8 +2570,8 @@ const speciesData = [
     bait: 'Curly tail grubs (white, chartreuse, pink), live minnows',
     limit: '10/day typical WA. Verify per water.' },
 
-  { type: 'fresh', name: 'Yellow Perch', sci: 'Perca flavescens',
-    status: 'open', statusText: 'Open',
+  { type: 'fresh', name: 'Yellow Perch', sci: 'Perca flavescens', status: 'open', statusText: 'Open',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Yellow_perch_USFWS.jpg/640px-Yellow_perch_USFWS.jpg',
     tags: ['Eating fish', 'Ice fishing'],
     season: { J:'peak', F:'peak', M:'open', A:'open', My:'open', Jn:'open', Jl:'open', Au:'open', S:'open', O:'open', N:'open', D:'peak' },
     seasonNote: 'Year-round. Ice fishing in E. WA. Schools deep in summer, shallow in spring.',
@@ -2560,8 +2581,8 @@ const speciesData = [
     bait: 'Small minnows, worm pieces, jigs in perch colors',
     limit: '25/day E. WA typical' },
 
-  { type: 'fresh', name: 'Channel Catfish', sci: 'Ictalurus punctatus',
-    status: 'open', statusText: 'Heating up',
+  { type: 'fresh', name: 'Channel Catfish', sci: 'Ictalurus punctatus', status: 'open', statusText: 'Heating up',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Channel_catfish_USFWS.jpg/640px-Channel_catfish_USFWS.jpg',
     tags: ['Night bite', 'Heavy gear'],
     season: { J:'closed', F:'closed', M:'open', A:'open', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'closed', D:'closed' },
     seasonNote: 'Active May-Oct. Peak summer night bite.',
@@ -2571,8 +2592,8 @@ const speciesData = [
     bait: 'Chicken liver, cut bait, stink bait, nightcrawlers, hot dogs',
     limit: '5/day WA' },
 
-  { type: 'fresh', name: 'Tiger Muskie', sci: 'Esox masquinongy × E. lucius',
-    status: 'open', statusText: 'Trophy',
+  { type: 'fresh', name: 'Tiger Muskie', sci: 'Esox masquinongy × E. lucius', status: 'open', statusText: 'Trophy',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Muskellunge_USFWS.jpg/640px-Muskellunge_USFWS.jpg',
     tags: ['50" min', 'Trophy only'],
     season: { J:'open', F:'open', M:'open', A:'open', My:'open', Jn:'peak', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'open', D:'open' },
     seasonNote: 'Year-round. Peak June-September.',
@@ -2582,8 +2603,8 @@ const speciesData = [
     bait: 'Large bucktails (Cowgirl, Bull Dawg), jerkbaits, swimbaits',
     limit: '50" minimum, 1/day. Anything under 50" released.' },
 
-  { type: 'fresh', name: 'Carp', sci: 'Cyprinus carpio',
-    status: 'open', statusText: 'Open',
+  { type: 'fresh', name: 'Carp', sci: 'Cyprinus carpio', status: 'open', statusText: 'Open',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Common_carp.jpg/640px-Common_carp.jpg',
     tags: ['Strong fight', 'No limit'],
     season: { J:'closed', F:'closed', M:'open', A:'open', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'open', O:'open', N:'closed', D:'closed' },
     seasonNote: 'Active when water warms. Peak summer.',
@@ -2594,8 +2615,8 @@ const speciesData = [
     limit: 'No limit (non-native)' },
 
   // ===== SALTWATER =====
-  { type: 'salt', name: 'Coho Salmon (salt)', sci: 'O. kisutch',
-    status: 'open', statusText: 'Summer Peak',
+  { type: 'salt', name: 'Coho Salmon (salt)', sci: 'O. kisutch', status: 'open', statusText: 'Summer Peak',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Coho_salmon_USFWS.jpg/640px-Coho_salmon_USFWS.jpg',
     tags: ['Aggressive', 'Topwater takes'],
     season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'open', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'closed', D:'closed' },
     seasonNote: 'Jul-Oct. Puget Sound MA 9, 10, 11 most popular.',
@@ -2605,8 +2626,8 @@ const speciesData = [
     bait: 'Cut-plug herring, anchovies, hoochies, spoons',
     limit: 'Varies by MA and quota. Often 2/day with marked hatchery requirement.' },
 
-  { type: 'salt', name: 'Chinook Salmon (salt)', sci: 'O. tshawytscha',
-    status: 'partial', statusText: 'Open w/ Quotas',
+  { type: 'salt', name: 'Chinook Salmon (salt)', sci: 'O. tshawytscha', status: 'partial', statusText: 'Open w/ Quotas',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Chinook_Salmon_USFWS.jpg/640px-Chinook_Salmon_USFWS.jpg',
     tags: ['King', 'Downrigger'],
     season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'open', Jn:'peak', Jl:'peak', Au:'peak', S:'open', O:'closed', N:'closed', D:'closed' },
     seasonNote: 'Summer fishery. Quota-driven openers. Watch WDFW announcements.',
@@ -2616,8 +2637,8 @@ const speciesData = [
     bait: 'Whole herring, anchovies, hoochies, spoons (Coyote, Kingfisher)',
     limit: 'Varies by MA. CRC required.' },
 
-  { type: 'salt', name: 'Pink Salmon', sci: 'O. gorbuscha',
-    status: 'partial', statusText: 'Odd Years Only',
+  { type: 'salt', name: 'Pink Salmon', sci: 'O. gorbuscha', status: 'partial', statusText: 'Odd Years Only',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Pink_salmon_USFWS.jpg/640px-Pink_salmon_USFWS.jpg',
     tags: ['Odd years', 'Easy bite'],
     season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'closed', Jl:'open', Au:'peak', S:'peak', O:'closed', N:'closed', D:'closed' },
     seasonNote: 'ODD YEARS ONLY (2025, 2027). Massive runs every 2 years in Puget Sound.',
@@ -2627,8 +2648,8 @@ const speciesData = [
     bait: 'Pink everything. Small spoons. Pink hoochies.',
     limit: 'Generous. 4/day typical odd-year openers.' },
 
-  { type: 'salt', name: 'Lingcod', sci: 'Ophiodon elongatus',
-    status: 'open', statusText: 'Mid-Mar to Oct',
+  { type: 'salt', name: 'Lingcod', sci: 'Ophiodon elongatus', status: 'open', statusText: 'Mid-Mar to Oct',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Lingcod_USFWS.jpg/640px-Lingcod_USFWS.jpg',
     tags: ['Eating fish', 'Bottom'],
     season: { J:'closed', F:'closed', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'closed', D:'closed' },
     seasonNote: 'Mid-March to mid-October typical. Verify season opens by MA.',
@@ -2638,8 +2659,8 @@ const speciesData = [
     bait: 'Live small rockfish/greenling, large swimbaits, herring, squid',
     limit: '2/day WA (22" min) · 2/day OR (22" min)' },
 
-  { type: 'salt', name: 'Rockfish', sci: 'Sebastes spp.',
-    status: 'open', statusText: 'Varies by Depth',
+  { type: 'salt', name: 'Rockfish', sci: 'Sebastes spp.', status: 'open', statusText: 'Varies by Depth',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Sebastes_ruberrimus_USFWS.jpg/640px-Sebastes_ruberrimus_USFWS.jpg',
     tags: ['Bottom', 'Multiple species'],
     season: { J:'closed', F:'closed', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'closed', D:'closed' },
     seasonNote: 'Spring through fall typical. Depth restrictions vary (no fishing below 240 ft in many WA areas).',
@@ -2649,8 +2670,8 @@ const speciesData = [
     bait: 'Squid strips, herring chunks, swimbaits, shrimp flies',
     limit: '7/day OR · varies by MA in WA. Many depth restrictions.' },
 
-  { type: 'salt', name: 'Pacific Halibut', sci: 'Hippoglossus stenolepis',
-    status: 'partial', statusText: 'Limited Openers',
+  { type: 'salt', name: 'Pacific Halibut', sci: 'Hippoglossus stenolepis', status: 'partial', statusText: 'Limited Openers',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Pacific_halibut_USFWS.jpg/640px-Pacific_halibut_USFWS.jpg',
     tags: ['Trophy', 'Quota-driven'],
     season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'peak', Jn:'peak', Jl:'peak', Au:'open', S:'closed', O:'closed', N:'closed', D:'closed' },
     seasonNote: 'May-August. Quota-driven openers (specific days). Sells out fast.',
@@ -2660,8 +2681,8 @@ const speciesData = [
     bait: 'Whole herring, salmon belly, octopus, squid',
     limit: '1/day on open days. CRC required. Size/weight slot may apply.' },
 
-  { type: 'salt', name: 'Albacore Tuna', sci: 'Thunnus alalunga',
-    status: 'open', statusText: 'Jul-Oct',
+  { type: 'salt', name: 'Albacore Tuna', sci: 'Thunnus alalunga', status: 'open', statusText: 'Jul-Oct',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Albacore_tuna.jpg/640px-Albacore_tuna.jpg',
     tags: ['Offshore', 'Boat needed'],
     season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'closed', Jl:'open', Au:'peak', S:'peak', O:'open', N:'closed', D:'closed' },
     seasonNote: 'Jul-Oct. Need to run 30-60 miles offshore. Charter or capable private boat.',
@@ -2671,8 +2692,8 @@ const speciesData = [
     bait: 'Live sardines, cedar plugs, feathers, daisy chains',
     limit: '25/day no min size · most regions' },
 
-  { type: 'salt', name: 'Surf Perch', sci: 'Embiotocidae spp.',
-    status: 'open', statusText: 'Year-Round',
+  { type: 'salt', name: 'Surf Perch', sci: 'Embiotocidae spp.', status: 'open', statusText: 'Year-Round',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Redtail_surfperch.jpg/640px-Redtail_surfperch.jpg',
     tags: ['Beginner', 'Beach', 'No boat'],
     season: { J:'open', F:'open', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'open', D:'open' },
     seasonNote: 'Year-round. Best 2 hrs before to 2 hrs after high tide.',
@@ -2682,8 +2703,8 @@ const speciesData = [
     bait: 'Sand crabs, mussels, raw shrimp, Berkley Gulp! sandworm/camo',
     limit: '15/day WA · 15/day OR' },
 
-  { type: 'salt', name: 'Cabezon', sci: 'Scorpaenichthys marmoratus',
-    status: 'open', statusText: 'Open',
+  { type: 'salt', name: 'Cabezon', sci: 'Scorpaenichthys marmoratus', status: 'open', statusText: 'Open',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Cabezon_USFWS.jpg/640px-Cabezon_USFWS.jpg',
     tags: ['Bottom', 'Eat the white meat'],
     season: { J:'closed', F:'closed', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'closed', D:'closed' },
     seasonNote: 'Spring through fall. Often caught while rockfishing.',
@@ -2693,8 +2714,8 @@ const speciesData = [
     bait: 'Squid, herring, crab',
     limit: '1/day WA · 1/day OR (16" min)' },
 
-  { type: 'salt', name: 'Dungeness Crab', sci: 'Metacarcinus magister',
-    status: 'partial', statusText: 'Varies by Area',
+  { type: 'salt', name: 'Dungeness Crab', sci: 'Metacarcinus magister', status: 'partial', statusText: 'Varies by Area',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Dungeness_crab.jpg/640px-Dungeness_crab.jpg',
     tags: ['Pots', 'Eating'],
     season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'open', Jl:'peak', Au:'peak', S:'peak', O:'peak', N:'open', D:'closed' },
     seasonNote: 'Recreational season varies by MA. Puget Sound summer mid-July to early-Sept typical. Coast Dec-Apr.',
@@ -2704,8 +2725,8 @@ const speciesData = [
     bait: 'Chicken parts, fish carcass (salmon heads especially), squid',
     limit: '5/day WA male only 6.25" carapace · 12/day OR male only 5.75" carapace. CRC required WA.' },
 
-  { type: 'salt', name: 'Razor Clams', sci: 'Siliqua patula',
-    status: 'partial', statusText: 'Dig Openers',
+  { type: 'salt', name: 'Razor Clams', sci: 'Siliqua patula', status: 'partial', statusText: 'Dig Openers',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Razor_clam.jpg/640px-Razor_clam.jpg',
     tags: ['Beach dig', 'WDFW announce'],
     season: { J:'open', F:'open', M:'open', A:'open', My:'closed', Jn:'closed', Jl:'closed', Au:'closed', S:'closed', O:'open', N:'open', D:'open' },
     seasonNote: 'Specific evening tides Oct-April announced 1-2 weeks ahead. Toxin tests must pass.',
@@ -2969,7 +2990,9 @@ function renderSpecies(filter = 'all', search = '') {
       const status = s.season[m] || 'closed';
       return `<div class="month ${status}">${monthLabels[i]}</div>`;
     }).join('');
-    const tagsHtml = s.tags ? `<div class="species-tags">${s.tags.map(t => `<span class="mini-tag">${t}</span>`).join('')}</div>` : '';
+   const tagsHtml = s.tags ? `<div class="species-tags">${s.tags.map(t => `<span class="mini-tag">${t}</span>`).join('')}</div>` : '';
+const thumbHtml = s.img ? `<img class="species-thumb" src="${s.img}" alt="${s.name}" loading="lazy" onerror="this.style.display='none'">` : '';
+const heroHtml = s.img ? `<img class="species-hero" src="${s.img}" alt="${s.name}" loading="lazy" onerror="this.style.display='none'">` : '';
     html += `
       <div class="species-card ${s.type}">
         <div class="species-header" onclick="toggleSpecies(this)">
@@ -2983,7 +3006,9 @@ function renderSpecies(filter = 'all', search = '') {
             <span class="expand-arrow">▼</span>
           </div>
         </div>
+        ${thumbHtml}
         <div class="species-body">
+          ${heroHtml}
           <div class="row"><div class="row-label">Season</div><div class="row-value">
             <div class="season-bar">${seasonHtml}</div>
             <div style="margin-top:8px;font-size:12px;color:var(--text-dim);">${s.seasonNote}</div>
