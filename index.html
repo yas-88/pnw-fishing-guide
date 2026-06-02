@@ -1181,6 +1181,140 @@ section.active { display: block; animation: fadeIn 0.25s; }
   color: var(--accent);
   letter-spacing: 1px;
 }
+// ============ NEAR ME ============
+const SPOTS_DB = [
+  { name: "Columbia River · Vancouver Waterfront", meta: "Downtown · Bank · Year-round", tags: ["Salmon","Steelhead","Sturgeon C&R","Shad","Bass"], note: "Wintler Park, Marine Park, Frenchman's Bar. Pay parking. Spring chinook plunking Apr–May, shad May–Jun, sturgeon C&R year-round.", type: "both", lat: 45.6280, lon: -122.6739, maps: "https://maps.google.com/?q=45.6280,-122.6739" },
+  { name: "Klineline Pond (Salmon Creek Park)", meta: "10 min · 12 ac · Bank only", tags: ["Trout","Bass","Stocked","Family"], note: "No floating devices. Stocked frequently with rainbow including jumbos. Best 2–7 days after stocking.", type: "fresh", lat: 45.7100, lon: -122.6440, maps: "https://maps.google.com/?q=45.7100,-122.6440" },
+  { name: "Battle Ground Lake State Park", meta: "25 min · 28 ac · Bank + small boat", tags: ["Trout","Bass","Panfish","Pier"], note: "Crater lake, wind-protected. Fishing pier. Stocked rainbows. Bass and bluegill summer. Discover Pass required.", type: "fresh", lat: 45.7850, lon: -122.4960, maps: "https://maps.google.com/?q=45.7850,-122.4960" },
+  { name: "Lacamas Lake (Camas)", meta: "20 min · 320 ac · Boat/Bank", tags: ["Bass","Trout","Panfish"], note: "Largemouth bass fishery. Stocked trout. Bank access Heritage Park, Lacamas Park. Best mornings/evenings.", type: "fresh", lat: 45.5950, lon: -122.4020, maps: "https://maps.google.com/?q=45.5950,-122.4020" },
+  { name: "Vancouver Lake", meta: "10 min · 2,300 ac · Bank + Boat", tags: ["Bass","Panfish","Catfish","Carp"], note: "Shallow, warm-water. Spring largemouth bass spawn. Crappie and bluegill all summer. Watch algae blooms late summer.", type: "fresh", lat: 45.6430, lon: -122.7500, maps: "https://maps.google.com/?q=45.6430,-122.7500" },
+  { name: "Lake Merwin", meta: "45 min · 5,800 ac · Boat only", tags: ["Kokanee","Tiger Muskie","Cutthroat"], note: "PacifiCorp ramps at Speelyal and Cresap Bay (weekend fee). Premier kokanee Apr–Aug. Tiger muskie 50\" min.", type: "fresh", lat: 46.0100, lon: -122.5040, maps: "https://maps.google.com/?q=46.0100,-122.5040" },
+  { name: "Yale Reservoir", meta: "55 min · 3,600 ac · Boat", tags: ["Bass","Crappie","Trout"], note: "Trophy largemouth bass fishery. Excellent crappie. Shallow weedy lake near Mt. St. Helens.", type: "fresh", lat: 46.0520, lon: -122.3750, maps: "https://maps.google.com/?q=46.0520,-122.3750" },
+  { name: "Swift Reservoir", meta: "65 min · Boat", tags: ["Kokanee","Rainbow","Bull Trout"], note: "Uppermost of the three Swift/Yale/Merwin reservoirs. Kokanee and rainbow. Bull trout C&R.", type: "fresh", lat: 46.0870, lon: -122.2460, maps: "https://maps.google.com/?q=46.0870,-122.2460" },
+  { name: "Lewis River (Lower)", meta: "45 min · River", tags: ["Steelhead","Salmon","Trout"], note: "Winter steelhead Dec–Mar. Spring Chinook Apr–May. Access at Daybreak Park, Paradise Point SP.", type: "fresh", lat: 45.8530, lon: -122.6100, maps: "https://maps.google.com/?q=45.8530,-122.6100" },
+  { name: "Washougal River", meta: "30 min · River", tags: ["Steelhead","Coho","Cutthroat"], note: "Clear tributary of the Columbia. Wild fish C&R emphasis. Fall coho and winter steelhead.", type: "fresh", lat: 45.5830, lon: -122.3380, maps: "https://maps.google.com/?q=45.5830,-122.3380" },
+  { name: "Shillapoo / Vancouver Lake Wildlife Area", meta: "15 min · Slough · Bank", tags: ["Bass","Catfish","Panfish","Carp"], note: "Network of sloughs off Vancouver Lake. Largemouth, crappie, bullhead. Best spring through fall. Free access.", type: "fresh", lat: 45.6600, lon: -122.7620, maps: "https://maps.google.com/?q=45.6600,-122.7620" },
+  { name: "Willamette River (Portland)", meta: "15–30 min · OR license", tags: ["Salmon","Steelhead","Sturgeon","Bass"], note: "Oregon license required. Spring Chinook peaks late May–Jun. Excellent smallmouth bass below Willamette Falls.", type: "both", lat: 45.5231, lon: -122.6765, maps: "https://maps.google.com/?q=45.5231,-122.6765" },
+  { name: "Sandy River", meta: "30 min · River", tags: ["Steelhead","Salmon","Trout"], note: "Winter steelhead Dec–Mar, summer steelhead May–Oct, spring/fall Chinook, coho. Lewis & Clark and Oxbow Park access.", type: "fresh", lat: 45.4970, lon: -122.3780, maps: "https://maps.google.com/?q=45.4970,-122.3780" },
+  { name: "Clackamas River", meta: "30–45 min · River", tags: ["Steelhead","Salmon","Trout"], note: "Year-round opportunity. Winter steelhead peak Feb. Spring Chinook Apr–May. Bonnie Lure SP, Carver, McIver SP access.", type: "fresh", lat: 45.3970, lon: -122.5370, maps: "https://maps.google.com/?q=45.3970,-122.5370" },
+  { name: "Tualatin River + Henry Hagg Lake", meta: "30–45 min", tags: ["Bass","Trout","Panfish"], note: "Henry Hagg is the metro's best stocked trout + warm water lake. Bank and boat access.", type: "fresh", lat: 45.4780, lon: -123.1870, maps: "https://maps.google.com/?q=45.4780,-123.1870" },
+  { name: "Multnomah Channel", meta: "20–30 min", tags: ["Bass","Walleye","Catfish"], note: "Backwater of the Columbia. Trophy largemouth in lily pads. Underrated walleye and channel catfish.", type: "fresh", lat: 45.6960, lon: -122.8320, maps: "https://maps.google.com/?q=45.6960,-122.8320" },
+  { name: "Estacada Lake / Faraday", meta: "45 min", tags: ["Bass","Trout"], note: "Stocked trout. Small impoundments on the Clackamas. Bank-friendly.", type: "fresh", lat: 45.2950, lon: -122.3310, maps: "https://maps.google.com/?q=45.2950,-122.3310" },
+  { name: "Lake Washington", meta: "Seattle · Boat + Bank", tags: ["Kokanee","Bass","Trout","Cutthroat"], note: "Urban kokanee fishery summer months. Cutthroat year-round. Largemouth and smallmouth bass.", type: "fresh", lat: 47.6062, lon: -122.2550, maps: "https://maps.google.com/?q=47.6062,-122.2550" },
+  { name: "Green River", meta: "30 min · River", tags: ["Steelhead","Salmon","Trout"], note: "Winter steelhead Dec–Mar. Fall Chinook and coho. Flaming Geyser SP, Auburn access points.", type: "fresh", lat: 47.3060, lon: -122.0290, maps: "https://maps.google.com/?q=47.3060,-122.0290" },
+  { name: "Sammamish River", meta: "Redmond · Bank", tags: ["Bass","Trout","Salmon"], note: "Trail-accessible urban fishery. Coho return fall. Bass in slower sections. Stocked rainbow spring.", type: "fresh", lat: 47.6740, lon: -122.1130, maps: "https://maps.google.com/?q=47.6740,-122.1130" },
+  { name: "Lake Sammamish", meta: "Issaquah · Boat + Bank", tags: ["Bass","Kokanee","Trout"], note: "Kokanee June–Aug. Largemouth bass. Stocked rainbow spring. Sammamish SP launch.", type: "fresh", lat: 47.5790, lon: -122.0660, maps: "https://maps.google.com/?q=47.5790,-122.0660" },
+  { name: "Snoqualmie River", meta: "45 min · River", tags: ["Steelhead","Salmon","Trout"], note: "Fall Chinook, coho, winter steelhead. Multiple access points Fall City through Carnation.", type: "fresh", lat: 47.5580, lon: -121.9840, maps: "https://maps.google.com/?q=47.5580,-121.9840" },
+  { name: "Edmonds Underwater Park / Pier", meta: "Edmonds · Pier + Shore", tags: ["Rockfish","Lingcod","Perch","Greenling"], note: "Year-round bottomfish off pier. Rockfish limits achievable. Productive kelp edges for lingcod fall.", type: "salt", lat: 47.8118, lon: -122.3843, maps: "https://maps.google.com/?q=47.8118,-122.3843" },
+  { name: "Point Defiance (Tacoma)", meta: "Tacoma · Shore + Pier", tags: ["Salmon","Perch","Rockfish"], note: "Fall coho and Chinook from the boathouse pier. Surf perch spring. Rockfish from rocks.", type: "salt", lat: 47.3190, lon: -122.5440, maps: "https://maps.google.com/?q=47.3190,-122.5440" },
+  { name: "Narrows Bridge (Tacoma Narrows)", meta: "Tacoma · Shore", tags: ["Salmon","Lingcod","Rockfish"], note: "Strong tidal flow concentrates baitfish. Salmon during fall runs. Lingcod structure fishing.", type: "salt", lat: 47.2680, lon: -122.5500, maps: "https://maps.google.com/?q=47.2680,-122.5500" },
+  { name: "Sekiu / Clallam Bay", meta: "3 hr · Boat preferred", tags: ["Chinook","Coho","Halibut","Rockfish"], note: "Top summer salmon fishery on the Strait. Halibut season opens spring. Charter and private launch available.", type: "salt", lat: 48.2650, lon: -124.3070, maps: "https://maps.google.com/?q=48.2650,-124.3070" },
+  { name: "Possession Sound (Everett)", meta: "Everett · Boat", tags: ["Chinook","Coho","Perch"], note: "Blackmouth (resident Chinook) Nov–Mar. Summer Chinook July–Aug. Launch at Everett Marina.", type: "salt", lat: 47.9760, lon: -122.2210, maps: "https://maps.google.com/?q=47.9760,-122.2210" },
+  { name: "Hood Canal (Union / Hoodsport)", meta: "1.5–2 hr · Boat + Shore", tags: ["Chinook","Coho","Shrimp","Oysters"], note: "Summer Chinook run Aug. Spot shrimp season spring (check WDFW for opener).", type: "salt", lat: 47.4020, lon: -123.1060, maps: "https://maps.google.com/?q=47.4020,-123.1060" },
+  { name: "Westport · Westhaven State Park", meta: "2.5 hr · Jetty + Boat", tags: ["Salmon","Halibut","Rockfish","Surf Perch"], note: "Premier WA coast launch. Summer Chinook and coho charters. Jetty perch spring. Halibut season opens May.", type: "salt", lat: 46.9010, lon: -124.1050, maps: "https://maps.google.com/?q=46.9010,-124.1050" },
+  { name: "Long Beach Peninsula", meta: "2 hr · Beach", tags: ["Surf Perch","Razor Clams"], note: "Miles of surf perch beach. Razor clam digs announced by WDFW seasonally.", type: "salt", lat: 46.4900, lon: -124.0470, maps: "https://maps.google.com/?q=46.4900,-124.0470" },
+  { name: "Grays Harbor (Hoquiam/Aberdeen)", meta: "2 hr · Boat + Bank", tags: ["Salmon","Sturgeon","Perch"], note: "Fall Chinook and coho in the estuary. Sturgeon C&R. Perch from docks and pilings.", type: "both", lat: 46.9790, lon: -123.8360, maps: "https://maps.google.com/?q=46.9790,-123.8360" },
+  { name: "Neah Bay / Cape Flattery", meta: "3.5 hr · Boat", tags: ["Halibut","Chinook","Rockfish","Lingcod"], note: "Washington's top offshore fishery. Halibut season May–Sep. Makah Tribe permit required for land access.", type: "salt", lat: 48.3680, lon: -124.6230, maps: "https://maps.google.com/?q=48.3680,-124.6230" },
+  { name: "Willapa Bay", meta: "2 hr · Boat + Shore", tags: ["Perch","Salmon","Oysters","Crab"], note: "Productive estuary. Coho fall. Dungeness crab pots. Oyster harvest (check shellfish safety hotline).", type: "salt", lat: 46.6390, lon: -123.9520, maps: "https://maps.google.com/?q=46.6390,-123.9520" },
+  { name: "Tillamook Bay", meta: "1.5 hr Portland · Boat + Bank", tags: ["Salmon","Steelhead","Perch","Crab"], note: "Fall Chinook Aug–Oct. Winter steelhead Dec–Mar on Wilson/Trask/Tillamook Rivers. Dungeness crab summer.", type: "both", lat: 45.4590, lon: -123.8450, maps: "https://maps.google.com/?q=45.4590,-123.8450" },
+  { name: "Newport / Yaquina Bay", meta: "2.5 hr · Boat + Pier", tags: ["Rockfish","Lingcod","Halibut","Crab"], note: "Charter fleet at Newport dock. Offshore halibut May–Sep. Bottomfish year-round. Bay crabbing from docks.", type: "salt", lat: 44.6366, lon: -124.0513, maps: "https://maps.google.com/?q=44.6366,-124.0513" },
+  { name: "Depoe Bay", meta: "2.5 hr · Charter/Boat", tags: ["Salmon","Rockfish"], note: "Smallest navigable harbor in the world. Salmon trolling close to port. Multiple charter operators.", type: "salt", lat: 44.8096, lon: -124.0640, maps: "https://maps.google.com/?q=44.8096,-124.0640" },
+  { name: "Seaside / Gearhart Beach", meta: "1.5 hr · Beach", tags: ["Surf Perch","Razor Clams"], note: "Good surf perch from beaches. Razor clam digs (check ODFW). Necanicum River mouth for coho fall.", type: "salt", lat: 45.9934, lon: -123.9235, maps: "https://maps.google.com/?q=45.9934,-123.9235" },
+  { name: "Alsea River", meta: "2.5 hr · River", tags: ["Steelhead","Coho","Trout"], note: "Winter steelhead Jan–Mar. Fall coho. Access at Tidewater, Alsea, and Mike Bauer WMA.", type: "fresh", lat: 44.4280, lon: -123.6190, maps: "https://maps.google.com/?q=44.4280,-123.6190" },
+  { name: "Nestucca River", meta: "2 hr · River", tags: ["Steelhead","Coho","Chinook"], note: "Excellent winter steelhead Dec–Feb. Fall coho and Chinook. Bank access at Cloverdale and Pacific City.", type: "fresh", lat: 45.2070, lon: -123.7640, maps: "https://maps.google.com/?q=45.2070,-123.7640" },
+  { name: "Siletz Bay / Siletz River", meta: "2 hr · River + Bay", tags: ["Steelhead","Coho","Perch"], note: "Productive estuary bay for perch. River fishery for coho Oct–Nov, winter steelhead Dec–Mar.", type: "both", lat: 44.9020, lon: -124.0130, maps: "https://maps.google.com/?q=44.9020,-124.0130" },
+  { name: "Prineville Reservoir", meta: "3 hr · Boat + Bank", tags: ["Bass","Crappie","Catfish","Trout"], note: "Trophy largemouth spring. Excellent crappie May–Jun. Campground and launch at state park.", type: "fresh", lat: 44.1540, lon: -120.7130, maps: "https://maps.google.com/?q=44.1540,-120.7130" },
+  { name: "Crane Prairie Reservoir", meta: "4 hr · Boat + Bank", tags: ["Rainbow","Brown Trout","Kokanee"], note: "Famous stillwater fly fishery. Drowned timber structure. Rainbow to 5 lb common.", type: "fresh", lat: 43.7860, lon: -121.8290, maps: "https://maps.google.com/?q=43.7860,-121.8290" },
+  { name: "Ochoco Reservoir", meta: "3 hr · Boat + Bank", tags: ["Trout","Bass","Perch"], note: "Stocked rainbow and brown trout. Yellow perch in warmer months. Near Prineville.", type: "fresh", lat: 44.3000, lon: -120.5620, maps: "https://maps.google.com/?q=44.3000,-120.5620" },
+  { name: "Crooked River (below Bowman Dam)", meta: "3 hr · River · Walk-in", tags: ["Rainbow","Brown Trout"], note: "Tailwater fishery, consistent temps. Wild brown trout. Fly fishing heavy. Barbless strongly encouraged.", type: "fresh", lat: 44.2520, lon: -120.7040, maps: "https://maps.google.com/?q=44.2520,-120.7040" },
+  { name: "Paulina Lake / East Lake", meta: "3.5 hr · Newberry Crater", tags: ["Rainbow","Brown Trout","Kokanee"], note: "Caldera lakes inside Newberry Volcano NM. Brown trout to 20 lb. Late season through November. Fee area.", type: "fresh", lat: 43.7160, lon: -121.2580, maps: "https://maps.google.com/?q=43.7160,-121.2580" },
+  { name: "Banks Lake", meta: "3 hr · Boat + Bank", tags: ["Walleye","Bass","Trout","Perch"], note: "27-mile Grand Coulee reservoir. Premier walleye fishery spring/fall. Largemouth and smallmouth.", type: "fresh", lat: 47.8590, lon: -119.1010, maps: "https://maps.google.com/?q=47.8590,-119.1010" },
+  { name: "Lake Roosevelt", meta: "3–4 hr · Boat", tags: ["Walleye","Trout","Bass","Burbot"], note: "150-mile Columbia River reservoir. Trophy walleye. Burbot ice fishing winter.", type: "fresh", lat: 48.3060, lon: -118.2140, maps: "https://maps.google.com/?q=48.3060,-118.2140" },
+  { name: "Rufus Woods Lake", meta: "3 hr · Boat", tags: ["Rainbow","Triploid Trout"], note: "Trophy triploid rainbow fishery behind Chief Joseph Dam. Trout to 20 lb. Tribal permit required (Colville).", type: "fresh", lat: 48.0030, lon: -119.6320, maps: "https://maps.google.com/?q=48.0030,-119.6320" },
+  { name: "Columbia River (Tri-Cities)", meta: "3.5 hr · Boat + Bank", tags: ["Walleye","Smallmouth","Sturgeon","Salmon"], note: "Walleye and smallmouth bass fishery. Fall Chinook near Ringold. Sturgeon C&R.", type: "both", lat: 46.2396, lon: -119.1006, maps: "https://maps.google.com/?q=46.2396,-119.1006" },
+  { name: "Lake Chelan", meta: "3 hr · Boat", tags: ["Kokanee","Rainbow","Chinook"], note: "Deep fjord lake. Premier kokanee fishery Jun–Aug. Launch at Manson or Chelan.", type: "fresh", lat: 47.8430, lon: -120.0170, maps: "https://maps.google.com/?q=47.8430,-120.0170" },
+  { name: "Spokane River", meta: "Spokane area · River", tags: ["Rainbow","Smallmouth","Whitefish"], note: "Wild rainbow and mountain whitefish. Fly fishing below Spokane Falls.", type: "fresh", lat: 47.6587, lon: -117.4260, maps: "https://maps.google.com/?q=47.6587,-117.4260" },
+  { name: "Hoh River", meta: "3.5 hr · River", tags: ["Steelhead","Salmon","Cutthroat"], note: "Wild winter steelhead Jan–Mar. Fall Chinook and coho. Olympic NP regulations apply in upper sections.", type: "fresh", lat: 47.7590, lon: -124.1870, maps: "https://maps.google.com/?q=47.7590,-124.1870" },
+  { name: "Quinault River", meta: "3 hr · River", tags: ["Steelhead","Coho","Chinook"], note: "Rain forest fishery. Winter steelhead Dec–Mar. Quinault Indian Nation permit required above Lake Quinault.", type: "fresh", lat: 47.4560, lon: -123.8610, maps: "https://maps.google.com/?q=47.4560,-123.8610" },
+  { name: "Sol Duc River", meta: "3 hr · River", tags: ["Steelhead","Coho","Cutthroat"], note: "One of the best OP steelhead rivers. Dec–Mar peak. Good coho Oct–Nov.", type: "fresh", lat: 48.0550, lon: -124.1380, maps: "https://maps.google.com/?q=48.0550,-124.1380" },
+  { name: "Lake Ozette", meta: "3.5 hr · Remote · Canoe/Kayak", tags: ["Cutthroat","Kokanee","Perch"], note: "Wild, remote Olympic NP lake. Coastal cutthroat and kokanee. No gas motors.", type: "fresh", lat: 48.1570, lon: -124.6500, maps: "https://maps.google.com/?q=48.1570,-124.6500" },
+  { name: "Rogue River (Medford/Grants Pass)", meta: "5–6 hr · River", tags: ["Steelhead","Coho","Chinook","Smallmouth"], note: "Year-round fishery. Spring Chinook Apr–Jun. Summer steelhead. Excellent smallmouth bass lower sections.", type: "fresh", lat: 42.4440, lon: -123.3320, maps: "https://maps.google.com/?q=42.4440,-123.3320" },
+  { name: "Upper Klamath Lake", meta: "5 hr · Boat", tags: ["Rainbow","Bass","Crappie"], note: "Largest freshwater body in Oregon. Trophy rainbow trout in tributaries. Water quality varies — check ODFW.", type: "fresh", lat: 42.3530, lon: -121.8510, maps: "https://maps.google.com/?q=42.3530,-121.8510" },
+  { name: "Diamond Lake", meta: "4.5 hr · Boat + Bank", tags: ["Rainbow","Brown Trout"], note: "Stocked rainbow averaging 14–18\". Brown trout present. Boat trolling most effective.", type: "fresh", lat: 43.1720, lon: -122.1580, maps: "https://maps.google.com/?q=43.1720,-122.1580" },
+  { name: "Umpqua River (North Fork)", meta: "3.5 hr · River · Fly only sections", tags: ["Steelhead","Salmon","Cutthroat"], note: "Famous fly-only steelhead river. Summer steelhead Jun–Oct. Glide, Rock Creek access.", type: "fresh", lat: 43.2690, lon: -122.9840, maps: "https://maps.google.com/?q=43.2690,-122.9840" }
+];
+
+function haversineDistance(lat1, lon1, lat2, lon2) {
+  const R = 3958.8;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+let nearMeLat = null, nearMeLon = null, nearMeRadius = 5;
+
+function initNearMe() {
+  const btn = document.getElementById('near-me-trigger');
+  const status = document.getElementById('near-me-status');
+  if (!navigator.geolocation) { status.textContent = 'Geolocation not supported on this browser.'; return; }
+  btn.disabled = true;
+  btn.textContent = 'Locating...';
+  status.textContent = 'Getting your location...';
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      nearMeLat = pos.coords.latitude;
+      nearMeLon = pos.coords.longitude;
+      btn.textContent = 'Refresh';
+      btn.disabled = false;
+      document.getElementById('near-me-radius').style.display = 'flex';
+      document.getElementById('near-me-disclaimer').style.display = 'block';
+      renderNearMe();
+    },
+    (err) => {
+      btn.disabled = false;
+      btn.textContent = 'Try Again';
+      status.textContent = err.code === 1
+        ? 'Location access denied. Enable it in browser settings and try again.'
+        : 'Could not get location. Check your signal and try again.';
+    },
+    { timeout: 10000, maximumAge: 60000 }
+  );
+}
+
+function setRadius(miles, el) {
+  nearMeRadius = miles;
+  document.querySelectorAll('.radius-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  if (nearMeLat !== null) renderNearMe();
+}
+
+function renderNearMe() {
+  const status = document.getElementById('near-me-status');
+  const results = document.getElementById('near-me-results');
+  const nearby = SPOTS_DB
+    .map(spot => ({ ...spot, distance: haversineDistance(nearMeLat, nearMeLon, spot.lat, spot.lon) }))
+    .filter(spot => spot.distance <= nearMeRadius)
+    .sort((a, b) => a.distance - b.distance);
+  if (nearby.length === 0) {
+    status.textContent = `No spots within ${nearMeRadius} miles.`;
+    results.innerHTML = `<div class="near-me-empty">Try expanding the radius — most PNW fishing is worth the drive.</div>`;
+    return;
+  }
+  status.textContent = `${nearby.length} spot${nearby.length > 1 ? 's' : ''} within ${nearMeRadius} miles`;
+  results.innerHTML = nearby.map(spot => `
+    <div class="near-me-result-card ${spot.type}">
+      <div class="near-me-result-top">
+        <div class="near-me-spot-name">${spot.name}</div>
+        <div class="near-me-distance">${spot.distance.toFixed(1)} mi</div>
+      </div>
+      <div class="near-me-meta">${spot.meta}</div>
+      <div class="near-me-tags">${spot.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      <div class="near-me-note">${spot.note}</div>
+      <a class="near-me-maps-link" href="${spot.maps}" target="_blank" rel="noopener">📍 Open in Maps</a>
+    </div>
+  `).join('');
+}  
 .region-count {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
