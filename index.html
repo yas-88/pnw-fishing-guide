@@ -3496,12 +3496,11 @@ async function submitNewsletter(event) {
 
 try {
       const response = await fetch(
-        'https://api.beehiiv.com/v2/publications/22ef3a8f-1d87-4664-b624-5cab2db4ca26/subscriptions',
+        'https://beehiiv-subscribe.yab-account.workers.dev',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer JNxPmEZ8Hugaw7hzMUlOQ5TCXOBURQAo5mvzxxhsQShzjhc6psJ3kDexQiLnHJXU'
           },
           body: JSON.stringify({
             email: email,
