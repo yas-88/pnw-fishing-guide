@@ -1822,7 +1822,29 @@ footer {
   <div class="section-title">SPOTS BY REGION</div>
   <div class="section-subtitle">Tap a region to see locations</div>
 
-  <div id="spots-container"><!-- populated by JS --></div>
+  <div class="near-me-box" id="near-me-box">
+    <div class="near-me-header">
+      <div>
+        <div class="near-me-eyebrow">📍 Near Me</div>
+        <div class="near-me-title">SPOTS WITHIN RANGE</div>
+      </div>
+      <button class="near-me-btn" id="near-me-trigger" onclick="initNearMe()">Find Spots</button>
+    </div>
+    <div class="near-me-radius" id="near-me-radius" style="display:none;">
+      <button class="radius-pill active" onclick="setRadius(5,this)">5 mi</button>
+      <button class="radius-pill" onclick="setRadius(10,this)">10 mi</button>
+      <button class="radius-pill" onclick="setRadius(15,this)">15 mi</button>
+      <button class="radius-pill" onclick="setRadius(20,this)">20 mi</button>
+    </div>
+    <div id="near-me-status" class="near-me-status"></div>
+    <div id="near-me-results"></div>
+    <div class="near-me-disclaimer" id="near-me-disclaimer" style="display:none;">
+      ⚠️ Coordinates are approximate. Confirm access and parking on
+      <a href="https://www.google.com/maps" target="_blank" rel="noopener">Google Maps</a>,
+      <a href="https://wdfw.wa.gov/fishing/locations-rules" target="_blank" rel="noopener">WDFW</a>, or
+      <a href="https://myodfw.com/fishing" target="_blank" rel="noopener">ODFW</a> before driving out.
+    </div>
+  </div><div id="spots-container"><!-- populated by JS --></div>
 </section>
 
 <!-- ============================ RIGS ============================ -->
