@@ -1395,11 +1395,12 @@ footer {
 <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="65030d84-b443-4f66-b075-804cb0c7adf7"></script>
     </div>
 
-    <!-- FALLBACK NATIVE FORM (used until Beehiiv iframe is added) -->
+<!-- FALLBACK NATIVE FORM (disabled - Beehiiv active) -->
+<div style="display:none;">
     <form id="newsletter-form" class="newsletter-form" onsubmit="return submitNewsletter(event)">
       <input type="email" id="newsletter-email" placeholder="your@email.com" required autocomplete="email">
       <button type="submit" id="newsletter-submit">Subscribe</button>
-    </form>
+    </div>
     <div id="newsletter-status" class="newsletter-status"></div>
 
     <div class="newsletter-meta">
