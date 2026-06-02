@@ -3103,7 +3103,8 @@ function renderSpots() {
 
 // ============ INTERACTIONS ============
 function toggleSpecies(header) {
-  const body = header.parentElement.querySelector('.species-body');
+  const card = header.closest('.species-card');
+const body = card.querySelector('.species-body');
   body.classList.toggle('expanded');
   header.classList.toggle('expanded');
 }
