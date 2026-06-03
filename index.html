@@ -1416,6 +1416,24 @@ footer {
   <div class="today-text" id="seasonal-text"></div>
 </div>
 
+<div class="section-title">STOCKING REPORT</div>
+<div class="section-subtitle" id="stocking-subtitle">Recent plants · SW Washington focus</div>
+
+<div class="weather-block" style="margin-bottom:18px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <div>
+      <div class="weather-block-title">RECENT FISH PLANTS</div>
+      <div class="weather-block-sub" id="stocking-updated">Loading...</div>
+    </div>
+    <button id="stocking-toggle" onclick="toggleStockingScope()" style="padding:6px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);cursor:pointer;">Show All WA</button>
+  </div>
+  <div id="stocking-table">
+    <div style="font-size:13px;color:var(--text-dim);font-style:italic;">Loading stocking data...</div>
+  </div>
+  <div class="note info" style="margin-top:10px;">
+    <strong>Source:</strong> WDFW Fish Plants dataset · data.wa.gov · Updated weekly. Catchable trout only.
+  </div>
+</div>  
   <div class="section-title">BIG 5 RIGHT NOW</div>
   <div class="section-subtitle">If you only have one weekend</div>
 
@@ -3274,6 +3292,71 @@ function renderSeasonalContent() {
   document.getElementById('seasonal-label').textContent = data.label;
   document.getElementById('seasonal-text').innerHTML = data.text;
 }
+// ============ STOCKING REPORT ============
+let stockingShowAll = false;
+
+async function fetchStockingReport() {
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 14);
+  const cutoffStr = cutoff.toISOString().split('T')[0] + 'T00:00:00.000';
+  const localCounties = ['Clark','Cowlitz','Skamania','Klickitat'];
+  const countyFilter = stockingShowAll ? '' :
+    '&$where=' + encodeURIComponent(`date_stocked >= '${cutoffStr}'`);
+  const localFilter = stockingShowAll ? '' :
+    encodeURIComponent(` AND (${localCounties.map(c => `county='${c}'`).join(' OR ')})`);
+  const url = `https://data.wa.gov/resource/6fex-3r7d.json?$limit=50&$order=date_stocked DESC${countyFilter}${localFilter}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    renderStockingTable(data);
+  } catch(e) {
+    document.getElementById('stocking-table').innerHTML =
+      '<div class="note">Stocking data unavailable. <a href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants" target="_blank" style="color:var(--accent);">Check WDFW directly →</a></div>';
+    document.getElementById('stocking-updated').textContent = 'Could not load · tap link below';
+  }
+}
+
+function renderStockingTable(data) {
+  const table = document.getElementById('stocking-table');
+  const updated = document.getElementById('stocking-updated');
+  if (!data || data.length === 0) {
+    table.innerHTML = '<div style="font-size:13px;color:var(--text-dim);font-style:italic;">No plants found in the last 14 days for this area.</div>';
+    updated.textContent = 'No recent plants';
+    return;
+  }
+  const now = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  updated.textContent = `${data.length} plants · updated ${now}`;
+  let html = `<table style="width:100%;border-collapse:collapse;font-size:12px;">
+    <thead><tr>
+      <th style="text-align:left;padding:6px 4px;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);letter-spacing:1px;text-transform:uppercase;">Water</th>
+      <th style="text-align:left;padding:6px 4px;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);letter-spacing:1px;text-transform:uppercase;">Species</th>
+      <th style="text-align:right;padding:6px 4px;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);letter-spacing:1px;text-transform:uppercase;">Count</th>
+      <th style="text-align:right;padding:6px 4px;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);letter-spacing:1px;text-transform:uppercase;">Date</th>
+    </tr></thead><tbody>`;
+  data.forEach(r => {
+    const date = r.date_stocked ? new Date(r.date_stocked).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '—';
+    const count = r.number_stocked ? parseInt(r.number_stocked).toLocaleString() : '—';
+    const water = r.water_body || '—';
+    const species = r.species || '—';
+    html += `<tr>
+      <td style="padding:7px 4px;border-bottom:1px solid var(--line);color:var(--text);">${water}</td>
+      <td style="padding:7px 4px;border-bottom:1px solid var(--line);color:var(--fresh-bright);">${species}</td>
+      <td style="padding:7px 4px;border-bottom:1px solid var(--line);color:var(--text-dim);text-align:right;">${count}</td>
+      <td style="padding:7px 4px;border-bottom:1px solid var(--line);color:var(--text-dim);text-align:right;">${date}</td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  table.innerHTML = html;
+}
+
+function toggleStockingScope() {
+  stockingShowAll = !stockingShowAll;
+  const btn = document.getElementById('stocking-toggle');
+  btn.textContent = stockingShowAll ? 'SW WA Only' : 'Show All WA';
+  document.getElementById('stocking-subtitle').textContent = stockingShowAll ? 'Recent plants · Statewide' : 'Recent plants · SW Washington focus';
+  fetchStockingReport();
+}  
   renderSeasonalContent();
   renderSpecies();
 renderSpots();
