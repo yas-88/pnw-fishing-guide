@@ -1412,9 +1412,9 @@ footer {
   <div class="section-subtitle">What's hot in late spring</div>
 
   <div class="today-banner">
-    <div class="today-label">June · What's Running</div>
-    <div class="today-text"><strong>Bass</strong> topwater prime — early mornings on Vancouver Lake, Sammamish, Lacamas. <strong>Summer steelhead</strong> entering the Sandy and Deschutes. <strong>Kokanee</strong> going deep on Merwin and Chelan — downrigger time. <strong>Halibut</strong> season open on the coast. <strong>Surf perch</strong> still hot from Long Beach to Cannon Beach. <strong>Saltwater Chinook</strong> building in Puget Sound MAs.</div>
-  </div>
+  <div class="today-label" id="seasonal-label"></div>
+  <div class="today-text" id="seasonal-text"></div>
+</div>
 
   <div class="section-title">BIG 5 RIGHT NOW</div>
   <div class="section-subtitle">If you only have one weekend</div>
@@ -3251,7 +3251,31 @@ function renderNearMe() {
   `).join('');
 }
 // Initial render
-renderSpecies();
+// ============ SEASONAL CONTENT ============
+const seasonalData = {
+  1:  { label: 'January · What\'s Running', text: '<strong>Winter steelhead</strong> peak on Cowlitz, Lewis, Sandy, Siletz. <strong>Sturgeon</strong> C&R year-round on Columbia. <strong>Burbot</strong> ice fishing on Banks Lake. <strong>Kokanee</strong> deep on Chelan. Stay off rivers above 68°F.' },
+  2:  { label: 'February · What\'s Running', text: '<strong>Winter steelhead</strong> peak month — Cowlitz, Clackamas, Wilson, Nestucca. <strong>Walleye</strong> pre-spawn starting on Columbia pools. <strong>Sturgeon</strong> C&R. <strong>Trout</strong> stocking begins on lowland lakes.' },
+  3:  { label: 'March · What\'s Running', text: '<strong>Spring Chinook</strong> arriving — Willamette, Cowlitz, Lewis. <strong>Winter steelhead</strong> tail end. <strong>Walleye</strong> pre-spawn on Columbia. <strong>Trout opener</strong> approaching — lowland lakes stocking up. <strong>Lingcod</strong> season opens mid-month.' },
+  4:  { label: 'April · What\'s Running', text: '<strong>Spring Chinook</strong> peak — Columbia, Willamette, Sandy. <strong>Trout opener</strong> — Klineline, Battle Ground, Lacamas, Henry Hagg. <strong>Walleye</strong> spawning on Columbia. <strong>Bass</strong> pre-spawn in shallows. <strong>Kokanee</strong> prime on Merwin and Yale.' },
+  5:  { label: 'May · What\'s Running', text: '<strong>Shad</strong> arriving at Bonneville — no limit, hard fight. <strong>Spring Chinook</strong> open days on Columbia and Willamette. <strong>Bass</strong> spawn starting — Vancouver Lake, Lacamas, Sammamish. <strong>Kokanee</strong> trolling peak. <strong>Surf perch</strong> excellent on coast.' },
+  6:  { label: 'June · What\'s Running', text: '<strong>Bass</strong> topwater prime — early mornings on Vancouver Lake, Sammamish, Lacamas. <strong>Summer steelhead</strong> entering the Sandy and Deschutes. <strong>Kokanee</strong> going deep on Merwin and Chelan — downrigger time. <strong>Halibut</strong> season open on the coast. <strong>Surf perch</strong> still hot from Long Beach to Cannon Beach. <strong>Saltwater Chinook</strong> building in Puget Sound MAs.' },
+  7:  { label: 'July · What\'s Running', text: '<strong>Saltwater Chinook and Coho</strong> — Westport, Neah Bay, Puget Sound MAs. <strong>Halibut</strong> quota closing fast — go now. <strong>Sockeye</strong> brief openers on Columbia and Baker Lake. <strong>Bass topwater</strong> prime dawn to 9am. <strong>Albacore tuna</strong> starting to show offshore.' },
+  8:  { label: 'August · What\'s Running', text: '<strong>Buoy 10 fall Chinook</strong> opens — Columbia mouth, world-class fishery. <strong>Albacore tuna</strong> 30-60 miles offshore from Westport and Newport. <strong>Coho</strong> building in Puget Sound. <strong>Summer steelhead</strong> on Deschutes and Sandy. <strong>Kokanee</strong> deep on Chelan and Merwin.' },
+  9:  { label: 'September · What\'s Running', text: '<strong>Fall Chinook</strong> peak — Buoy 10, Cowlitz, Lewis, Tillamook. <strong>Coho</strong> entering rivers — Washougal, Sandy, Wilson, Nestucca. <strong>Bass</strong> fall transition — crankbaits and swimbaits. <strong>Albacore</strong> still running offshore. <strong>Razor clam</strong> digs starting on WA coast.' },
+  10: { label: 'October · What\'s Running', text: '<strong>Coho</strong> peak in rivers — Sandy, Clackamas, Wilson, Trask. <strong>Fall Chinook</strong> tail end on Columbia. <strong>Sea-run cutthroat</strong> in tidewater. <strong>Bass</strong> feeding hard before cold. <strong>Dungeness crab</strong> season opening in Puget Sound. <strong>Razor clams</strong> on WA coast.' },
+  11: { label: 'November · What\'s Running', text: '<strong>Winter steelhead</strong> beginning — Cowlitz, Lewis, Sandy, Wilson. <strong>Late coho</strong> still in some rivers. <strong>Brown trout</strong> spawning on Wickiup and Paulina. <strong>Walleye</strong> fall bite on Columbia. <strong>Sturgeon</strong> C&R year-round. <strong>Razor clams</strong> evening digs on WA coast.' },
+  12: { label: 'December · What\'s Running', text: '<strong>Winter steelhead</strong> prime start — Cowlitz, Kalama, Lewis, Sandy, Siletz. <strong>Sturgeon</strong> C&R on Columbia. <strong>Burbot</strong> season opens on Banks Lake. <strong>Kokanee</strong> deep trolling on Chelan. Bundle up — best winter steelhead is worth it.' },
+};
+
+function renderSeasonalContent() {
+  const month = new Date().getMonth() + 1;
+  const data = seasonalData[month];
+  if (!data) return;
+  document.getElementById('seasonal-label').textContent = data.label;
+  document.getElementById('seasonal-text').innerHTML = data.text;
+}
+  renderSeasonalContent();
+  renderSpecies();
 renderSpots();
 
 // ============ LIVE WEATHER (Open-Meteo, no API key) ============
