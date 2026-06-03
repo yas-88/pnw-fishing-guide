@@ -3297,14 +3297,12 @@ let stockingShowAll = false;
 
 async function fetchStockingReport() {
   const cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - 14);
-  const cutoffStr = cutoff.toISOString().split('T')[0] + 'T00:00:00.000';
-  const localCounties = ['Clark','Cowlitz','Skamania','Klickitat'];
-  const countyFilter = stockingShowAll ? '' :
-    '&$where=' + encodeURIComponent(`date_stocked >= '${cutoffStr}'`);
-  const localFilter = stockingShowAll ? '' :
-    encodeURIComponent(` AND (${localCounties.map(c => `county='${c}'`).join(' OR ')})`);
-  const url = `https://data.wa.gov/resource/6fex-3r7d.json?$limit=50&$order=date_stocked DESC${countyFilter}${localFilter}`;
+  const cutoffStr = cutoff.toISOString().split('T')[0];
+let whereClause = `date_stocked >= '${cutoffStr}'`;
+if (!stockingShowAll) {
+  whereClause += ` AND (county='Clark' OR county='Cowlitz' OR county='Skamania' OR county='Klickitat')`;
+}
+const url = `https://data.wa.gov/resource/6fex-3r7d.json?$limit=50&$order=date_stocked DESC&$where=${encodeURIComponent(whereClause)}`;
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error('API error');
