@@ -3296,7 +3296,7 @@ function renderSeasonalContent() {
 let stockingShowAll = false;
 
 async function fetchStockingReport() {
-const url = `https://data.wa.gov/resource/6fex-3r7d.json?$limit=200&$order=date_stocked%20DESC`;
+const url = `https://pnwfg-stocking.yab-account.workers.dev`;
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 8000);
   try {
