@@ -3297,15 +3297,17 @@ let stockingShowAll = false;
 
 async function fetchStockingReport() {
 const url = `https://data.wa.gov/resource/6fex-3r7d.json?$limit=200&$order=date_stocked%20DESC`;
-const controller = new AbortController();
-const timeout = setTimeout(() => controller.abort(), 8000);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
   try {
     const res = await fetch(url, { signal: controller.signal });
-clearTimeout(timeout);
-    if (!res.ok) throw new Error('API error');
+    clearTimeout(timeout);
+    if (!res.ok) throw new Error(`API error ${res.status}`);
     const data = await res.json();
     renderStockingTable(data);
   } catch(e) {
+    clearTimeout(timeout);
+    console.error('Stocking error:', e.name, e.message);
     document.getElementById('stocking-table').innerHTML =
       '<div class="note">Stocking data unavailable. <a href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants" target="_blank" style="color:var(--accent);">Check WDFW directly →</a></div>';
     document.getElementById('stocking-updated').textContent = 'Could not load · tap link below';
