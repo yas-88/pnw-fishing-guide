@@ -4068,7 +4068,6 @@ function showUpdateBanner(newWorker) {
   banner.dataset.worker = 'pending';
   window.__pendingWorker = newWorker;
   document.body.appendChild(banner);
-  setTimeout(() => applyUpdate(), 2000);
 }
 }
 
