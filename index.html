@@ -4068,12 +4068,15 @@ function showUpdateBanner(newWorker) {
   banner.dataset.worker = 'pending';
   window.__pendingWorker = newWorker;
   document.body.appendChild(banner);
+  setTimeout(() => applyUpdate(), 2000);
+}
 }
 
 function applyUpdate() {
   if (window.__pendingWorker) {
     window.__pendingWorker.postMessage({ type: 'SKIP_WAITING' });
   }
+  setTimeout(() => window.location.reload(), 500);
 }
 </script>
 <script type="text/javascript" async src="https://subscribe-forms.beehiiv.com/attribution.js"></script>
