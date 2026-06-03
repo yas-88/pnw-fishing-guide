@@ -28,6 +28,7 @@ const NETWORK_ONLY_HOSTS = [
   'api.open-meteo.com',
   'api.tidesandcurrents.noaa.gov',
   'embeds.beehiiv.com',
+  'data.wa.gov',
 ];
 
 // ============ INSTALL ============
