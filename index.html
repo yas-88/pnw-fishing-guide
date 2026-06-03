@@ -3517,7 +3517,9 @@ async function updateLiveWeather(location) {
   const bl = biteLabel(score);
   document.getElementById('live-score').textContent = `${score}`;
   document.getElementById('live-score').className = 'info-card-value ' + bl.cls;
-  document.getElementById('live-score-detail').textContent = `${bl.label} · ${bl.detail}`;
+  const airTemp = c.temperature_2m;
+const warmWaterWarning = airTemp >= 75 ? ' ⚠️ Air temp suggests warm water — avoid targeting trout/steelhead.' : '';
+document.getElementById('live-score-detail').textContent = `${bl.label} · ${bl.detail}${warmWaterWarning}`;
 
   // Update label with timestamp
   const updated = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
