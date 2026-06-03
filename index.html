@@ -3296,13 +3296,7 @@ function renderSeasonalContent() {
 let stockingShowAll = false;
 
 async function fetchStockingReport() {
-  const cutoff = new Date();
-  const cutoffStr = cutoff.toISOString().split('T')[0];
-let whereClause = `date_stocked >= '${cutoffStr}'`;
-if (!stockingShowAll) {
-  whereClause += ` AND (county='Clark' OR county='Cowlitz' OR county='Skamania' OR county='Klickitat')`;
-}
-const url = `https://data.wa.gov/resource/6fex-3r7d.json?$limit=50&$order=date_stocked DESC&$where=${encodeURIComponent(whereClause)}`;
+const url = `https://data.wa.gov/resource/6fex-3r7d.json?$limit=50&$order=date_stocked%20DESC`;
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error('API error');
