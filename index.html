@@ -1272,6 +1272,205 @@ function renderNearMe() {
 .region-body { display: none; }
 .region-body.expanded { display: block; }
 
+/* TRIP LOG */
+.log-form {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 16px;
+  margin-bottom: 20px;
+}
+.log-form-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: var(--accent-bright);
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+}
+.log-field {
+  margin-bottom: 12px;
+}
+.log-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-faint);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  display: block;
+}
+.log-input {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+}
+.log-input:focus { border-color: var(--accent); }
+.log-input::placeholder { color: var(--text-faint); }
+.log-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.log-btn {
+  padding: 12px 20px;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  width: 100%;
+  margin-top: 4px;
+}
+.log-btn:hover { background: var(--accent-bright); }
+.log-btn:active { transform: scale(0.97); }
+.log-btn.secondary {
+  background: var(--bg-elev);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+}
+.log-btn.secondary:hover { border-color: var(--accent); color: var(--accent); background: var(--bg-elev); }
+.log-entry-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+.log-entry-card.fresh { border-left-color: var(--fresh); }
+.log-entry-card.salt { border-left-color: var(--salt); }
+.log-entry-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.log-entry-species {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  color: var(--accent-bright);
+  letter-spacing: 1px;
+  line-height: 1;
+}
+.log-entry-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 1px;
+  white-space: nowrap;
+  padding-top: 3px;
+}
+.log-entry-location {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.log-entry-meta {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+.log-entry-conditions {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 0.5px;
+  margin-top: 6px;
+}
+.log-delete-btn {
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 4px;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+.log-delete-btn:hover { color: var(--danger); }
+.log-empty {
+  text-align: center;
+  padding: 32px 16px;
+  font-size: 13px;
+  color: var(--text-faint);
+  font-style: italic;
+}
+.log-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.log-stat {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+.log-stat-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  color: var(--accent-bright);
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+.log-stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-faint);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.log-filter-bar {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+  margin-bottom: 14px;
+}
+.log-filter-bar::-webkit-scrollbar { display: none; }
+.log-filter-pill {
+  padding: 6px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.log-filter-pill.active {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
 /* FOOTER */
 footer {
   padding: 24px 16px;
@@ -1326,6 +1525,7 @@ footer {
   <button class="nav-tab" data-tab="hooks">Hooks</button>
   <button class="nav-tab" data-tab="knots">Knots</button>
   <button class="nav-tab" data-tab="tips">Tips</button>
+  <button class="nav-tab" data-tab="log">Trip Log</button>
 </nav>
 
 <main>
@@ -2384,6 +2584,109 @@ footer {
   </div>
 </section>
 
+<!-- ============================ TRIP LOG ============================ -->
+<section id="log">
+  <div class="section-title">TRIP LOG</div>
+  <div class="section-subtitle">Your personal catch history</div>
+
+  <!-- STATS -->
+  <div class="log-stats">
+    <div class="log-stat">
+      <div class="log-stat-value" id="log-stat-trips">0</div>
+      <div class="log-stat-label">Trips</div>
+    </div>
+    <div class="log-stat">
+      <div class="log-stat-value" id="log-stat-fish">0</div>
+      <div class="log-stat-label">Fish</div>
+    </div>
+    <div class="log-stat">
+      <div class="log-stat-value" id="log-stat-species">0</div>
+      <div class="log-stat-label">Species</div>
+    </div>
+  </div>
+
+  <!-- LOG FORM -->
+  <div class="log-form">
+    <div class="log-form-title">Log a Trip</div>
+    <div class="log-field">
+      <label class="log-label">Date</label>
+      <input type="date" id="log-date" class="log-input">
+    </div>
+    <div class="log-field">
+      <label class="log-label">Location</label>
+      <input type="text" id="log-location" class="log-input" placeholder="e.g. Klineline Pond, Cowlitz River...">
+    </div>
+    <div class="log-row-2">
+      <div class="log-field">
+        <label class="log-label">Species</label>
+        <select id="log-species" class="log-input">
+          <option value="">Select species...</option>
+          <optgroup label="Freshwater">
+            <option>Rainbow Trout</option>
+            <option>Cutthroat Trout</option>
+            <option>Steelhead</option>
+            <option>Spring Chinook</option>
+            <option>Fall Chinook</option>
+            <option>Coho Salmon</option>
+            <option>Sockeye</option>
+            <option>Kokanee</option>
+            <option>Shad</option>
+            <option>White Sturgeon</option>
+            <option>Largemouth Bass</option>
+            <option>Smallmouth Bass</option>
+            <option>Walleye</option>
+            <option>Bluegill / Sunfish</option>
+            <option>Crappie</option>
+            <option>Yellow Perch</option>
+            <option>Channel Catfish</option>
+            <option>Tiger Muskie</option>
+            <option>Carp</option>
+          </optgroup>
+          <optgroup label="Saltwater">
+            <option>Coho Salmon (salt)</option>
+            <option>Chinook Salmon (salt)</option>
+            <option>Pink Salmon</option>
+            <option>Lingcod</option>
+            <option>Rockfish</option>
+            <option>Pacific Halibut</option>
+            <option>Albacore Tuna</option>
+            <option>Surf Perch</option>
+            <option>Cabezon</option>
+            <option>Dungeness Crab</option>
+            <option>Razor Clams</option>
+          </optgroup>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="log-field">
+        <label class="log-label">Count</label>
+        <input type="number" id="log-count" class="log-input" placeholder="0" min="0" max="999">
+      </div>
+    </div>
+    <div class="log-field">
+      <label class="log-label">Notes</label>
+      <input type="text" id="log-notes" class="log-input" placeholder="Bait used, water conditions, anything useful...">
+    </div>
+    <div class="log-field" id="log-conditions-field" style="display:none;">
+      <label class="log-label">Conditions (auto)</label>
+      <input type="text" id="log-conditions" class="log-input" readonly style="color:var(--text-dim);">
+    </div>
+    <button class="log-btn" onclick="saveLogEntry()">Save Entry</button>
+  </div>
+
+  <!-- FILTER + EXPORT -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+    <div class="section-subtitle" style="margin:0;" id="log-count-label">No entries yet</div>
+    <button class="log-btn secondary" style="width:auto;padding:8px 14px;margin:0;" onclick="exportLogCSV()">↓ CSV</button>
+  </div>
+  <div class="log-filter-bar" id="log-filter-bar">
+    <button class="log-filter-pill active" data-filter="all" onclick="filterLog('all', this)">All</button>
+  </div>
+
+  <!-- ENTRIES -->
+  <div id="log-entries"></div>
+</section>
+
 </main>
 
 <footer>
@@ -3175,6 +3478,7 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
     tab.classList.add('active');
     document.getElementById(target).classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (target === 'log') initLogForm();
   });
 });
 
@@ -3992,6 +4296,205 @@ window.clearNewsletterQueue = function() {
     console.log('Queue cleared.');
   }
 };
+
+// ============ TRIP LOG ============
+const LOG_KEY = 'pnwfg-trip-log';
+
+function getLogEntries() {
+  try { return JSON.parse(localStorage.getItem(LOG_KEY) || '[]'); } catch(e) { return []; }
+}
+
+function saveLogEntries(entries) {
+  localStorage.setItem(LOG_KEY, JSON.stringify(entries));
+}
+
+function saveLogEntry() {
+  const date = document.getElementById('log-date').value;
+  const location = document.getElementById('log-location').value.trim();
+  const species = document.getElementById('log-species').value;
+  const count = parseInt(document.getElementById('log-count').value) || 0;
+  const notes = document.getElementById('log-notes').value.trim();
+  const conditions = document.getElementById('log-conditions').value.trim();
+
+  if (!date) { alert('Please select a date.'); return; }
+  if (!location) { alert('Please enter a location.'); return; }
+  if (!species) { alert('Please select a species.'); return; }
+
+  const entry = {
+    id: Date.now(),
+    date,
+    location,
+    species,
+    count,
+    notes,
+    conditions,
+    type: getSaltFreshType(species)
+  };
+
+  const entries = getLogEntries();
+  entries.unshift(entry);
+  saveLogEntries(entries);
+
+  // Reset form (keep date)
+  document.getElementById('log-location').value = '';
+  document.getElementById('log-species').value = '';
+  document.getElementById('log-count').value = '';
+  document.getElementById('log-notes').value = '';
+
+  renderLogEntries();
+  renderLogStats();
+}
+
+function getSaltFreshType(species) {
+  const saltSpecies = ['Coho Salmon (salt)', 'Chinook Salmon (salt)', 'Pink Salmon',
+    'Lingcod', 'Rockfish', 'Pacific Halibut', 'Albacore Tuna', 'Surf Perch',
+    'Cabezon', 'Dungeness Crab', 'Razor Clams'];
+  return saltSpecies.includes(species) ? 'salt' : 'fresh';
+}
+
+let logActiveFilter = 'all';
+
+function filterLog(filter, el) {
+  logActiveFilter = filter;
+  document.querySelectorAll('.log-filter-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  renderLogEntries();
+}
+
+function renderLogEntries() {
+  const container = document.getElementById('log-entries');
+  const countLabel = document.getElementById('log-count-label');
+  let entries = getLogEntries();
+
+  // Filter
+  if (logActiveFilter !== 'all') {
+    entries = entries.filter(e => e.species === logActiveFilter);
+  }
+
+  // Update filter pills with counts
+  updateFilterPills();
+
+  if (entries.length === 0) {
+    countLabel.textContent = logActiveFilter === 'all' ? 'No entries yet' : `No ${logActiveFilter} entries`;
+    container.innerHTML = `<div class="log-empty">${logActiveFilter === 'all' ? 'Log your first trip above.' : 'No entries for this species yet.'}</div>`;
+    return;
+  }
+
+  countLabel.textContent = `${entries.length} entr${entries.length === 1 ? 'y' : 'ies'}`;
+
+  container.innerHTML = entries.map(e => `
+    <div class="log-entry-card ${e.type || 'fresh'}">
+      <div class="log-entry-top">
+        <div>
+          <div class="log-entry-species">${e.species}</div>
+          <div class="log-entry-location">📍 ${e.location}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+          <div class="log-entry-date">${formatLogDate(e.date)}</div>
+          <button class="log-delete-btn" onclick="deleteLogEntry(${e.id})" title="Delete">✕</button>
+        </div>
+      </div>
+      <div class="log-entry-meta">
+        ${e.count > 0 ? `<span style="color:var(--accent-bright);font-weight:600;">${e.count} caught</span>${e.notes ? ' · ' : ''}` : ''}${e.notes || ''}
+      </div>
+      ${e.conditions ? `<div class="log-entry-conditions">🌤 ${e.conditions}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+function updateFilterPills() {
+  const entries = getLogEntries();
+  const bar = document.getElementById('log-filter-bar');
+  if (!bar) return;
+
+  // Count by species
+  const counts = {};
+  entries.forEach(e => { counts[e.species] = (counts[e.species] || 0) + 1; });
+  const species = Object.keys(counts).sort();
+
+  let html = `<button class="log-filter-pill ${logActiveFilter === 'all' ? 'active' : ''}" data-filter="all" onclick="filterLog('all', this)">All (${entries.length})</button>`;
+  species.forEach(s => {
+    const active = logActiveFilter === s ? 'active' : '';
+    html += `<button class="log-filter-pill ${active}" data-filter="${s}" onclick="filterLog('${s.replace(/'/g, "\'")}', this)">${s} (${counts[s]})</button>`;
+  });
+  bar.innerHTML = html;
+}
+
+function renderLogStats() {
+  const entries = getLogEntries();
+  const totalFish = entries.reduce((sum, e) => sum + (e.count || 0), 0);
+  const uniqueSpecies = new Set(entries.map(e => e.species)).size;
+  document.getElementById('log-stat-trips').textContent = entries.length;
+  document.getElementById('log-stat-fish').textContent = totalFish;
+  document.getElementById('log-stat-species').textContent = uniqueSpecies;
+}
+
+function deleteLogEntry(id) {
+  if (!confirm('Delete this entry?')) return;
+  const entries = getLogEntries().filter(e => e.id !== id);
+  saveLogEntries(entries);
+  renderLogEntries();
+  renderLogStats();
+}
+
+function formatLogDate(dateStr) {
+  if (!dateStr) return '–';
+  const d = new Date(dateStr + 'T12:00:00');
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function exportLogCSV() {
+  const entries = getLogEntries();
+  if (entries.length === 0) { alert('No entries to export.'); return; }
+
+  const headers = ['Date', 'Location', 'Species', 'Count', 'Conditions', 'Notes'];
+  const rows = entries.map(e => [
+    e.date,
+    `"${(e.location || '').replace(/"/g, '""')}"`,
+    `"${(e.species || '').replace(/"/g, '""')}"`,
+    e.count || 0,
+    `"${(e.conditions || '').replace(/"/g, '""')}"`,
+    `"${(e.notes || '').replace(/"/g, '""')}"`
+  ]);
+
+  const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('
+');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `pnw-trip-log-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Auto-populate conditions from live weather when log tab is opened
+function populateLogConditions() {
+  const tempEl = document.getElementById('live-temp');
+  const windEl = document.getElementById('live-wind');
+  const skyEl = document.getElementById('live-sky');
+  const condField = document.getElementById('log-conditions-field');
+  const condInput = document.getElementById('log-conditions');
+
+  if (tempEl && tempEl.textContent !== '--' && tempEl.textContent !== '...') {
+    const temp = tempEl.textContent;
+    const wind = windEl ? windEl.textContent : '';
+    const sky = skyEl ? skyEl.textContent : '';
+    condInput.value = [temp, wind, sky].filter(Boolean).join(' · ');
+    condField.style.display = 'block';
+  }
+}
+
+// Set today's date as default
+function initLogForm() {
+  const dateInput = document.getElementById('log-date');
+  if (dateInput && !dateInput.value) {
+    dateInput.value = new Date().toISOString().slice(0, 10);
+  }
+  populateLogConditions();
+  renderLogEntries();
+  renderLogStats();
+}
 
 // ============ PWA: SERVICE WORKER REGISTRATION ============
 if ('serviceWorker' in navigator) {
