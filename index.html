@@ -3333,7 +3333,7 @@ function renderStockingTable(data) {
     </tr></thead><tbody>`;
   data.forEach(r => {
     const date = r.release_start_date ? new Date(r.release_start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '–';
-    const count = r.number_stocked ? parseInt(r.number_stocked).toLocaleString() : '—';
+    const count = r.number_released ? parseInt(r.number_released).toLocaleString() : '–';
     const water = r.release_location || '–';
     const species = r.species_type || r.species || '–';
     html += `<tr>
