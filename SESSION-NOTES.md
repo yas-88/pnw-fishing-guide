@@ -1,32 +1,40 @@
 # PNW Fishing Guide – Session Notes
 
-## Session: 2026-06-03
+## Session: 2026-06-03 (continued)
 
-### Completed
-- Fixed pre-existing syntax error: stray `}` at line 4072 (`showUpdateBanner` function) — was masked by old SW cache, broke once SW was cleared
-- Built and deployed `pnwfg-stocking` Cloudflare Worker at `pnwfg-stocking.yab-account.workers.dev`
-  - Proxies WDFW dataset `6fex-3r7d`, sorted by `release_start_date DESC` (not `date_stocked` — that column doesn't exist)
-  - Returns JSON with CORS headers, 1hr cache
-  - Confirmed returning live data in Worker preview
-- Updated `fetchStockingReport()` in `index.html` line 3299 to point at Worker URL instead of `data.wa.gov`
-- Added `pnwfg-stocking.yab-account.workers.dev` to `NETWORK_ONLY_HOSTS` in `service-worker.js`
-- Bumped VERSION to `v2.6` in `service-worker.js`
-- Purged Cloudflare edge cache via safjob.com → Caching → Configuration → Purge Everything
+### Status: Stocking Report — Partially Working
+- Worker is live and returning real WDFW data ✅
+- "Show All WA" button works and renders 50 records ✅
+- Default SW Washington filtered view still shows "Loading..." indefinitely ❌
+- Water and Date columns show `—` (field name mismatch) ❌
+- Version display in header still shows v2.5 (cosmetic only) ❌
 
-### Still Blocked
-- Stocking section still shows "Loading..." — SW cache activation problem
-- Fix is architecturally correct; Worker returns data, URL is right, NETWORK_ONLY_HOSTS is updated
-- Browsers (Chrome, Edge, incognito) all holding onto old SW despite purge, unregister attempts, and tab closes
-- Root cause: `service-worker.js` has a 4-hour Browser Cache TTL set in Cloudflare — browsers won't re-fetch it until TTL expires
+### What's Working
+- `pnwfg-stocking.yab-account.workers.dev` returns live WDFW data
+- Species rendering correctly: Cutthroat, Coho, Rainbow, Chinook, Kokanee, Steelhead, Tiger Trout
+- SW v2.6 is active with correct NETWORK_ONLY_HOSTS
+- Cloudflare Cache Rule: `No-cache service worker` — URI Path equals `/service-worker.js`, Browser TTL 1 second, Bypass cache ✅
+- Syntax error (stray `}` at line 4072) fixed ✅
 
-### Next Session: Fix SW cache activation
-Two options, pick one:
-1. **Preferred:** Add `Cache-Control: no-store` header to `service-worker.js` specifically via a Cloudflare Cache Rule so it's never cached at the edge or browser
-2. **Alternative:** Add `self.skipWaiting()` call directly inside the `activate` event handler for more aggressive takeover
+### Next Session: Three fixes needed
+
+**Fix 1 — Default view not loading (priority)**
+`fetchStockingReport()` is being called but the SW-filtered view isn't rendering on page load. Need to check `toggleStockingScope()` and the initial call logic in `index.html`. The "Show All WA" path works, so the filtered path has a bug.
+
+**Fix 2 — Field name mismatch**
+`renderStockingTable()` is likely looking for `location` and `date_stocked` but actual API fields are `release_location` and `release_start_date`. Need to update the render function to use correct field names.
+
+**Fix 3 — Version display**
+Change `v2.5` to `v2.6` in `index.html` header string (cosmetic).
+
+### Infrastructure
+- Worker: `pnwfg-stocking.yab-account.workers.dev`
+- Cache Rule: "No-cache service worker" active on safjob.com
+- SW version: v2.6 (confirmed active in incognito)
+- Cloudflare Pages: auto-deploys from GitHub main
 
 ### Pending (Tier 2)
 - Newsletter title mismatch: "The Monthly Letter" in HTML vs "The Field Report" in Beehiiv
 - Regulation quick-reference
 - Hatchery vs. wild indicators
 - Server-side date/county filtering for stocking API
-- Bump version display in `index.html` header from v2.5 to v2.6
