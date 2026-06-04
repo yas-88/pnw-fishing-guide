@@ -3354,9 +3354,10 @@ function toggleStockingScope() {
   document.getElementById('stocking-subtitle').textContent = stockingShowAll ? 'Recent plants · Statewide' : 'Recent plants · SW Washington focus';
   fetchStockingReport();
 }  
-  renderSeasonalContent();
-  renderSpecies();
+renderSeasonalContent();
+renderSpecies();
 renderSpots();
+fetchStockingReport();
 
 // ============ LIVE WEATHER (Open-Meteo, no API key) ============
 const DEFAULT_LOCATION = { lat: 45.6387, lng: -122.6615, name: 'Vancouver, WA' };
