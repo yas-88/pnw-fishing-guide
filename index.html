@@ -768,6 +768,9 @@ section.active { display: block; animation: fadeIn 0.25s; }
 .mini-tag.diff-1 { color: var(--fresh-bright); }
 .mini-tag.diff-2 { color: var(--accent); }
 .mini-tag.diff-3 { color: var(--danger); }
+.mini-tag.hatchery { color: #f4c79b; border: 1px solid rgba(244,199,155,0.4); background: rgba(244,199,155,0.08); }
+.mini-tag.wild { color: #9bc176; border: 1px solid rgba(155,193,118,0.4); background: rgba(155,193,118,0.08); }
+.mini-tag.wild-cr { color: var(--warn); border: 1px solid rgba(212,160,23,0.4); background: rgba(212,160,23,0.08); }
 
 .status-pill {
   font-family: 'JetBrains Mono', monospace;
@@ -2412,6 +2415,8 @@ const speciesData = [
   // ===== FRESHWATER =====
   { type: 'fresh', name: 'Rainbow Trout', sci: 'Oncorhynchus mykiss', status: 'open', statusText: 'Open',
     tags: ['Beginner', 'Stocked', 'Year-round'],
+    retention: 'hatchery',
+    retentionNote: 'Stocked hatchery fish on most lakes · some wild fish present in rivers',
     season: { J:'open', F:'open', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'open', Au:'open', S:'open', O:'peak', N:'peak', D:'peak' },
     seasonNote: 'Year-round on most lakes. Lowland opener late April. Best 2-7 days after stocking.',
     where: 'Klineline, Battle Ground, Lacamas, Yale, Merwin (WA) · Henry Hagg, Detroit, Diamond Lake (OR)',
@@ -2424,6 +2429,8 @@ const speciesData = [
   { type: 'fresh', name: 'Cutthroat Trout', sci: 'O. clarkii · Coastal/Sea-run',
     status: 'open', statusText: 'Open',
     tags: ['Native', 'Streams'],
+    retention: 'wild-cr',
+    retentionNote: 'Many waters wild C&R only · hatchery fish rare · single barbless required',
     season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'open', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'closed', D:'closed' },
     seasonNote: 'Lakes year-round. Rivers/streams typically June 1 to Oct 31. Verify.',
     where: 'Yale Reservoir, Lewis system (WA) · coast range streams (OR) · Tillamook Bay sea-runs',
@@ -2436,6 +2443,8 @@ const speciesData = [
   { type: 'fresh', name: 'Steelhead', sci: 'O. mykiss · sea-run rainbow',
     status: 'partial', statusText: 'Partial',
     tags: ['Trophy', 'Hatchery only'],
+    retention: 'hatchery',
+    retentionNote: 'Hatchery only · wild = barbless + release · look for clipped adipose fin',
     season: { J:'peak', F:'peak', M:'open', A:'closed', My:'closed', Jn:'open', Jl:'open', Au:'open', S:'open', O:'open', N:'peak', D:'peak' },
     seasonNote: 'Winter run Dec-Mar (peak). Summer run Jun-Oct. Hatchery only retention. Wild release required.',
     where: 'Cowlitz, Lewis, Kalama, Washougal, Klickitat (WA) · Sandy, Clackamas, Deschutes, Rogue, Siletz, Wilson, Nestucca (OR)',
@@ -2448,6 +2457,8 @@ const speciesData = [
   { type: 'fresh', name: 'Spring Chinook', sci: 'O. tshawytscha',
     status: 'partial', statusText: 'Short Windows',
     tags: ['Trophy', 'Premium table'],
+    retention: 'hatchery',
+    retentionNote: 'Hatchery only most openers · wild release required · clipped adipose = keep',
     season: { J:'closed', F:'closed', M:'open', A:'peak', My:'peak', Jn:'open', Jl:'closed', Au:'closed', S:'closed', O:'closed', N:'closed', D:'closed' },
     seasonNote: 'Mar-Jun. Openers announced in short windows. Verify daily during season.',
     where: 'Lower Columbia, Willamette (Portland), Cowlitz, Lewis, Sandy, Clackamas',
@@ -2460,6 +2471,8 @@ const speciesData = [
   { type: 'fresh', name: 'Fall Chinook', sci: 'O. tshawytscha',
     status: 'open', statusText: 'Sept Peak',
     tags: ['Bigger fish', 'Heavier gear'],
+    retention: 'hatchery',
+    retentionNote: 'Hatchery only most waters · wild release required · clipped adipose = keep',
     season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'closed', Jl:'open', Au:'open', S:'peak', O:'peak', N:'open', D:'closed' },
     seasonNote: 'Aug-Nov. Peak September. Buoy 10 fishery world-class.',
     where: 'Buoy 10 (Columbia mouth), Cowlitz, Lewis, Wind River (WA) · Tillamook, Nehalem, Siuslaw, Rogue (OR)',
@@ -2472,6 +2485,8 @@ const speciesData = [
   { type: 'fresh', name: 'Coho Salmon', sci: 'O. kisutch · Silver',
     status: 'open', statusText: 'Sept-Nov',
     tags: ['Aggressive', 'Light gear OK'],
+    retention: 'hatchery',
+    retentionNote: 'Hatchery only most waters · wild release required · clipped adipose = keep',
     season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'closed', Jl:'closed', Au:'open', S:'peak', O:'peak', N:'open', D:'closed' },
     seasonNote: 'Aug-Nov. Aggressive on spinners and jigs in rivers.',
     where: 'Lower Columbia, Cowlitz, Lewis, Washougal (WA) · Tillamook, Nestucca, Sandy, Trask, Wilson, Coos (OR)',
@@ -2484,6 +2499,8 @@ const speciesData = [
   { type: 'fresh', name: 'Sockeye', sci: 'O. nerka',
     status: 'partial', statusText: 'Summer',
     tags: ['Targeted run', 'Specialty'],
+    retention: 'wild-cr',
+    retentionNote: 'Wild fish only · no hatchery program · C&R if run quota not met',
     season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'open', Jl:'peak', Au:'peak', S:'closed', O:'closed', N:'closed', D:'closed' },
     seasonNote: 'Late June through August. Brief openers when run is strong.',
     where: 'Columbia (Brewster Pool, Wells Dam), Baker Lake, Lake Wenatchee, Lake Washington',
@@ -2496,6 +2513,8 @@ const speciesData = [
   { type: 'fresh', name: 'Kokanee', sci: 'O. nerka · landlocked sockeye',
     status: 'open', statusText: 'Peak Now',
     tags: ['Trolling', 'Family-friendly boat'],
+    retention: 'wild-cr',
+    retentionNote: 'Wild landlocked fish · no adipose clip · check per-water limits carefully',
     season: { J:'open', F:'open', M:'open', A:'peak', My:'peak', Jn:'peak', Jl:'peak', Au:'peak', S:'open', O:'open', N:'closed', D:'closed' },
     seasonNote: 'Apr-Aug peak. Adults spawn out late October.',
     where: 'Lake Merwin (best near Vancouver WA), Yale, Riffe, Lake Chelan (E. WA · trophy class), Detroit Lake (OR)',
@@ -2520,6 +2539,8 @@ const speciesData = [
   { type: 'fresh', name: 'White Sturgeon', sci: 'Acipenser transmontanus',
     status: 'cr', statusText: 'C&R Below Bonneville',
     tags: ['Heavy gear', 'Trophy'],
+    retention: 'wild-cr',
+    retentionNote: 'Wild only · no hatchery program · C&R below Bonneville year-round',
     season: { J:'cr', F:'cr', M:'cr', A:'cr', My:'cr', Jn:'cr', Jl:'cr', Au:'cr', S:'cr', O:'cr', N:'cr', D:'cr' },
     seasonNote: 'C&R year-round below Bonneville. Retention opens above Bonneville on specific days.',
     where: 'Columbia (Vancouver to Bonneville and above), lower Willamette, Snake River impoundments',
@@ -2641,6 +2662,8 @@ const speciesData = [
   { type: 'salt', name: 'Coho Salmon (salt)', sci: 'O. kisutch',
     status: 'open', statusText: 'Summer Peak',
     tags: ['Aggressive', 'Topwater takes'],
+    retention: 'hatchery',
+    retentionNote: 'Marked (hatchery) fish only in most MAs · clipped adipose = keep · wild release',
     season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'open', Jl:'peak', Au:'peak', S:'peak', O:'open', N:'closed', D:'closed' },
     seasonNote: 'Jul-Oct. Puget Sound MA 9, 10, 11 most popular.',
     where: 'Puget Sound (Possession Bar, Jefferson Head, Point No Point), Westport, Ilwaco, Newport, Garibaldi',
@@ -2653,6 +2676,8 @@ const speciesData = [
   { type: 'salt', name: 'Chinook Salmon (salt)', sci: 'O. tshawytscha',
     status: 'partial', statusText: 'Open w/ Quotas',
     tags: ['King', 'Downrigger'],
+    retention: 'hatchery',
+    retentionNote: 'Marked (hatchery) fish only most areas · clipped adipose = keep · wild release',
     season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'open', Jn:'peak', Jl:'peak', Au:'peak', S:'open', O:'closed', N:'closed', D:'closed' },
     seasonNote: 'Summer fishery. Quota-driven openers. Watch WDFW announcements.',
     where: 'Westport, Ilwaco, Sekiu, Neah Bay, Puget Sound MA 5-13 (WA) · Newport, Depoe Bay, Garibaldi (OR)',
@@ -2665,6 +2690,8 @@ const speciesData = [
   { type: 'salt', name: 'Pink Salmon', sci: 'O. gorbuscha',
     status: 'partial', statusText: 'Odd Years Only',
     tags: ['Odd years', 'Easy bite'],
+    retention: 'wild-cr',
+    retentionNote: 'Wild run fish · no hatchery supplement · C&R in some areas',
     season: { J:'closed', F:'closed', M:'closed', A:'closed', My:'closed', Jn:'closed', Jl:'open', Au:'peak', S:'peak', O:'closed', N:'closed', D:'closed' },
     seasonNote: 'ODD YEARS ONLY (2025, 2027). Massive runs every 2 years in Puget Sound.',
     where: 'Puget Sound (Skagit Bay, Skykomish, Stillaguamish, Snohomish)',
@@ -3046,7 +3073,8 @@ function renderSpecies(filter = 'all', search = '') {
       const status = s.season[m] || 'closed';
       return `<div class="month ${status}">${monthLabels[i]}</div>`;
     }).join('');
-    const tagsHtml = s.tags ? `<div class="species-tags">${s.tags.map(t => `<span class="mini-tag">${t}</span>`).join('')}</div>` : '';
+    const retentionTag = s.retention ? `<span class="mini-tag ${s.retention}">${s.retention === 'hatchery' ? '🏷 HATCHERY ONLY' : s.retention === 'wild-cr' ? '🐟 WILD · C&R' : '🐟 WILD'}</span>` : '';
+    const tagsHtml = s.tags ? `<div class="species-tags">${s.tags.map(t => `<span class="mini-tag">${t}</span>`).join('')}${retentionTag}</div>` : '';
     const photoHtml = s.img ? `<img src="${s.img}" alt="${s.name}" class="species-photo" onerror="this.style.display='none'">` : '';
     html += `
       <div class="species-card ${s.type}">
@@ -3074,6 +3102,7 @@ function renderSpecies(filter = 'all', search = '') {
             <div>${s.regs ? s.regs.limit : s.limit}</div>
             ${s.regs && s.regs.size ? `<div style="margin-top:4px;font-size:12px;color:var(--text-dim);">Min size: ${s.regs.size}</div>` : ''}
             ${s.regs && s.regs.gear ? `<div style="font-size:12px;color:var(--text-dim);">Gear: ${s.regs.gear}</div>` : ''}
+            ${s.retentionNote ? `<div style="margin-top:6px;font-size:12px;padding:6px 8px;background:rgba(212,165,116,0.06);border-left:2px solid var(--accent);border-radius:2px;color:var(--text-dim);">🏷 ${s.retentionNote}</div>` : ''}
             <div style="margin-top:6px;font-size:12px;">
               ${s.regs && s.regs.waUrl ? `<a href="${s.regs.waUrl}" target="_blank" rel="noopener" style="color:var(--accent);margin-right:12px;">WA Regs ↗</a>` : ''}
               ${s.regs && s.regs.orUrl ? `<a href="${s.regs.orUrl}" target="_blank" rel="noopener" style="color:var(--accent);">OR Regs ↗</a>` : ''}
