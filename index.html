@@ -2390,7 +2390,7 @@ footer {
     <a href="https://myodfw.com" target="_blank">myodfw.com</a><br>
     FISH WA APP · MYODFW APP<br>
     WDFW 360-902-2700 · ODFW 503-947-6000<br><br>
-    PNW ANGLER FIELD GUIDE V2.5 · JUNE 2026
+    PNW ANGLER FIELD GUIDE V2.6 · JUNE 2026
   </div>
   <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border);">
     <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);letter-spacing:2px;line-height:1;">
@@ -2418,7 +2418,7 @@ const speciesData = [
     rig: 'Bait rig: 6-8 lb main, slip sinker 1/4 oz, 18" leader 4-6 lb fluoro · Lure: Rooster Tail 1/16-1/8 oz, Kastmaster 1/4 oz',
     hook: 'Size 8-12 baitholder or treble (PowerBait)',
     bait: 'PowerBait (rainbow, chartreuse), Trout Nuggets, nightcrawlers, salmon eggs',
-    limit: '5/day WA · 5/day OR (varies by water)',
+    regs: { limit: '5/day · possession 10 (WA) · 5/day OR (varies by water)', size: 'None statewide; some waters 8" min', gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/rainbow-trout' },
     img: 'Images/rainbow-trout.jpg' },
 
   { type: 'fresh', name: 'Cutthroat Trout', sci: 'O. clarkii · Coastal/Sea-run',
@@ -2430,7 +2430,7 @@ const speciesData = [
     rig: 'Light spinning, 6 lb main, small spinners (Mepps #1-2, Panther Martin), wet flies, nightcrawlers',
     hook: 'Size 8-10, single barbless on selective gear waters',
     bait: 'Worms, eggs, small spinners',
-    limit: 'Varies; many waters C&R or 2/day min 14"',
+    regs: { limit: 'Varies · many waters C&R · 2/day where open', size: '14" min on most rivers', gear: 'Single barbless required on selective gear waters', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/rainbow-trout' },
     img: 'Images/cutthroat-trout.jpg' },
 
   { type: 'fresh', name: 'Steelhead', sci: 'O. mykiss · sea-run rainbow',
@@ -2442,7 +2442,7 @@ const speciesData = [
     rig: 'Drift fishing: 12-15 lb main, 8-10 lb leader, yarn/corkie + bait · Float fishing: bobber + 1/8 oz jig · Plug pulling: Hot Shot or Mag Lip',
     hook: 'Size 1 to 1/0 octopus, single barbless',
     bait: 'Cured eggs, sand shrimp, prawn tails, jigs, beads',
-    limit: '2 hatchery adults/day typical. Wild release.',
+    regs: { limit: '2 hatchery/day · wild release required', size: 'No min on hatchery fish', gear: 'Single barbless hook required', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/steelhead' },
     img: 'Images/steelhead.jpg' },
 
   { type: 'fresh', name: 'Spring Chinook', sci: 'O. tshawytscha',
@@ -2454,7 +2454,7 @@ const speciesData = [
     rig: 'Plunking: 25-30 lb main, 4 oz pyramid, Spin-N-Glo + cured egg · Trolling: herring or Kwikfish + sardine wrap',
     hook: 'Size 2/0-3/0 octopus, single barbless',
     bait: 'Cured eggs, sand shrimp, herring, prawn tails, Kwikfish',
-    limit: '1-2/day with endorsement. Verify open days.',
+    regs: { limit: '1-2 hatchery/day · Columbia River Endorsement required', size: 'No statewide min; varies by fishery', gear: 'Single barbless hook required', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/chinook-salmon' },
     img: 'Images/spring-chinook.jpg' },
 
   { type: 'fresh', name: 'Fall Chinook', sci: 'O. tshawytscha',
@@ -2466,7 +2466,7 @@ const speciesData = [
     rig: 'Buoy 10: trolling herring or spinner with downrigger 20-50 ft · River: backbouncing eggs, plug pulling',
     hook: 'Size 2/0-3/0 octopus, single barbless',
     bait: 'Cured roe, herring, sand shrimp',
-    limit: 'Varies by river and date. CRC required.',
+    regs: { limit: 'Varies by river · hatchery only most waters', size: 'No statewide min', gear: 'Single barbless hook required', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/chinook-salmon' },
     img: 'Images/fall-chinook.jpg' },
 
   { type: 'fresh', name: 'Coho Salmon', sci: 'O. kisutch · Silver',
@@ -2478,7 +2478,7 @@ const speciesData = [
     rig: 'River: float + jig (pink/chartreuse), spinners (Blue Fox #4-5) · Estuary: trolling herring',
     hook: 'Size 1/0-2/0 octopus, single barbless',
     bait: 'Cured eggs, sand shrimp, jigs, spinners',
-    limit: 'Varies by river. Hatchery only typical.',
+    regs: { limit: 'Varies by river · hatchery only most waters', size: 'No statewide min', gear: 'Single barbless hook required', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/coho-salmon' },
     img: 'Images/coho-salmon.jpg' },
 
   { type: 'fresh', name: 'Sockeye', sci: 'O. nerka',
@@ -2490,7 +2490,7 @@ const speciesData = [
     rig: 'Trolling pink hoochies behind dodger 4-12 ft deep, slow speed 0.8-1.2 mph',
     hook: 'Pre-tied tandem 4-6',
     bait: 'Pink, red, UV hoochies. Sometimes scent-tipped.',
-    limit: 'Set when run exceeds escapement. Watch announcements.',
+    regs: { limit: 'Set annually when run exceeds escapement · watch WDFW announcements', size: null, gear: 'Verify before fishing · changes in-season', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: null },
     img: 'Images/sockeye.jpg' },
 
   { type: 'fresh', name: 'Kokanee', sci: 'O. nerka · landlocked sockeye',
@@ -2502,7 +2502,7 @@ const speciesData = [
     rig: 'Trolling only. Dodger/flasher + small hoochie or spinner tipped with corn. Downrigger May+ as fish go deep. 1.0-1.5 mph.',
     hook: 'Size 6-8 in tandem on pre-tied kokanee rigs',
     bait: 'White shoepeg corn (cured in scent), small pieces of worm',
-    limit: '10/day Merwin · 16/day Chelan (no min size at Chelan)',
+    regs: { limit: '10/day Merwin · 16/day Chelan', size: 'None at Chelan · verify per water', gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: null },
     img: 'Images/kokanee.jpg' },
 
   { type: 'fresh', name: 'Shad', sci: 'Alosa sapidissima',
@@ -2514,7 +2514,7 @@ const speciesData = [
     rig: 'Shad rig: 10-15 lb main, 1-2 oz sinker, 2-3 ft dropper leader, tandem shad darts or curly tail grubs',
     hook: 'Size 4-6 shad darts, 1/8-1/4 oz',
     bait: 'None. Shad darts in white, chartreuse, pink. Curly tail grubs on jig heads.',
-    limit: 'No limit. No minimum size.',
+    regs: { limit: 'No daily limit · no minimum size', size: null, gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/shad.jpg' },
 
   { type: 'fresh', name: 'White Sturgeon', sci: 'Acipenser transmontanus',
@@ -2526,7 +2526,7 @@ const speciesData = [
     rig: 'Anchor rig: 50-65 lb main, 60-80 lb leader 12-18", slider weight or pyramid 4-12 oz',
     hook: 'Required: single barbless circle hook, 5/0-8/0. Snell to leader.',
     bait: 'Sand shrimp, smelt, lamprey, salmon parts (legal in season), squid',
-    limit: '0 retention below Bonneville. Annual limit 2 white sturgeon statewide WA (size slot in open areas).',
+    regs: { limit: 'C&R only below Bonneville · 2 white sturgeon annual limit WA where open', size: 'Size slot applies in open areas (verify per section)', gear: 'Single barbless hook required', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/white-sturgeon' },
     img: 'Images/white-sturgeon.jpg' },
 
   { type: 'fresh', name: 'Largemouth Bass', sci: 'Micropterus salmoides',
@@ -2538,7 +2538,7 @@ const speciesData = [
     rig: 'Texas rig: bullet weight, EWG, plastic worm · Topwater: frog/popper dawn-dusk · Jig: 3/8 oz football + trailer',
     hook: '2/0-4/0 EWG worm hook, 1/0 weedless',
     bait: 'Senkos, creature baits, crankbaits, spinnerbaits, live nightcrawlers',
-    limit: '5/day, no min size statewide. Encouraged C&R for larger fish.',
+    regs: { limit: '5/day statewide WA', size: 'No minimum size', gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/bass' },
     img: 'Images/largemouth-bass.jpg' },
 
   { type: 'fresh', name: 'Smallmouth Bass', sci: 'Micropterus dolomieu',
@@ -2550,7 +2550,7 @@ const speciesData = [
     rig: 'Drop shot: 1/4 oz weight, 4" worm 12" above · Ned rig: mushroom jig + half stick worm · Tube jig 3-4"',
     hook: 'Size 1 to 2/0 finesse hook',
     bait: 'Soft plastics in green pumpkin, smoke, crawfish. Live crayfish where legal.',
-    limit: 'Columbia: no limit/no min (invasive control). Lakes: 5/day.',
+    regs: { limit: 'Columbia mainstem: no limit (invasive) · Lakes: 5/day', size: 'No minimum size Columbia · varies by lake', gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/bass' },
     img: 'Images/smallmouth-bass.jpg' },
 
   { type: 'fresh', name: 'Walleye', sci: 'Sander vitreus',
@@ -2562,7 +2562,7 @@ const speciesData = [
     rig: 'Bottom bouncer 1-3 oz + spinner harness with worm · Jig 1/4-3/8 oz + plastic tipped with crawler',
     hook: 'Size 2-4 octopus on harness, jigs 1/4-1/2 oz',
     bait: 'Nightcrawlers, leeches, plastics in fire tiger/perch',
-    limit: 'Columbia: no limit/no min (invasive). Other waters 8/day.',
+    regs: { limit: 'Columbia mainstem: no limit (invasive) · Other waters: 8/day', size: 'No minimum size', gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/walleye.jpg' },
 
   { type: 'fresh', name: 'Bluegill / Sunfish', sci: 'Lepomis spp.',
@@ -2574,7 +2574,7 @@ const speciesData = [
     rig: 'Bobber rig: small float, split shot, hook with worm. Fish 3-6 ft deep near docks/weeds. Jig 1/32-1/16 oz.',
     hook: 'Size 6-10 long shank or aberdeen',
     bait: 'Worm pieces, mealworms, crickets, crappie tubes, small jigs',
-    limit: 'No limit on most waters.',
+    regs: { limit: 'No limit on most waters', size: null, gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/bluegill-sunfish.jpg' },
 
   { type: 'fresh', name: 'Crappie', sci: 'Pomoxis spp.',
@@ -2586,7 +2586,7 @@ const speciesData = [
     rig: '1/32-1/16 oz crappie jig under slip float at 4-12 ft. Live minnow on size 6 hook also classic.',
     hook: 'Size 6-8 aberdeen, jig heads',
     bait: 'Curly tail grubs (white, chartreuse, pink), live minnows',
-    limit: '10/day typical WA. Verify per water.',
+    regs: { limit: '10/day typical WA · verify per water', size: null, gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/crappie.jpg' },
 
   { type: 'fresh', name: 'Yellow Perch', sci: 'Perca flavescens',
@@ -2598,7 +2598,7 @@ const speciesData = [
     rig: 'Small jig 1/16-1/8 oz + minnow or worm. Drop shot also works.',
     hook: 'Size 6-8 baitholder',
     bait: 'Small minnows, worm pieces, jigs in perch colors',
-    limit: '25/day E. WA typical',
+    regs: { limit: '25/day E. WA typical', size: null, gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/yellow-perch.jpg' },
 
   { type: 'fresh', name: 'Channel Catfish', sci: 'Ictalurus punctatus',
@@ -2610,7 +2610,7 @@ const speciesData = [
     rig: 'Carolina rig: egg sinker, swivel, 18" leader, circle hook. Fish on bottom in holes and channels.',
     hook: 'Size 2/0-5/0 circle',
     bait: 'Chicken liver, cut bait, stink bait, nightcrawlers, hot dogs',
-    limit: '5/day WA',
+    regs: { limit: '5/day WA', size: null, gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/channel-catfish.jpg' },
 
   { type: 'fresh', name: 'Tiger Muskie', sci: 'Esox masquinongy × E. lucius',
@@ -2622,7 +2622,7 @@ const speciesData = [
     rig: 'Heavy musky rod, 50-80 lb braid, 12" steel/fluoro leader 80 lb+, bucktails, jerkbaits, swimbaits 6-12"',
     hook: 'Single point hooks 5/0-7/0; pinch barbs for release',
     bait: 'Large bucktails (Cowgirl, Bull Dawg), jerkbaits, swimbaits',
-    limit: '50" minimum, 1/day. Anything under 50" released.',
+    regs: { limit: '1/day', size: '50" minimum · anything under released', gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: null },
     img: 'Images/tiger-muskie.jpg' },
 
   { type: 'fresh', name: 'Carp', sci: 'Cyprinus carpio',
@@ -2634,7 +2634,7 @@ const speciesData = [
     rig: 'Hair rig with boilie, corn, or bread. Method feeder or freelined.',
     hook: 'Size 4-8 carp hook',
     bait: 'Sweet corn, bread, boilies, dough balls',
-    limit: 'No limit (non-native)',
+    regs: { limit: 'No limit (non-native invasive)', size: null, gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: null },
     img: 'Images/carp.jpg' },
 
   // ===== SALTWATER =====
@@ -2647,7 +2647,7 @@ const speciesData = [
     rig: 'Mooching cut-plug herring with crescent sinker 2-4 oz · Trolling with flasher + Coyote spoon or hoochie · Buzz Bomb jig',
     hook: 'Size 2/0-3/0 tandem, single barbless required',
     bait: 'Cut-plug herring, anchovies, hoochies, spoons',
-    limit: 'Varies by MA and quota. Often 2/day with marked hatchery requirement.',
+    regs: { limit: 'Varies by MA · often 2/day hatchery marked only', size: null, gear: 'Single barbless hook required · CRC required', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/coho-salmon' },
     img: 'Images/coho-salmon-salt.jpg' },
 
   { type: 'salt', name: 'Chinook Salmon (salt)', sci: 'O. tshawytscha',
@@ -2659,7 +2659,7 @@ const speciesData = [
     rig: 'Downrigger troll: flasher + cut-plug herring or hoochie 30-80 ft · Mooching same as coho but deeper',
     hook: 'Size 4/0-5/0 tandem, single barbless',
     bait: 'Whole herring, anchovies, hoochies, spoons (Coyote, Kingfisher)',
-    limit: 'Varies by MA. CRC required.',
+    regs: { limit: 'Varies by MA · check quota before heading out', size: null, gear: 'Single barbless hook required · CRC required', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/chinook-salmon' },
     img: 'Images/chinook-salmon-salt.jpg' },
 
   { type: 'salt', name: 'Pink Salmon', sci: 'O. gorbuscha',
@@ -2671,7 +2671,7 @@ const speciesData = [
     rig: 'Pink Buzz Bombs, pink jigs under floats, pink mini squids on downrigger',
     hook: 'Size 1/0-2/0 octopus',
     bait: 'Pink everything. Small spoons. Pink hoochies.',
-    limit: 'Generous. 4/day typical odd-year openers.',
+    regs: { limit: '4/day typical (odd years only)', size: null, gear: 'Single barbless hook required', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/pink-salmon.jpg' },
 
   { type: 'salt', name: 'Lingcod', sci: 'Ophiodon elongatus',
@@ -2683,7 +2683,7 @@ const speciesData = [
     rig: 'Vertical jig 4-12 oz diamond/iron · Live bait (small rockfish or greenling) on 5/0-8/0 circle · Swimbait + jig head',
     hook: 'Size 5/0-8/0 circle, treble on jigs',
     bait: 'Live small rockfish/greenling, large swimbaits, herring, squid',
-    limit: '2/day WA (22" min) · 2/day OR (22" min)',
+    regs: { limit: '2/day WA · 2/day OR', size: '22" minimum both states', gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/lingcod' },
     img: 'Images/lingcod.jpg' },
 
   { type: 'salt', name: 'Rockfish', sci: 'Sebastes spp.',
@@ -2695,7 +2695,7 @@ const speciesData = [
     rig: 'Diamond jig 2-6 oz with bait teaser · Shrimp fly + bait rig · Soft plastic swimbaits',
     hook: 'Size 3/0-5/0 circle',
     bait: 'Squid strips, herring chunks, swimbaits, shrimp flies',
-    limit: '7/day OR · varies by MA in WA. Many depth restrictions.',
+    regs: { limit: '7/day OR · varies by MA in WA', size: 'Varies · quillback rockfish C&R only', gear: 'Many depth restrictions · verify current MA rules', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/rockfish' },
     img: 'Images/rock-fish.jpg' },
 
   { type: 'salt', name: 'Pacific Halibut', sci: 'Hippoglossus stenolepis',
@@ -2707,7 +2707,7 @@ const speciesData = [
     rig: 'Spreader bar with cannonball 16-32 oz, 3 ft leader, 12/0-16/0 circle hook + herring/salmon belly',
     hook: 'Size 12/0-16/0 circle',
     bait: 'Whole herring, salmon belly, octopus, squid',
-    limit: '1/day on open days. CRC required. Size/weight slot may apply.',
+    regs: { limit: '1/day on open days', size: 'Size/weight slot may apply · verify at season open', gear: 'CRC required · IPHC quota sets season length', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/pacific-halibut' },
     img: 'Images/pacific-halibut.jpg' },
 
   { type: 'salt', name: 'Albacore Tuna', sci: 'Thunnus alalunga',
@@ -2719,7 +2719,7 @@ const speciesData = [
     rig: 'Troll cedar plugs, Zukers, daisy chains at 6-8 knots · Live bait sardine on circle when school stops',
     hook: 'Size 5/0-7/0 circle for live bait, J-hooks on troll lures',
     bait: 'Live sardines, cedar plugs, feathers, daisy chains',
-    limit: '25/day no min size · most regions',
+    regs: { limit: '25/day · no minimum size', size: null, gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/albacore-tuna.jpg' },
 
   { type: 'salt', name: 'Surf Perch', sci: 'Embiotocidae spp.',
@@ -2731,7 +2731,7 @@ const speciesData = [
     rig: 'High-low dropper rig: 2 hook leaders off main line above pyramid sinker 1-3 oz',
     hook: 'Size 4-6 baitholder',
     bait: 'Sand crabs, mussels, raw shrimp, Berkley Gulp! sandworm/camo',
-    limit: '15/day WA · 15/day OR',
+    regs: { limit: '15/day WA · 15/day OR', size: null, gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/surf-perch.jpg' },
 
   { type: 'salt', name: 'Cabezon', sci: 'Scorpaenichthys marmoratus',
@@ -2743,7 +2743,7 @@ const speciesData = [
     rig: 'Same as rockfish/lingcod. Diamond jig or swimbait with bait.',
     hook: 'Size 3/0-5/0 circle',
     bait: 'Squid, herring, crab',
-    limit: '1/day WA · 1/day OR (16" min)',
+    regs: { limit: '1/day WA · 1/day OR', size: '16" minimum both states', gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/rockfish' },
     img: 'Images/cabezon.jpg' },
 
   { type: 'salt', name: 'Dungeness Crab', sci: 'Metacarcinus magister',
@@ -2755,7 +2755,7 @@ const speciesData = [
     rig: 'Crab pots or ring nets · 4-12 traps allowed depending on area',
     hook: 'No hook · bait box in pot',
     bait: 'Chicken parts, fish carcass (salmon heads especially), squid',
-    limit: '5/day WA male only 6.25" carapace · 12/day OR male only 5.75" carapace. CRC required WA.',
+    regs: { limit: '5/day WA · 12/day OR · male only', size: '6.25" carapace WA · 5.75" carapace OR', gear: 'CRC required WA · shellfish/seaweed license OR', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/dungeness-crab' },
     img: 'Images/dungeness-crab.jpg' },
 
   { type: 'salt', name: 'Razor Clams', sci: 'Siliqua patula',
@@ -2767,7 +2767,7 @@ const speciesData = [
     rig: 'Clam shovel or clam gun · find the dimple/show, dig fast',
     hook: '—',
     bait: '—',
-    limit: '15/day, first 15 you dig (cannot release). Shellfish license required.',
+    regs: { limit: '15/day · first 15 dug count (cannot release and re-dig)', size: null, gear: 'Shellfish license required · dig only on open beaches', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/razor-clams.jpg' },
 ];
 
@@ -2778,37 +2778,48 @@ const spotsData = [
     spots: [
       { name: 'Columbia River · Vancouver Waterfront', meta: 'Downtown · Bank · Year-round',
         tags: ['Salmon', 'Steelhead', 'Sturgeon C&R', 'Shad', 'Bass'],
-        note: 'Wintler Park, Marine Park, Frenchman\'s Bar. Pay parking. Spring chinook plunking Apr-May, shad May-Jun, sturgeon C&R year-round.' },
+        note: 'Wintler Park, Marine Park, Frenchman\'s Bar. Pay parking. Spring chinook plunking Apr-May, shad May-Jun, sturgeon C&R year-round.',
+        regsUrl: 'https://wdfw.wa.gov/fishing/management/columbia-river/recreational', regsNote: 'Columbia River rules apply' },
       { name: 'Klineline Pond (Salmon Creek Park)', meta: '10 min · 12 ac · Bank only',
         tags: ['Trout', 'Bass', 'Stocked', 'Family'],
-        note: 'No floating devices. Stocked frequently with rainbow including jumbos. Small largemouth population. Best 2-7 days after stocking.' },
+        note: 'No floating devices. Stocked frequently with rainbow including jumbos. Small largemouth population. Best 2-7 days after stocking.',
+        regsUrl: 'https://wdfw.wa.gov/fishing/regulations' },
       { name: 'Battle Ground Lake State Park', meta: '25 min · 28 ac · Bank + small boat',
         tags: ['Trout', 'Bass', 'Panfish', 'Pier'],
-        note: 'Crater lake, wind-protected. Fishing pier. Stocked rainbows. Bass and bluegill summer. Discover Pass required.' },
+        note: 'Crater lake, wind-protected. Fishing pier. Stocked rainbows. Bass and bluegill summer. Discover Pass required.',
+        regsUrl: 'https://wdfw.wa.gov/fishing/regulations' },
       { name: 'Lacamas Lake (Camas)', meta: '20 min · 320 ac · Boat/bank',
         tags: ['Bass', 'Trout', 'Panfish'],
-        note: 'Largemouth bass fishery. Stocked trout. Bank access Heritage Park, Lacamas Park. Best mornings/evenings.' },
+        note: 'Largemouth bass fishery. Stocked trout. Bank access Heritage Park, Lacamas Park. Best mornings/evenings.',
+        regsUrl: 'https://wdfw.wa.gov/fishing/regulations' },
       { name: 'Vancouver Lake', meta: '10 min · 2,300 ac · Bank + boat',
         tags: ['Bass', 'Panfish', 'Catfish', 'Carp'],
-        note: 'Shallow, warm-water. Spring largemouth bass spawn. Crappie and bluegill all summer. Watch algae blooms late summer.' },
+        note: 'Shallow, warm-water. Spring largemouth bass spawn. Crappie and bluegill all summer. Watch algae blooms late summer.',
+        regsUrl: 'https://wdfw.wa.gov/fishing/regulations' },
       { name: 'Lake Merwin', meta: '45 min · 3,800 ac · Boat only',
         tags: ['Kokanee', 'Tiger Muskie', 'Cutthroat'],
-        note: 'PacifiCorp ramps at Speelyai and Cresap Bay (weekend fee). Premier kokanee Apr-Aug. Tiger muskie 50" min. Limited shore access.' },
+        note: 'PacifiCorp ramps at Speelyai and Cresap Bay (weekend fee). Premier kokanee Apr-Aug. Tiger muskie 50" min. Limited shore access.',
+        regsUrl: 'https://wdfw.wa.gov/fishing/regulations', regsNote: 'Tiger muskie 50" min · verify kokanee limit' },
       { name: 'Yale Reservoir', meta: '55 min · 3,600 ac · Boat',
         tags: ['Kokanee', 'Cutthroat'],
-        note: 'Kokanee Apr-Oct. Cutthroat near Siouxon Creek mouth in spring and fall.' },
+        note: 'Kokanee Apr-Oct. Cutthroat near Siouxon Creek mouth in spring and fall.',
+        regsUrl: 'https://wdfw.wa.gov/fishing/regulations' },
       { name: 'Lewis River (North Fork)', meta: '30 min · River',
         tags: ['Steelhead', 'Chinook', 'Coho', 'Trout'],
-        note: 'Below Merwin Dam, 15 fishable miles to Columbia. Winter steelhead Dec-Mar. Spring Chinook Apr-May. Fall Chinook + coho Sep-Nov. Hatchery only.' },
+        note: 'Below Merwin Dam, 15 fishable miles to Columbia. Winter steelhead Dec-Mar. Spring Chinook Apr-May. Fall Chinook + coho Sep-Nov. Hatchery only.',
+        regsUrl: 'https://wdfw.wa.gov/fishing/regulations', regsNote: 'Hatchery only · single barbless required' },
       { name: 'Cowlitz River (Kelso/Castle Rock)', meta: '45 min · River',
         tags: ['Steelhead', 'Chinook', 'Coho'],
-        note: 'One of the best salmon/steelhead rivers in WA. Drift fishing, plunking, plug pulling. Year-round opportunity for some species.' },
+        note: 'One of the best salmon/steelhead rivers in WA. Drift fishing, plunking, plug pulling. Year-round opportunity for some species.',
+        regsUrl: 'https://wdfw.wa.gov/fishing/regulations', regsNote: 'Verify current salmon opener before fishing' },
       { name: 'Kalama River', meta: '35 min · River',
         tags: ['Steelhead', 'Salmon'],
-        note: 'Winter and summer steelhead. Smaller, intimate river. Selective gear rules in upper sections.' },
+        note: 'Winter and summer steelhead. Smaller, intimate river. Selective gear rules in upper sections.',
+        regsUrl: 'https://wdfw.wa.gov/fishing/regulations', regsNote: 'Selective gear rules upper river' },
       { name: 'Silver Lake (Cowlitz)', meta: '55 min · 3,000 ac · Boat/bank',
         tags: ['Bass', 'Crappie', 'Trout'],
-        note: 'Trophy largemouth bass fishery. Excellent crappie. Shallow weedy lake near Mt. St. Helens.' },
+        note: 'Trophy largemouth bass fishery. Excellent crappie. Shallow weedy lake near Mt. St. Helens.',
+        regsUrl: 'https://wdfw.wa.gov/fishing/regulations' },
     ]},
 
   // ===== PORTLAND METRO =====
@@ -2816,22 +2827,28 @@ const spotsData = [
     spots: [
       { name: 'Willamette River (Portland)', meta: '15-30 min · OR license',
         tags: ['Salmon', 'Steelhead', 'Sturgeon', 'Bass'],
-        note: 'Oregon license required. Spring Chinook peaks late May-Jun. Excellent smallmouth bass below Willamette Falls. Sturgeon C&R.' },
+        note: 'Oregon license required. Spring Chinook peaks late May-Jun. Excellent smallmouth bass below Willamette Falls. Sturgeon C&R.',
+        regsUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates', regsNote: 'OR license required · sturgeon C&R' },
       { name: 'Sandy River', meta: '30 min · River',
         tags: ['Steelhead', 'Salmon', 'Trout'],
-        note: 'Winter steelhead Dec-Mar, summer steelhead May-Oct, spring/fall Chinook, coho. Lewis & Clark and Oxbow Park access.' },
+        note: 'Winter steelhead Dec-Mar, summer steelhead May-Oct, spring/fall Chinook, coho. Lewis & Clark and Oxbow Park access.',
+        regsUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates', regsNote: 'Hatchery only retention · single barbless' },
       { name: 'Clackamas River', meta: '30-45 min · River',
         tags: ['Steelhead', 'Salmon', 'Trout'],
-        note: 'Year-round opportunity. Winter steelhead peak Feb. Spring Chinook Apr-May. Bonnie Lure SP, Carver, McIver SP access.' },
+        note: 'Year-round opportunity. Winter steelhead peak Feb. Spring Chinook Apr-May. Bonnie Lure SP, Carver, McIver SP access.',
+        regsUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
       { name: 'Tualatin River + Henry Hagg Lake', meta: '30-45 min',
         tags: ['Bass', 'Trout', 'Panfish'],
-        note: 'Henry Hagg is the metro\'s best stocked trout + warm water lake. Bank and boat access. Tualatin known for smallmouth.' },
+        note: 'Henry Hagg is the metro\'s best stocked trout + warm water lake. Bank and boat access. Tualatin known for smallmouth.',
+        regsUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
       { name: 'Multnomah Channel', meta: '20-30 min',
         tags: ['Bass', 'Walleye', 'Catfish'],
-        note: 'Backwater of the Columbia. Trophy largemouth in lily pads. Underrated walleye and channel catfish.' },
+        note: 'Backwater of the Columbia. Trophy largemouth in lily pads. Underrated walleye and channel catfish.',
+        regsUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
       { name: 'Estacada Lake / Faraday', meta: '45 min',
         tags: ['Bass', 'Trout'],
-        note: 'Stocked trout. Small impoundments on the Clackamas. Bank-friendly.' },
+        note: 'Stocked trout. Small impoundments on the Clackamas. Bank-friendly.',
+        regsUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     ]},
 
   // ===== PUGET SOUND / SEATTLE =====
@@ -2839,19 +2856,24 @@ const spotsData = [
     spots: [
       { name: 'Lake Washington', meta: 'Seattle east · 22,000 ac',
         tags: ['Smallmouth', 'Cutthroat', 'Sockeye', 'Perch'],
-        note: 'Big-fish smallmouth. Cutthroat trolling. Sockeye fishery when run is strong (June-July, brief openers). Multiple public ramps.' },
+        note: 'Big-fish smallmouth. Cutthroat trolling. Sockeye fishery when run is strong (June-July, brief openers). Multiple public ramps.',
+        regsUrl: 'https://wdfw.wa.gov/fishing/regulations', regsNote: 'Sockeye openers announced in-season' },
       { name: 'Lake Sammamish', meta: 'Issaquah · 4,900 ac',
         tags: ['Smallmouth', 'Largemouth', 'Yellow Perch', 'Cutthroat'],
-        note: 'Smallmouth and yellow perch year-round. Largemouth spawn shallow May-Jun. State park access.' },
+        note: 'Smallmouth and yellow perch year-round. Largemouth spawn shallow May-Jun. State park access.',
+        regsUrl: 'https://wdfw.wa.gov/fishing/regulations' },
       { name: 'Snoqualmie River', meta: '30-45 min E of Seattle',
         tags: ['Trout', 'Steelhead', 'Salmon'],
-        note: 'Three forks plus mainstem. Summer steelhead. Selective gear rules apply.' },
+        note: 'Three forks plus mainstem. Summer steelhead. Selective gear rules apply.',
+        regsUrl: 'https://wdfw.wa.gov/fishing/regulations', regsNote: 'Selective gear rules apply' },
       { name: 'Skykomish + Snohomish Rivers', meta: '45-60 min',
         tags: ['Salmon', 'Steelhead', 'Sea-Run Cutthroat'],
-        note: 'Major Puget Sound salmon system. Pink salmon massive in odd years. Coho fall. Winter and summer steelhead.' },
+        note: 'Major Puget Sound salmon system. Pink salmon massive in odd years. Coho fall. Winter and summer steelhead.',
+        regsUrl: 'https://wdfw.wa.gov/fishing/regulations', regsNote: 'Pink salmon odd years only' },
       { name: 'Green River + Howard Hanson area', meta: '30 min S of Seattle',
         tags: ['Steelhead', 'Salmon', 'Trout'],
-        note: 'Winter steelhead lower river. Trout above the dam. Selective gear rules in upper.' },
+        note: 'Winter steelhead lower river. Trout above the dam. Selective gear rules in upper.',
+        regsUrl: 'https://wdfw.wa.gov/fishing/regulations', regsNote: 'Selective gear rules upper river' },
     ]},
   { region: 'Puget Sound · Saltwater', type: 'salt',
     spots: [
@@ -3085,6 +3107,7 @@ function renderSpots() {
               <div class="location-meta">${spot.meta}</div>
               <div class="location-tags">${spot.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
               <div class="location-note">${spot.note}</div>
+              ${spot.regsUrl ? `<div style="margin-top:6px;font-size:12px;">${spot.regsNote ? `<span style="color:var(--text-dim);">${spot.regsNote} · </span>` : ''}<a href="${spot.regsUrl}" target="_blank" rel="noopener" style="color:var(--accent);">Regs ↗</a></div>` : ''}
             </div>
           `).join('')}
         </div>
