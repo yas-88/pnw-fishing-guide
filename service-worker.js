@@ -1,7 +1,7 @@
 // PNW Angler Field Guide - Service Worker
 // Cache-first with background update (stale-while-revalidate)
 
-const VERSION = 'v2.5';
+const VERSION = 'v2.6';
 const CACHE_NAME = `pnw-angler-${VERSION}`;
 
 // Assets to cache on install (the app shell)
@@ -29,6 +29,7 @@ const NETWORK_ONLY_HOSTS = [
   'api.tidesandcurrents.noaa.gov',
   'embeds.beehiiv.com',
   'data.wa.gov',
+  'pnwfg-stocking.yab-account.workers.dev',
 ];
 
 // ============ INSTALL ============
