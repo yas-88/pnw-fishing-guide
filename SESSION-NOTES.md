@@ -1,76 +1,32 @@
-PNW Angler Field Guide · Session Notes
+# PNW Fishing Guide – Session Notes
 
-Session 3 · June 3, 2026
-What was accomplished
+## Session: 2026-06-03
 
-Diagnosed stocking report never calling fetchStockingReport() on page load -- fixed
-Added 8-second AbortController timeout to fetch
-Added console.error to catch block for debugging
-Added data.wa.gov to NETWORK_ONLY_HOSTS in service-worker.js
-Bumped service worker to v2.5
-Purged Cloudflare CDN cache
+### Completed
+- Fixed pre-existing syntax error: stray `}` at line 4072 (`showUpdateBanner` function) — was masked by old SW cache, broke once SW was cleared
+- Built and deployed `pnwfg-stocking` Cloudflare Worker at `pnwfg-stocking.yab-account.workers.dev`
+  - Proxies WDFW dataset `6fex-3r7d`, sorted by `release_start_date DESC` (not `date_stocked` — that column doesn't exist)
+  - Returns JSON with CORS headers, 1hr cache
+  - Confirmed returning live data in Worker preview
+- Updated `fetchStockingReport()` in `index.html` line 3299 to point at Worker URL instead of `data.wa.gov`
+- Added `pnwfg-stocking.yab-account.workers.dev` to `NETWORK_ONLY_HOSTS` in `service-worker.js`
+- Bumped VERSION to `v2.6` in `service-worker.js`
+- Purged Cloudflare edge cache via safjob.com → Caching → Configuration → Purge Everything
 
-Root cause identified (not yet fixed)
-The stocking fetch never reaches data.wa.gov. Network tab shows zero requests to that domain. The service worker intercepts and drops the call before it leaves the browser. Despite adding data.wa.gov to NETWORK_ONLY_HOSTS, the old cached service worker persists because Cloudflare minifies and caches the SW file with a long TTL. Browser never receives the updated service-worker.js.
-What broke and was reverted
-Added auto-reload on SW update (setTimeout applyUpdate 2000ms) -- caused reload loop, broke weather and conditions loading. REVERTED. App rolled back to last stable Cloudflare deployment.
-Current state
+### Still Blocked
+- Stocking section still shows "Loading..." — SW cache activation problem
+- Fix is architecturally correct; Worker returns data, URL is right, NETWORK_ONLY_HOSTS is updated
+- Browsers (Chrome, Edge, incognito) all holding onto old SW despite purge, unregister attempts, and tab closes
+- Root cause: `service-worker.js` has a 4-hour Browser Cache TTL set in Cloudflare — browsers won't re-fetch it until TTL expires
 
-Stocking section shows "Loading stocking data..." -- fetch never fires
-All other features working: weather, forecast, seasonal, species, spots, rigs, knots, tips
-Service worker version: v2.5 in repo but old cached version still serving in browser
+### Next Session: Fix SW cache activation
+Two options, pick one:
+1. **Preferred:** Add `Cache-Control: no-store` header to `service-worker.js` specifically via a Cloudflare Cache Rule so it's never cached at the edge or browser
+2. **Alternative:** Add `self.skipWaiting()` call directly inside the `activate` event handler for more aggressive takeover
 
-Next session plan
-Build a Cloudflare Worker proxy for the stocking API:
-
-Create new Worker in Cloudflare dashboard (can reuse the beehiiv-subscribe worker pattern)
-Worker fetches data.wa.gov/resource/6fex-3r7d.json and returns response with CORS headers
-Update fetchStockingReport() in index.html to call the Worker URL instead of data.wa.gov directly
-This bypasses the service worker cache entirely since the call goes through our own CF Worker infrastructure
-
-Tier 2 remaining
-
-Stocking report live data (blocked -- needs CF Worker proxy, ~15 min task next session)
-Regulation quick-reference by species/water (static data, no API needed)
-Hatchery vs wild indicator on spot cards
-
-Tier 3 (not started)
-
-Trip log
-Tide calendar
-Offline maps
-
-
-Session 2 · (prior session)
-What was accomplished
-
-30 AI-generated species illustrations added to /Images/, all wired with img: field and .species-photo CSS
-Seasonal content: seasonalData JS object keyed by month, renderSeasonalContent() called on load
-Bite score fix: warm water warning appended when air temp >= 75F
-Stocking report HTML card added to Right Now tab
-fetchStockingReport() wired to WDFW API (data.wa.gov, dataset 6fex-3r7d)
-renderStockingTable() and toggleStockingScope() implemented
-
-Current state at end of session
-
-Stocking API call hanging/failing -- left for Session 3 to debug
-
-
-Session 1 · (prior session)
-What was accomplished
-
-Tier 1 complete: species guide, spots, rigs, hooks, knots, tips
-Live weather via Open-Meteo (no API key)
-Tide data via NOAA CO-OPS for coastal locations
-7-day forecast with bite scores
-Newsletter via Beehiiv (Cloudflare Worker proxy at beehiiv-subscribe.yab-account.workers.dev)
-PWA setup: service worker, manifest, installable
-Deployed to pnwfg.safjob.com via Cloudflare Pages + GitHub auto-deploy
-
-Infrastructure
-
-Hosting: Cloudflare Pages
-Repo: github.com/yas-88/pnw-fishing-guide
-Custom subdomain: pnwfg.safjob.com (under safjob.com business domain)
-Newsletter: Beehiiv publication ID 22ef3a8f-1d87-4664-b624-5cab2db4ca26
-Beehiiv Worker: beehiiv-subscribe.yab-account.workers.dev
+### Pending (Tier 2)
+- Newsletter title mismatch: "The Monthly Letter" in HTML vs "The Field Report" in Beehiiv
+- Regulation quick-reference
+- Hatchery vs. wild indicators
+- Server-side date/county filtering for stocking API
+- Bump version display in `index.html` header from v2.5 to v2.6
