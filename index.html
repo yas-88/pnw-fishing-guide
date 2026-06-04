@@ -3048,7 +3048,15 @@ function renderSpecies(filter = 'all', search = '') {
           <div class="row"><div class="row-label">Rig</div><div class="row-value">${s.rig}</div></div>
           <div class="row"><div class="row-label">Hook</div><div class="row-value">${s.hook}</div></div>
           <div class="row"><div class="row-label">Bait</div><div class="row-value">${s.bait}</div></div>
-          <div class="row"><div class="row-label">Limit</div><div class="row-value">${s.limit}</div></div>
+          <div class="row"><div class="row-label">Regs</div><div class="row-value">
+            <div>${s.regs ? s.regs.limit : s.limit}</div>
+            ${s.regs && s.regs.size ? `<div style="margin-top:4px;font-size:12px;color:var(--text-dim);">Min size: ${s.regs.size}</div>` : ''}
+            ${s.regs && s.regs.gear ? `<div style="font-size:12px;color:var(--text-dim);">Gear: ${s.regs.gear}</div>` : ''}
+            <div style="margin-top:6px;font-size:12px;">
+              ${s.regs && s.regs.waUrl ? `<a href="${s.regs.waUrl}" target="_blank" rel="noopener" style="color:var(--accent);margin-right:12px;">WA Regs ↗</a>` : ''}
+              ${s.regs && s.regs.orUrl ? `<a href="${s.regs.orUrl}" target="_blank" rel="noopener" style="color:var(--accent);">OR Regs ↗</a>` : ''}
+            </div>
+          </div></div>
         </div>
       </div>
     `;
