@@ -1168,6 +1168,15 @@ section.active { display: block; animation: fadeIn 0.25s; }
 .qp-value strong { color: var(--accent-bright); }
 
 /* COLLAPSIBLE REGION GROUPS */
+.spots-section-header {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  padding: 20px 0 8px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
 .region-group {
   margin-bottom: 14px;
 }
@@ -3104,7 +3113,7 @@ const speciesData = [
 // ============ SPOTS DATA ============
 const spotsData = [
   // ===== SW WA / VANCOUVER =====
-  { region: 'SW Washington · Vancouver Area', type: 'fresh',
+  { region: 'SW Washington · Vancouver Area', type: 'fresh', group: 'local',
     spots: [
       { name: 'Columbia River · Vancouver Waterfront', meta: 'Downtown · Bank · Year-round',
         tags: ['Salmon', 'Steelhead', 'Sturgeon C&R', 'Shad', 'Bass'],
@@ -3153,7 +3162,7 @@ const spotsData = [
     ]},
 
   // ===== PORTLAND METRO =====
-  { region: 'Portland Metro · NW Oregon', type: 'fresh',
+  { region: 'Portland Metro · NW Oregon', type: 'fresh', group: 'local',
     spots: [
       { name: 'Willamette River (Portland)', meta: '15-30 min · OR license',
         tags: ['Salmon', 'Steelhead', 'Sturgeon', 'Bass'],
@@ -3182,7 +3191,7 @@ const spotsData = [
     ]},
 
   // ===== PUGET SOUND / SEATTLE =====
-  { region: 'Puget Sound · Seattle Metro', type: 'fresh',
+  { region: 'Puget Sound · Seattle Metro', type: 'fresh', group: 'local',
     spots: [
       { name: 'Lake Washington', meta: 'Seattle east · 22,000 ac',
         tags: ['Smallmouth', 'Cutthroat', 'Sockeye', 'Perch'],
@@ -3205,7 +3214,7 @@ const spotsData = [
         note: 'Winter steelhead lower river. Trout above the dam. Selective gear rules in upper.',
         regsUrl: 'https://wdfw.wa.gov/fishing/regulations', regsNote: 'Selective gear rules upper river' },
     ]},
-  { region: 'Puget Sound · Saltwater', type: 'salt',
+  { region: 'Puget Sound · Saltwater', type: 'salt', group: 'local',
     spots: [
       { name: 'MA 10 · Seattle / Bremerton (Central Sound)', meta: 'Public ramps Shilshole, Edmonds, Pt Defiance',
         tags: ['Chinook', 'Coho', 'Pink (odd yr)'],
@@ -3228,7 +3237,7 @@ const spotsData = [
     ]},
 
   // ===== WA COAST =====
-  { region: 'Washington Coast', type: 'salt',
+  { region: 'Washington Coast', type: 'salt', group: 'local',
     spots: [
       { name: 'Westport (MA 2)', meta: 'Charter capital · ramp',
         tags: ['Salmon', 'Tuna', 'Halibut', 'Ling', 'Rock'],
@@ -3248,7 +3257,7 @@ const spotsData = [
     ]},
 
   // ===== OREGON COAST =====
-  { region: 'Oregon Coast', type: 'salt',
+  { region: 'Oregon Coast', type: 'salt', group: 'oregon-coast',
     spots: [
       { name: 'Astoria / Lower Columbia (OR side)', meta: 'Buoy 10',
         tags: ['Salmon (Fall)', 'Sturgeon'],
@@ -3274,7 +3283,7 @@ const spotsData = [
     ]},
 
   // ===== CENTRAL OR =====
-  { region: 'Central Oregon · High Desert', type: 'fresh',
+  { region: 'Central Oregon · High Desert', type: 'fresh', group: 'local',
     spots: [
       { name: 'Deschutes River (Lower)', meta: 'Maupin · Warm Springs',
         tags: ['Trout', 'Steelhead', 'Salmon'],
@@ -3294,7 +3303,7 @@ const spotsData = [
     ]},
 
   // ===== EAST WA =====
-  { region: 'Eastern Washington', type: 'fresh',
+  { region: 'Eastern Washington', type: 'fresh', group: 'local',
     spots: [
       { name: 'Banks Lake', meta: 'Grand Coulee · 27,000 ac',
         tags: ['Walleye', 'Smallmouth', 'Perch', 'Burbot'],
@@ -3317,7 +3326,7 @@ const spotsData = [
     ]},
 
   // ===== OLYMPIC PENINSULA =====
-  { region: 'Olympic Peninsula', type: 'fresh',
+  { region: 'Olympic Peninsula', type: 'fresh', group: 'local',
     spots: [
       { name: 'Hoh River', meta: 'Olympic NP river',
         tags: ['Steelhead', 'Salmon'],
@@ -3334,7 +3343,7 @@ const spotsData = [
     ]},
 
   // ===== CENTRAL OR INLAND / SE =====
-  { region: 'Southern Oregon · Inland', type: 'fresh',
+  { region: 'Southern Oregon · Inland', type: 'fresh', group: 'local',
     spots: [
       { name: 'Rogue River', meta: 'Medford to coast',
         tags: ['Steelhead', 'Chinook', 'Trout'],
@@ -3422,7 +3431,13 @@ function renderSpecies(filter = 'all', search = '') {
 function renderSpots() {
   const container = document.getElementById('spots-container');
   let html = '';
+  const groupLabels = { 'local': 'LOCAL & REGIONAL', 'oregon-coast': 'OREGON COAST', 'wa-coast': 'WASHINGTON COAST' };
+  let lastGroup = null;
   spotsData.forEach((region, idx) => {
+    if (region.group !== lastGroup) {
+      html += `<div class="spots-section-header">${groupLabels[region.group] || region.group.toUpperCase()}</div>`;
+      lastGroup = region.group;
+    }
     html += `
       <div class="region-group">
         <div class="region-header" onclick="toggleRegion(this)">
@@ -4644,3 +4659,4 @@ function applyUpdate() {
 
 </body>
 </html>
+
