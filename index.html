@@ -3118,7 +3118,8 @@ const spotsData = [
       { name: 'Columbia River · Vancouver Waterfront', meta: 'Downtown · Bank · Year-round',
         tags: ['Salmon', 'Steelhead', 'Sturgeon C&R', 'Shad', 'Bass'],
         note: 'Wintler Park, Marine Park, Frenchman\'s Bar. Pay parking. Spring chinook plunking Apr-May, shad May-Jun, sturgeon C&R year-round.',
-        regsUrl: 'https://wdfw.wa.gov/fishing/management/columbia-river/recreational', regsNote: 'Columbia River rules apply' },
+        regsUrl: 'https://wdfw.wa.gov/fishing/management/columbia-river/recreational', regsNote: 'Columbia River rules apply',
+        tideUrl: 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9440422' },
       { name: 'Klineline Pond (Salmon Creek Park)', meta: '10 min · 12 ac · Bank only',
         tags: ['Trout', 'Bass', 'Stocked', 'Family'],
         note: 'No floating devices. Stocked frequently with rainbow including jumbos. Small largemouth population. Best 2-7 days after stocking.',
@@ -3454,7 +3455,7 @@ function renderSpots() {
               <div class="location-meta">${spot.meta}</div>
               <div class="location-tags">${spot.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
               <div class="location-note">${spot.note}</div>
-              ${spot.regsUrl ? `<div style="margin-top:6px;font-size:12px;">${spot.regsNote ? `<span style="color:var(--text-dim);">${spot.regsNote} · </span>` : ''}<a href="${spot.regsUrl}" target="_blank" rel="noopener" style="color:var(--accent);">Regs ↗</a></div>` : ''}
+              ${spot.regsUrl ? `<div style="margin-top:6px;font-size:12px;">${spot.regsNote ? `<span style="color:var(--text-dim);">${spot.regsNote} · </span>` : ''}<a href="${spot.regsUrl}" target="_blank" rel="noopener" style="color:var(--accent);">Regs ↗</a>${spot.tideUrl ? ` · <a href="${spot.tideUrl}" target="_blank" rel="noopener" style="color:var(--salt);">Tides ↗</a>` : ''}</div>` : ''}
             </div>
           `).join('')}
         </div>
@@ -4659,4 +4660,5 @@ function applyUpdate() {
 
 </body>
 </html>
+
 
