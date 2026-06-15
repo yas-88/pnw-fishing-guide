@@ -3276,9 +3276,11 @@ const spotsData = [
   // ===== OREGON COAST =====
   { region: 'Oregon Coast', type: 'salt', group: 'oregon-coast',
     spots: [
-      { name: 'Astoria / Lower Columbia (OR side)', meta: 'Buoy 10',
-        tags: ['Salmon (Fall)', 'Sturgeon'],
-        note: 'Same Buoy 10 fishery as Ilwaco. OR license. Excellent ramps at Hammond and Warrenton.',
+      { name: 'Astoria / Lower Columbia (OR side)', meta: '1.5 hr Portland · Columbia mouth · OR license',
+        tags: ['Chinook', 'Coho', 'White Sturgeon', 'Dungeness Crab'],
+        note: 'Same Buoy 10 fishery as Ilwaco — world-class fall Chinook August through early September, with coho following in September. OR license required on the south bank. Excellent boat ramps at Hammond and Warrenton. Sturgeon C&R year-round in the lower Columbia. Dungeness crab in Young’s Bay and the Columbia estuary. The bar at the Columbia mouth is one of the most dangerous in the world — stay inside the bay or go with a charter that knows it. Astoria–Megler Bridge marks the WA/OR crossing.',
+        regsUrl: 'https://myodfw.com/fishing/species/chinook-salmon',
+        regsNote: 'OR license · hatchery only salmon · sturgeon C&R below Bonneville',
         tideUrl: 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9439040' },
       { name: 'Tillamook Bay', meta: '1.5 hr Portland · Bay + offshore · OR license',
         tags: ['Chinook', 'Coho', 'Steelhead', 'Lingcod', 'Rockfish', 'Surf Perch', 'Dungeness Crab'],
@@ -3292,9 +3294,11 @@ const spotsData = [
         regsUrl: 'https://myodfw.com/fishing/species/pacific-halibut',
         regsNote: 'OR license · halibut quota-driven · CRC required · shellfish license for crab',
         tideUrl: 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9435380' },
-      { name: 'Depoe Bay', meta: 'Smallest US harbor',
-        tags: ['Salmon', 'Rock', 'Ling'],
-        note: 'Quick access to deep water. Strong rockfish/lingcod fishery. Smaller charter fleet, more personal.',
+      { name: 'Depoe Bay', meta: '2.5 hr Portland · Smallest US harbor · OR license',
+        tags: ['Chinook', 'Coho', 'Lingcod', 'Rockfish', 'Cabezon'],
+        note: 'Quickest access to deep water on the Oregon coast — the bar is narrow but the drop-off is close. Strong lingcod and rockfish fishery year-round when seasons allow. Salmon trolling July–August. Smaller charter fleet than Newport means more personal trips and flexible scheduling. No crabbing or clamming to speak of — this is a bottomfish and salmon port. Whale watching boats share the harbor. Bar can surge dramatically — check conditions before booking.',
+        regsUrl: 'https://myodfw.com/fishing/species/lingcod',
+        regsNote: 'OR license · lingcod 22" min · rockfish depth restrictions apply',
         tideUrl: 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9435380' },
       { name: 'Charleston / Coos Bay', meta: '3.5 hr Portland · South coast major port · OR license',
         tags: ['Chinook', 'Coho', 'Albacore Tuna', 'Pacific Halibut', 'Lingcod', 'Rockfish', 'Dungeness Crab'],
@@ -3302,13 +3306,23 @@ const spotsData = [
         regsUrl: 'https://myodfw.com/fishing/species/albacore-tuna',
         regsNote: 'OR license · halibut quota-driven · shellfish license for crab',
         tideUrl: 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9432780' },
-      { name: 'Pacific City / Cape Kiwanda', meta: 'Dory beach',
-        tags: ['Salmon', 'Bottom', 'Surf Perch'],
-        note: 'Famous dory fleet launches off the beach. Bottomfishing close-in. Surf perch and salmon at the cape.',
+      { name: 'Pacific City / Cape Kiwanda', meta: '2 hr Portland · Dory beach launch · OR license',
+        tags: ['Chinook', 'Coho', 'Lingcod', 'Rockfish', 'Surf Perch'],
+        note: 'One of the most unique fishing experiences on the Oregon coast — the dory fleet launches directly off the beach through the surf, no bar crossing required. Bottomfishing close-in at Cape Kiwanda rocks. Salmon trolling July–August. Surf perch year-round from the beach. No traditional marina — dory boats only for offshore. Haystack Rock marks the launch zone. The Pelican Pub is a solid post-trip stop.',
+        regsUrl: 'https://myodfw.com/fishing/species/chinook-salmon',
+        regsNote: 'OR license · hatchery only salmon retention',
         tideUrl: 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9437540' },
-      { name: 'Brookings / Chetco Bay', meta: 'Far south',
-        tags: ['Salmon (Fall)', 'Tuna'],
-        note: 'Fall Chinook in Chetco late Oct-Nov is legendary. Tuna close in late summer.',
+      { name: 'Florence / Siuslaw Estuary', meta: '2.5 hr Portland · Bay + river · OR license',
+        tags: ['Chinook', 'Coho', 'Steelhead', 'Surf Perch', 'Dungeness Crab'],
+        note: 'An underrated estuary fishery that most anglers drive past on the way to Newport or Coos Bay. Fall Chinook enter the Siuslaw River August–October. Coho follow September–November. Winter steelhead December–March in the upper river. Dungeness crab in the lower bay year-round. Surf perch from the north and south jetties at the river mouth. Port of Siuslaw Marina has a good launch ramp. Florence is a pleasant town with solid gear shops. Quieter and less pressured than the big ports north and south.',
+        regsUrl: 'https://myodfw.com/fishing/species/chinook-salmon',
+        regsNote: 'OR license · hatchery only salmon retention · shellfish license for crab',
+        tideUrl: 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9432780' },
+      { name: 'Brookings / Chetco Bay', meta: '5.5 hr Portland · Far south OR coast · OR license',
+        tags: ['Chinook', 'Coho', 'Albacore Tuna', 'Lingcod', 'Rockfish'],
+        note: 'Fall Chinook in the Chetco River late October through November is the stuff of legend — some of the largest returns on the Oregon coast. Albacore tuna pushes close to shore in late summer, often 15–25 miles out — closer than most OR ports. Lingcod and rockfish year-round when open. Brookings Harbor has a small but capable charter fleet. The Chetco River also produces winter steelhead December through February. Closest OR port to the California border — worth the drive for the fall Chinook run.',
+        regsUrl: 'https://myodfw.com/fishing/species/chinook-salmon',
+        regsNote: 'OR license · hatchery only salmon retention',
         tideUrl: 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9431647' },
     ]},
 
@@ -4689,6 +4703,7 @@ function applyUpdate() {
 
 </body>
 </html>
+
 
 
 
