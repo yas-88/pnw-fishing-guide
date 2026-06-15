@@ -3283,7 +3283,7 @@ const spotsData = [
     ]},
 
   // ===== CENTRAL OR =====
-  { region: 'Central Oregon · High Desert', type: 'fresh', group: 'local',
+  { region: 'Central Oregon · High Desert', type: 'fresh', group: 'inland',
     spots: [
       { name: 'Deschutes River (Lower)', meta: 'Maupin · Warm Springs',
         tags: ['Trout', 'Steelhead', 'Salmon'],
@@ -3303,7 +3303,7 @@ const spotsData = [
     ]},
 
   // ===== EAST WA =====
-  { region: 'Eastern Washington', type: 'fresh', group: 'local',
+  { region: 'Eastern Washington', type: 'fresh', group: 'inland',
     spots: [
       { name: 'Banks Lake', meta: 'Grand Coulee · 27,000 ac',
         tags: ['Walleye', 'Smallmouth', 'Perch', 'Burbot'],
@@ -3326,7 +3326,7 @@ const spotsData = [
     ]},
 
   // ===== OLYMPIC PENINSULA =====
-  { region: 'Olympic Peninsula', type: 'fresh', group: 'local',
+  { region: 'Olympic Peninsula', type: 'fresh', group: 'inland',
     spots: [
       { name: 'Hoh River', meta: 'Olympic NP river',
         tags: ['Steelhead', 'Salmon'],
@@ -3343,7 +3343,7 @@ const spotsData = [
     ]},
 
   // ===== CENTRAL OR INLAND / SE =====
-  { region: 'Southern Oregon · Inland', type: 'fresh', group: 'local',
+  { region: 'Southern Oregon · Inland', type: 'fresh', group: 'inland',
     spots: [
       { name: 'Rogue River', meta: 'Medford to coast',
         tags: ['Steelhead', 'Chinook', 'Trout'],
@@ -3431,7 +3431,7 @@ function renderSpecies(filter = 'all', search = '') {
 function renderSpots() {
   const container = document.getElementById('spots-container');
   let html = '';
-  const groupLabels = { 'local': 'LOCAL & REGIONAL', 'oregon-coast': 'OREGON COAST', 'wa-coast': 'WASHINGTON COAST' };
+  const groupLabels = { 'local': 'LOCAL & REGIONAL', 'oregon-coast': 'OREGON COAST', 'wa-coast': 'WASHINGTON COAST', 'inland': 'INTERIOR & INLAND' };
   let lastGroup = null;
   spotsData.forEach((region, idx) => {
     if (region.group !== lastGroup) {
