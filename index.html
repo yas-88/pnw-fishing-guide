@@ -3473,7 +3473,7 @@ function renderSpots() {
               <div class="location-meta">${spot.meta}</div>
               <div class="location-tags">${spot.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
               <div class="location-note">${spot.note}</div>
-              ${spot.regsUrl ? `<div style="margin-top:6px;font-size:12px;">${spot.regsNote ? `<span style="color:var(--text-dim);">${spot.regsNote} · </span>` : ''}<a href="${spot.regsUrl}" target="_blank" rel="noopener" style="color:var(--accent);">Regs ↗</a>${spot.tideUrl ? ` · <a href="${spot.tideUrl}" target="_blank" rel="noopener" style="color:var(--salt);">Tides ↗</a>` : ''}</div>` : ''}
+              ${(spot.regsUrl || spot.tideUrl) ? `<div style="margin-top:6px;font-size:12px;">${spot.regsNote ? `<span style="color:var(--text-dim);">${spot.regsNote} · </span>` : ''}${spot.regsUrl ? `<a href="${spot.regsUrl}" target="_blank" rel="noopener" style="color:var(--accent);">Regs ↗</a>` : ''}${spot.tideUrl ? `${spot.regsUrl ? ' · ' : ''}<a href="${spot.tideUrl}" target="_blank" rel="noopener" style="color:var(--salt);">Tides ↗</a>` : ''}</div>` : ''}
             </div>
           `).join('')}
         </div>
@@ -4678,5 +4678,6 @@ function applyUpdate() {
 
 </body>
 </html>
+
 
 
