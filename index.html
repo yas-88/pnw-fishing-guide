@@ -961,6 +961,10 @@ section.active { display: block; animation: fadeIn 0.25s; }
   border: 1px solid var(--border);
 }
 .rig-parts { font-size: 12px; }
+.rig-body { display: none; }
+.rig-body.open { display: block; }
+.rig-title { cursor: pointer; user-select: none; }
+.rig-title:hover { color: var(--accent); }
 .rig-part {
   padding: 5px 0;
   color: var(--text-dim);
@@ -2029,8 +2033,9 @@ footer {
 
   <!-- DROP SHOT -->
   <div class="rig-diagram">
-    <div class="rig-title">▸ Drop Shot</div>
+    <div class="rig-title" onclick="toggleRig(this)">▸ Drop Shot</div>
     <div class="rig-use">Bass, walleye, perch · finesse · clear water</div>
+    <div class="rig-body">
     <svg class="rig-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
       <line x1="160" y1="10" x2="160" y2="80" stroke="#d4a574" stroke-width="1.5"/>
       <text x="170" y="30" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 8-12 lb fluoro</text>
@@ -2049,12 +2054,14 @@ footer {
       <div class="rig-part"><span class="rig-part-num">③</span>Hook point facing UP · soft plastic worm or minnow</div>
       <div class="rig-part"><span class="rig-part-num">④</span>Cylinder drop shot weight on tag end</div>
     </div>
+    </div>
   </div>
 
   <!-- TEXAS RIG -->
   <div class="rig-diagram">
-    <div class="rig-title">▸ Texas Rig</div>
+    <div class="rig-title" onclick="toggleRig(this)">▸ Texas Rig</div>
     <div class="rig-use">Bass · weedless · heavy cover</div>
+    <div class="rig-body">
     <svg class="rig-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
       <line x1="10" y1="40" x2="120" y2="80" stroke="#d4a574" stroke-width="1.5"/>
       <text x="20" y="30" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 12-17 lb fluoro/braid</text>
@@ -2070,12 +2077,14 @@ footer {
       <div class="rig-part"><span class="rig-part-num">③</span>3/0-4/0 EWG worm hook</div>
       <div class="rig-part"><span class="rig-part-num">④</span>Soft plastic worm or creature, hook point tucked back into body</div>
     </div>
+    </div>
   </div>
 
   <!-- NED RIG -->
   <div class="rig-diagram">
-    <div class="rig-title">▸ Ned Rig</div>
+    <div class="rig-title" onclick="toggleRig(this)">▸ Ned Rig</div>
     <div class="rig-use">Smallmouth, finicky bass · finesse magic</div>
+    <div class="rig-body">
     <svg class="rig-svg" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
       <line x1="20" y1="40" x2="140" y2="75" stroke="#d4a574" stroke-width="1.5"/>
       <text x="30" y="30" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 6-10 lb fluoro</text>
@@ -2090,12 +2099,14 @@ footer {
       <div class="rig-part"><span class="rig-part-num">②</span>Mushroom-head jig 1/10-1/6 oz · light wire EWG</div>
       <div class="rig-part"><span class="rig-part-num">③</span>2-3" stick worm (Z-Man TRD, half a Senko)</div>
     </div>
+    </div>
   </div>
 
   <!-- KOKANEE TROLL -->
   <div class="rig-diagram">
-    <div class="rig-title">▸ Kokanee Trolling Rig</div>
+    <div class="rig-title" onclick="toggleRig(this)">▸ Kokanee Trolling Rig</div>
     <div class="rig-use">Lake Merwin, Yale, Lake Chelan</div>
+    <div class="rig-body">
     <svg class="rig-svg" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
       <line x1="10" y1="50" x2="100" y2="80" stroke="#d4a574" stroke-width="1.5"/>
       <text x="20" y="40" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 8-10 lb main</text>
@@ -2115,12 +2126,14 @@ footer {
       <div class="rig-part"><span class="rig-part-num">③</span>12-18" leader (short = more action)</div>
       <div class="rig-part"><span class="rig-part-num">④</span>Pink/UV hoochie or small spinner + shoepeg corn cured in scent</div>
     </div>
+    </div>
   </div>
 
   <!-- STEELHEAD FLOAT -->
   <div class="rig-diagram">
-    <div class="rig-title">▸ Float + Jig (Steelhead)</div>
+    <div class="rig-title" onclick="toggleRig(this)">▸ Float + Jig (Steelhead)</div>
     <div class="rig-use">Most versatile steelhead presentation</div>
+    <div class="rig-body">
     <svg class="rig-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
       <line x1="20" y1="20" x2="160" y2="40" stroke="#d4a574" stroke-width="1.5"/>
       <text x="30" y="14" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 12-15 lb mainline</text>
@@ -2139,12 +2152,14 @@ footer {
       <div class="rig-part"><span class="rig-part-num">③</span>2-3 split shot below float, 18" above jig</div>
       <div class="rig-part"><span class="rig-part-num">④</span>1/8 oz marabou jig in pink, peach, black + bead</div>
     </div>
+    </div>
   </div>
 
   <!-- SURF PERCH -->
   <div class="rig-diagram">
-    <div class="rig-title">▸ Surf Perch Rig</div>
+    <div class="rig-title" onclick="toggleRig(this)">▸ Surf Perch Rig</div>
     <div class="rig-use">Coast beaches · pier · jetty</div>
+    <div class="rig-body">
     <svg class="rig-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
       <line x1="20" y1="20" x2="160" y2="80" stroke="#d4a574" stroke-width="1.5"/>
       <text x="30" y="14" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 10-15 lb mono main</text>
@@ -2166,12 +2181,14 @@ footer {
       <div class="rig-part"><span class="rig-part-num">④</span>Pyramid sinker 1-3 oz (matches surf · use more in heavy waves)</div>
       <div class="rig-part"><span class="rig-part-num">⑤</span>Bait: sand crab, mussel, raw shrimp, Berkley Gulp! sandworm</div>
     </div>
+    </div>
   </div>
 
   <!-- SALMON MOOCHING -->
   <div class="rig-diagram">
-    <div class="rig-title">▸ Mooching Rig (Salt Salmon)</div>
+    <div class="rig-title" onclick="toggleRig(this)">▸ Mooching Rig (Salt Salmon)</div>
     <div class="rig-use">Puget Sound coho, Chinook · drift / slow troll</div>
+    <div class="rig-body">
     <svg class="rig-svg" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
       <line x1="10" y1="30" x2="110" y2="55" stroke="#d4a574" stroke-width="1.5"/>
       <text x="20" y="22" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 20 lb mono</text>
@@ -2189,12 +2206,14 @@ footer {
       <div class="rig-part"><span class="rig-part-num">③</span>6 ft mono leader, 20 lb</div>
       <div class="rig-part"><span class="rig-part-num">④</span>Cut-plug herring on tandem 4/0 hooks · angled cut creates spin</div>
     </div>
+    </div>
   </div>
 
   <!-- HALIBUT -->
   <div class="rig-diagram">
-    <div class="rig-title">▸ Halibut Spreader</div>
+    <div class="rig-title" onclick="toggleRig(this)">▸ Halibut Spreader</div>
     <div class="rig-use">WA/OR coast offshore · 100-300 ft</div>
+    <div class="rig-body">
     <svg class="rig-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
       <line x1="160" y1="10" x2="160" y2="55" stroke="#d4a574" stroke-width="1.5"/>
       <text x="170" y="22" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 65-80 lb braid main</text>
@@ -2214,12 +2233,14 @@ footer {
       <div class="rig-part"><span class="rig-part-num">③</span>Cannonball 16-32 oz (depth + current dependent)</div>
       <div class="rig-part"><span class="rig-part-num">④</span>16/0 circle hook on 3 ft leader, herring or salmon belly</div>
     </div>
+    </div>
   </div>
 
   <!-- ROCKFISH JIG -->
   <div class="rig-diagram">
-    <div class="rig-title">▸ Rockfish/Lingcod Jig</div>
+    <div class="rig-title" onclick="toggleRig(this)">▸ Rockfish/Lingcod Jig</div>
     <div class="rig-use">Vertical jig · 40-200 ft rocky bottom</div>
+    <div class="rig-body">
     <svg class="rig-svg" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
       <line x1="160" y1="10" x2="160" y2="60" stroke="#d4a574" stroke-width="1.5"/>
       <text x="170" y="22" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 50-65 lb braid</text>
@@ -2235,12 +2256,14 @@ footer {
       <div class="rig-part"><span class="rig-part-num">③</span>Diamond or knife jig 4-12 oz · drop to bottom, lift-fall</div>
       <div class="rig-part"><span class="rig-part-num">④</span>Add a swimbait teaser 18" above for double-headers</div>
     </div>
+    </div>
   </div>
 
   <!-- STURGEON -->
   <div class="rig-diagram">
-    <div class="rig-title">▸ Sturgeon Anchor Rig</div>
+    <div class="rig-title" onclick="toggleRig(this)">▸ Sturgeon Anchor Rig</div>
     <div class="rig-use">Columbia C&R · barbless circle required</div>
+    <div class="rig-body">
     <svg class="rig-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
       <line x1="20" y1="30" x2="140" y2="80" stroke="#d4a574" stroke-width="2"/>
       <text x="30" y="22" fill="#9a9489" font-family="JetBrains Mono" font-size="9">① 50-65 lb braid</text>
@@ -2257,6 +2280,7 @@ footer {
       <div class="rig-part"><span class="rig-part-num">②</span>Pyramid weight 4-12 oz on slider above swivel</div>
       <div class="rig-part"><span class="rig-part-num">③</span>60-80 lb mono leader 12-18"</div>
       <div class="rig-part"><span class="rig-part-num">④</span><strong>Required:</strong> 5/0-8/0 single barbless circle hook, snelled</div>
+    </div>
     </div>
   </div>
 </section>
@@ -3570,6 +3594,12 @@ function renderSpots() {
 }
 
 // ============ INTERACTIONS ============
+function toggleRig(el) {
+  const body = el.nextElementSibling.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  el.textContent = (isOpen ? '▸ ' : '▾ ') + el.textContent.slice(2);
+}
 function toggleSpecies(header) {
   const body = header.nextElementSibling;
   body.classList.toggle('expanded');
@@ -4757,6 +4787,7 @@ function applyUpdate() {
 
 </body>
 </html>
+
 
 
 
