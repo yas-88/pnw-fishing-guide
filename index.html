@@ -3466,7 +3466,7 @@ function renderSpots() {
             <span class="expand-arrow">▼</span>
           </div>
         </div>
-        <div class="region-body" ${idx === 0 ? 'class="region-body expanded"' : ''}>
+        <div class="region-body">
           ${region.spots.map(spot => `
             <div class="location-card ${region.type}">
               <div class="location-name">${spot.name}</div>
@@ -3481,13 +3481,6 @@ function renderSpots() {
     `;
   });
   container.innerHTML = html;
-  // Expand first region by default
-  const firstBody = container.querySelector('.region-body');
-  const firstHeader = container.querySelector('.region-header');
-  if (firstBody && firstHeader) {
-    firstBody.classList.add('expanded');
-    firstHeader.classList.add('expanded');
-  }
 }
 
 // ============ INTERACTIONS ============
@@ -4684,6 +4677,7 @@ function applyUpdate() {
 
 </body>
 </html>
+
 
 
 
