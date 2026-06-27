@@ -2,6 +2,38 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>
+(function() {
+  function setTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+  }
+  function clockGuessIsDark() {
+    var h = new Date().getHours();
+    return (h < 6 || h >= 20);
+  }
+  var override = localStorage.getItem('pnwfg-theme-override');
+  if (override === 'dark' || override === 'light') {
+    setTheme(override);
+    return;
+  }
+  var cached = localStorage.getItem('pnwfg-sun-cache');
+  if (cached) {
+    try {
+      var c = JSON.parse(cached);
+      var now = new Date();
+      var sunrise = new Date(c.sunrise);
+      var sunset = new Date(c.sunset);
+      // Re-anchor cached times to today's date, same hour/min
+      var today = new Date();
+      sunrise.setFullYear(today.getFullYear(), today.getMonth(), today.getDate());
+      sunset.setFullYear(today.getFullYear(), today.getMonth(), today.getDate());
+      setTheme(now < sunrise || now > sunset ? 'dark' : 'light');
+      return;
+    } catch (e) {}
+  }
+  setTheme(clockGuessIsDark() ? 'dark' : 'light');
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="theme-color" content="#0f1310">
 <meta name="description" content="Pacific Northwest fishing field guide by Yassir Baza (YAB Official). Species, spots, rigs, knots, weather, and pro tips for fresh and salt water anglers across Washington and Oregon. Works offline.">
@@ -19,8 +51,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-:root {
+ 
+html[data-theme="dark"], html:not([data-theme]) {
   --bg: #0f1310;
   --bg-card: #1a2118;
   --bg-elev: #232b21;
@@ -40,7 +72,28 @@
   --border: #2d3527;
   --line: rgba(212, 165, 116, 0.15);
 }
-
+ 
+html[data-theme="light"] {
+  --bg: #f7f3ec;
+  --bg-card: #ffffff;
+  --bg-elev: #efe8da;
+  --bg-deep: #e8e0d0;
+  --accent: #9c7341;
+  --accent-bright: #7a5826;
+  --salt: #3d7a8c;
+  --salt-bright: #2a5a68;
+  --fresh: #5a7a3d;
+  --fresh-bright: #3f5c28;
+  --danger: #a8392a;
+  --warn: #a87a0e;
+  --info: #3d6a94;
+  --text: #2a2620;
+  --text-dim: #5c5648;
+  --text-faint: #8a8270;
+  --border: #d8cfb8;
+  --line: rgba(156, 115, 65, 0.18);
+}
+ 
 html, body {
   background: var(--bg);
   color: var(--text);
@@ -49,7 +102,7 @@ html, body {
   line-height: 1.55;
   overflow-x: hidden;
 }
-
+ 
 body {
   background-image:
     radial-gradient(at 20% 10%, rgba(212, 165, 116, 0.04) 0%, transparent 50%),
@@ -57,7 +110,7 @@ body {
   min-height: 100vh;
   padding-bottom: 80px;
 }
-
+ 
 /* HEADER */
 header {
   padding: 20px 16px 16px;
@@ -68,7 +121,7 @@ header {
   backdrop-filter: blur(12px);
   z-index: 100;
 }
-
+ 
 .title {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 30px;
@@ -76,7 +129,7 @@ header {
   color: var(--accent);
   line-height: 1;
 }
-
+ 
 .subtitle {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
@@ -85,7 +138,7 @@ header {
   letter-spacing: 2px;
   margin-top: 4px;
 }
-
+ 
 .header-meta {
   margin-top: 8px;
   font-size: 11px;
@@ -93,7 +146,7 @@ header {
   font-family: 'JetBrains Mono', monospace;
   letter-spacing: 1px;
 }
-
+ 
 /* NAV TABS */
 .nav {
   display: flex;
@@ -108,7 +161,7 @@ header {
   scrollbar-width: none;
 }
 .nav::-webkit-scrollbar { display: none; }
-
+ 
 .nav-tab {
   padding: 11px 14px;
   font-family: 'JetBrains Mono', monospace;
@@ -128,17 +181,17 @@ header {
   color: var(--accent);
   border-bottom-color: var(--accent);
 }
-
+ 
 /* SECTIONS */
 main { padding: 18px 14px; max-width: 900px; margin: 0 auto; }
 section { display: none; }
 section.active { display: block; animation: fadeIn 0.25s; }
-
+ 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
+ 
 /* SECTION HEADINGS */
 .section-title {
   font-family: 'Bebas Neue', sans-serif;
@@ -149,7 +202,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   line-height: 1;
 }
 .section-title:first-child { margin-top: 0; }
-
+ 
 .section-subtitle {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
@@ -158,7 +211,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   text-transform: uppercase;
   margin-bottom: 16px;
 }
-
+ 
 /* TODAY BANNER */
 .today-banner {
   background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elev) 100%);
@@ -177,7 +230,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 }
 .today-text { font-size: 14px; color: var(--text); }
 .today-text strong { color: var(--accent-bright); }
-
+ 
 /* LOCATION SELECTOR */
 .loc-btn {
   padding: 8px 14px;
@@ -205,11 +258,11 @@ section.active { display: block; animation: fadeIn 0.25s; }
   opacity: 0.6;
 }
 #location-selector::-webkit-scrollbar { display: none; }
-
+ 
 .bite-good { color: var(--fresh-bright) !important; }
 .bite-fair { color: var(--warn) !important; }
 .bite-poor { color: var(--danger) !important; }
-
+ 
 /* TIDE CARDS */
 .tide-card {
   background: var(--bg-card);
@@ -243,7 +296,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   color: var(--text-dim);
   margin-top: 4px;
 }
-
+ 
 /* FORECAST GRID */
 .forecast-day {
   background: var(--bg-card);
@@ -285,7 +338,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   font-weight: 700;
   margin-top: 4px;
 }
-
+ 
 /* NEWSLETTER */
 .newsletter-box {
   background: linear-gradient(135deg, rgba(212, 165, 116, 0.08) 0%, rgba(107, 168, 184, 0.06) 100%);
@@ -330,7 +383,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   border-left: 2px solid var(--accent);
 }
 .newsletter-pitch strong { color: var(--accent-bright); }
-
+ 
 .newsletter-form {
   display: flex;
   gap: 8px;
@@ -350,7 +403,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 }
 .newsletter-form input:focus { border-color: var(--accent); }
 .newsletter-form input::placeholder { color: var(--text-faint); }
-
+ 
 .newsletter-form button {
   padding: 12px 18px;
   background: var(--accent);
@@ -369,7 +422,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 .newsletter-form button:hover { background: var(--accent-bright); }
 .newsletter-form button:active { transform: scale(0.97); }
 .newsletter-form button:disabled { opacity: 0.5; cursor: not-allowed; }
-
+ 
 .newsletter-status {
   font-size: 12px;
   margin-top: 6px;
@@ -380,7 +433,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 .newsletter-status.success { color: var(--fresh-bright); }
 .newsletter-status.error { color: var(--danger); }
 .newsletter-status.pending { color: var(--accent); }
-
+ 
 .newsletter-meta {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
@@ -389,14 +442,14 @@ section.active { display: block; animation: fadeIn 0.25s; }
   margin-top: 12px;
 }
 .newsletter-meta a { color: var(--accent); }
-
+ 
 @media (max-width: 480px) {
   .newsletter-form { flex-direction: column; }
   .newsletter-title { font-size: 26px; }
   #forecast-grid { grid-template-columns: repeat(7, 1fr); }
   .forecast-day-name, .forecast-day-temp .low { font-size: 8px; }
 }
-
+ 
 /* INFO CARDS GRID */
 .info-grid {
   display: grid;
@@ -436,7 +489,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   margin-top: 4px;
   line-height: 1.45;
 }
-
+ 
 /* CONDITION DIAL */
 .condition-strip {
   display: grid;
@@ -480,7 +533,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 .status-good { color: var(--fresh-bright); }
 .status-fair { color: var(--warn); }
 .status-poor { color: var(--danger); }
-
+ 
 /* WEATHER INFOGRAPHIC */
 .weather-block {
   background: var(--bg-card);
@@ -504,7 +557,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   text-transform: uppercase;
   margin-bottom: 12px;
 }
-
+ 
 /* TEMP ZONES BAR */
 .temp-bar {
   display: flex;
@@ -538,7 +591,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   color: var(--text-faint);
   letter-spacing: 0.5px;
 }
-
+ 
 /* PRESSURE DIAL */
 .pressure-row {
   display: grid;
@@ -574,7 +627,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 }
 .pressure-cell.peak .pressure-rate { color: var(--fresh-bright); }
 .pressure-cell.poor .pressure-rate { color: var(--danger); }
-
+ 
 /* WIND DIRECTION */
 .wind-compass {
   display: grid;
@@ -599,7 +652,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   margin-bottom: 4px;
 }
 .wind-detail { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
-
+ 
 /* TIME OF DAY STRIP */
 .time-strip {
   display: grid;
@@ -633,7 +686,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 }
 .time-block.prime .time-bite { color: var(--fresh-bright); }
 .time-block.good .time-bite { color: var(--accent); }
-
+ 
 /* MOON PHASE */
 .moon-row {
   display: grid;
@@ -664,7 +717,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   margin-top: 2px;
   letter-spacing: 0.5px;
 }
-
+ 
 /* SPECIES TYPE TOGGLE */
 .type-toggle {
   display: flex;
@@ -688,7 +741,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 .type-btn.active.fresh { background: rgba(122, 155, 93, 0.18); border-color: var(--fresh); color: var(--fresh-bright); }
 .type-btn.active.salt { background: rgba(107, 168, 184, 0.18); border-color: var(--salt); color: var(--salt-bright); }
 .type-btn.active.all { background: rgba(212, 165, 116, 0.15); border-color: var(--accent); color: var(--accent-bright); }
-
+ 
 /* SEARCH */
 .search-bar {
   display: flex;
@@ -708,7 +761,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 }
 .search-bar input:focus { border-color: var(--accent); }
 .search-bar input::placeholder { color: var(--text-faint); }
-
+ 
 /* SPECIES CARDS */
 .species-card {
   background: var(--bg-card);
@@ -719,7 +772,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 }
 .species-card.salt { border-left: 3px solid var(--salt); }
 .species-card.fresh { border-left: 3px solid var(--fresh); }
-
+ 
 .species-header {
   padding: 14px 16px;
   display: flex;
@@ -731,7 +784,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   border-bottom: 1px solid var(--border);
 }
 .species-header:active { background: #2a3326; }
-
+ 
 .species-name {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 22px;
@@ -748,7 +801,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   margin-top: 3px;
   letter-spacing: 0.5px;
 }
-
+ 
 .species-tags {
   display: flex;
   gap: 6px;
@@ -771,7 +824,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 .mini-tag.hatchery { color: #f4c79b; border: 1px solid rgba(244,199,155,0.4); background: rgba(244,199,155,0.08); }
 .mini-tag.wild { color: #9bc176; border: 1px solid rgba(155,193,118,0.4); background: rgba(155,193,118,0.08); }
 .mini-tag.wild-cr { color: var(--warn); border: 1px solid rgba(212,160,23,0.4); background: rgba(212,160,23,0.08); }
-
+ 
 .status-pill {
   font-family: 'JetBrains Mono', monospace;
   font-size: 9px;
@@ -786,7 +839,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 .status-closed { background: rgba(200, 90, 74, 0.15); color: var(--danger); border: 1px solid rgba(200, 90, 74, 0.4); }
 .status-cr { background: rgba(212, 160, 23, 0.15); color: var(--warn); border: 1px solid rgba(212, 160, 23, 0.4); }
 .status-partial { background: rgba(212, 165, 116, 0.15); color: var(--accent); border: 1px solid rgba(212, 165, 116, 0.4); }
-
+ 
 .species-photo {
   width: 100%;
   max-height: 180px;
@@ -799,7 +852,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   display: none;
 }
 .species-body.expanded { display: block; }
-
+ 
 .row {
   display: grid;
   grid-template-columns: 80px 1fr;
@@ -819,7 +872,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 }
 .row-value { color: var(--text); line-height: 1.55; }
 .row-value strong { color: var(--accent-bright); font-weight: 600; }
-
+ 
 /* SEASON BAR */
 .season-bar {
   display: grid;
@@ -840,7 +893,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 .month.open { background: rgba(122, 155, 93, 0.3); color: var(--fresh-bright); }
 .month.closed { background: var(--bg-deep); color: var(--text-faint); }
 .month.cr { background: rgba(212, 160, 23, 0.3); color: var(--warn); }
-
+ 
 .expand-arrow {
   color: var(--text-dim);
   font-family: 'JetBrains Mono', monospace;
@@ -848,7 +901,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   transition: transform 0.2s;
 }
 .species-header.expanded .expand-arrow { transform: rotate(180deg); }
-
+ 
 /* REGION PILLS */
 .region-bar {
   display: flex;
@@ -879,7 +932,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   border-color: var(--accent);
   font-weight: 700;
 }
-
+ 
 /* LOCATION CARDS */
 .location-card {
   background: var(--bg-card);
@@ -929,7 +982,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   line-height: 1.55;
 }
 .location-note strong { color: var(--text); }
-
+ 
 /* RIG DIAGRAM */
 .rig-diagram {
   background: var(--bg-card);
@@ -977,7 +1030,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   font-weight: 700;
   flex-shrink: 0;
 }
-
+ 
 /* TABLES */
 .hook-table {
   width: 100%;
@@ -1010,7 +1063,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 }
 .hook-table td strong { color: var(--text); }
 .hook-table tr:last-child td { border-bottom: none; }
-
+ 
 /* KNOT CARDS */
 .knot-card {
   background: var(--bg-card);
@@ -1072,7 +1125,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   align-items: center;
   justify-content: center;
 }
-
+ 
 /* TIPS */
 .tip-card {
   background: var(--bg-card);
@@ -1098,7 +1151,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   margin-bottom: 3px;
 }
 .tip-text { font-size: 13px; color: var(--text-dim); line-height: 1.55; }
-
+ 
 /* NOTE BOX */
 .note {
   background: rgba(212, 160, 23, 0.08);
@@ -1114,7 +1167,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 .note.danger strong { color: var(--danger); }
 .note.info { background: rgba(94, 141, 184, 0.08); border-left-color: var(--info); }
 .note.info strong { color: var(--info); }
-
+ 
 /* LICENSE BOX */
 .license-box {
   background: var(--bg-card);
@@ -1143,7 +1196,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   left: 0;
   color: var(--accent);
 }
-
+ 
 /* QUICK PICK GRID */
 .quick-pick {
   display: grid;
@@ -1170,7 +1223,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   color: var(--text);
 }
 .qp-value strong { color: var(--accent-bright); }
-
+ 
 /* COLLAPSIBLE REGION GROUPS */
 .spots-section-header {
   font-family: 'JetBrains Mono', monospace;
@@ -1242,14 +1295,14 @@ section.active { display: block; animation: fadeIn 0.25s; }
     { timeout: 10000, maximumAge: 60000 }
   );
 }
-
+ 
 function setRadius(miles, el) {
   nearMeRadius = miles;
   document.querySelectorAll('.radius-pill').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   if (nearMeLat !== null) renderNearMe();
 }
-
+ 
 function renderNearMe() {
   const status = document.getElementById('near-me-status');
   const results = document.getElementById('near-me-results');
@@ -1284,7 +1337,7 @@ function renderNearMe() {
 }
 .region-body { display: none; }
 .region-body.expanded { display: block; }
-
+ 
 /* TRIP LOG */
 .log-form {
   background: var(--bg-card);
@@ -1483,7 +1536,7 @@ function renderNearMe() {
   border-color: var(--accent);
   font-weight: 700;
 }
-
+ 
 /* FOOTER */
 footer {
   padding: 24px 16px;
@@ -1503,7 +1556,7 @@ footer {
   text-decoration: none;
   border-bottom: 1px dotted var(--accent);
 }
-
+ 
 @media (max-width: 480px) {
   .row { grid-template-columns: 70px 1fr; }
   .info-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1516,7 +1569,7 @@ footer {
 </style>
 </head>
 <body>
-
+ 
 <header>
   <div style="display:flex;align-items:center;gap:14px;">
     <img src="icons/logo-header-256.png" alt="PNW Fishing Guide" style="width:56px;height:56px;flex-shrink:0;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.4);">
@@ -1525,10 +1578,12 @@ footer {
       <div class="subtitle">Pacific Northwest · Fresh + Salt · Est. 2026</div>
       <div class="header-meta">BY YASSIR BAZA · @YAB.OFFICIAL · v2.9</div>
     </div>
+    <button id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme" style="flex-shrink:0;width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--bg-card);color:var(--accent);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color 0.2s;"></button>
+    <script>document.getElementById('theme-toggle').textContent = document.documentElement.getAttribute('data-theme') === 'light' ? '☀️' : '🌙';</script>
   </div>
   <div class="header-meta" style="margin-top:8px;padding-top:6px;border-top:1px solid var(--border);">CONFIRM REGS AT WDFW.GOV + MYODFW.COM</div>
 </header>
-
+ 
 <nav class="nav">
   <button class="nav-tab active" data-tab="now">Right Now</button>
   <button class="nav-tab" data-tab="conditions">Conditions</button>
@@ -1540,17 +1595,17 @@ footer {
   <button class="nav-tab" data-tab="tips">Tips</button>
   <button class="nav-tab" data-tab="log">Trip Log</button>
 </nav>
-
+ 
 <main>
-
+ 
 <!-- ============================ NOW ============================ -->
 <section id="now" class="active">
   <div class="section-title" style="margin-top:0;">RIGHT NOW</div>
   <div class="section-subtitle">Live conditions + what's hot</div>
-
+ 
   <div class="section-title">LIVE CONDITIONS</div>
   <div class="section-subtitle" id="live-location-label">Loading your location...</div>
-
+ 
   <div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;" id="location-selector">
     <button class="loc-btn active" data-lat="45.6387" data-lng="-122.6615" data-name="Vancouver, WA">Vancouver WA</button>
     <button class="loc-btn" data-lat="45.5152" data-lng="-122.6784" data-name="Portland, OR">Portland</button>
@@ -1563,7 +1618,7 @@ footer {
     <button class="loc-btn" data-lat="48.0419" data-lng="-122.1817" data-name="Everett, WA">Everett</button>
     <button class="loc-btn" id="use-my-location">📍 My Location</button>
   </div>
-
+ 
   <div class="info-grid">
     <div class="info-card">
       <span class="info-card-icon">🌡️</span>
@@ -1602,39 +1657,39 @@ footer {
       <div class="info-card-detail" id="live-score-detail">Based on pressure, wind, sky</div>
     </div>
   </div>
-
+ 
   <!-- TIDES (only shown for coastal locations) -->
   <div id="tides-section" style="display:none;">
     <div class="section-title">TIDES</div>
     <div class="section-subtitle" id="tides-station-label">Loading station...</div>
-
+ 
     <div class="info-grid" id="tides-grid">
       <!-- populated by JS -->
     </div>
-
+ 
     <div class="note info" style="margin-top:6px;">
       <strong>Best bite windows:</strong> last hour incoming + first hour outgoing. Slack tides (the 30 min around high or low) often slow the bite. Big tide swings move bait, which moves predators.
     </div>
   </div>
-
+ 
   <!-- 7-DAY FORECAST -->
   <div class="section-title">7-DAY FORECAST · BEST DAYS</div>
   <div class="section-subtitle">Bite score, conditions, sun windows</div>
   <div id="forecast-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:18px;">
     <!-- populated by JS -->
   </div>
-
+ 
   <div class="section-title">SEASONAL FOCUS</div>
   <div class="section-subtitle">What's hot in late spring</div>
-
+ 
   <div class="today-banner">
   <div class="today-label" id="seasonal-label"></div>
   <div class="today-text" id="seasonal-text"></div>
 </div>
-
+ 
 <div class="section-title">STOCKING REPORT</div>
 <div class="section-subtitle" id="stocking-subtitle">Recent plants · SW Washington focus</div>
-
+ 
 <div class="weather-block" style="margin-bottom:18px;">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
     <div>
@@ -1652,7 +1707,7 @@ footer {
 </div>  
   <div class="section-title">BIG 5 RIGHT NOW</div>
   <div class="section-subtitle">If you only have one weekend</div>
-
+ 
   <div class="quick-pick">
     <div class="qp-card">
       <div class="qp-label">Easy + Hot</div>
@@ -1675,7 +1730,7 @@ footer {
       <div class="qp-value"><strong>Surf perch</strong> · Long Beach, Cannon Beach, Ocean Shores</div>
     </div>
   </div>
-
+ 
   <div class="license-box">
     <h3>LICENSE CHECKLIST</h3>
     <ul>
@@ -1688,26 +1743,26 @@ footer {
       <li>Kids under 15 fish free in WA. Kids under 12 fish free in OR.</li>
     </ul>
   </div>
-
+ 
   <div class="note danger">
     <strong>REGULATIONS CHANGE WEEKLY.</strong> Salmon openers, emergency closures, and bag limits shift fast. Always verify at <a href="https://wdfw.wa.gov" style="color:var(--danger);">wdfw.wa.gov</a> and <a href="https://myodfw.com" style="color:var(--danger);">myodfw.com</a> the day you fish. Carry the Fish WA or MyODFW app.
   </div>
-
+ 
   <!-- NEWSLETTER -->
   <div class="newsletter-box">
     <div class="newsletter-eyebrow">PNW FISHING MONTHLY · THE FIELD REPORT</div>
     <div class="newsletter-title">The Field Report</div>
     <div class="newsletter-sub">What's running, what's opening, what's worth your weekend.</div>
-
+ 
     <div class="newsletter-pitch">
       One email a month from <strong>Yassir Baza</strong>. Hatchery stocking calendar, salmon and steelhead opener watch, kokanee depth charts, and one deep-dive on a PNW river or saltwater area. No spam. No affiliate noise. Unsubscribe any time.
     </div>
-
+ 
     <!-- BEEHIIV IFRAME EMBED (preferred when configured) -->
     <div id="beehiiv-embed-container" style="display:none;">
 <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="65030d84-b443-4f66-b075-804cb0c7adf7"></script>
     </div>
-
+ 
 <!-- FALLBACK NATIVE FORM (disabled - Beehiiv active) -->
     <form id="newsletter-form" class="newsletter-form" onsubmit="return submitNewsletter(event)">
         <input type="email" id="newsletter-email" placeholder="your@email.com" required autocomplete="email">
@@ -1719,12 +1774,12 @@ footer {
     </div>
   </div>
 </section>
-
+ 
 <!-- ============================ CONDITIONS ============================ -->
 <section id="conditions">
   <div class="section-title">FISHING CONDITIONS</div>
   <div class="section-subtitle">How weather drives the bite</div>
-
+ 
   <!-- TODAY'S CONDITIONS -->
   <div class="condition-strip">
     <div class="cond-card">
@@ -1743,7 +1798,7 @@ footer {
       <div class="cond-status status-good">Overcast · ideal</div>
     </div>
   </div>
-
+ 
   <!-- WATER TEMP -->
   <div class="weather-block">
     <div class="weather-block-title">WATER TEMPERATURE</div>
@@ -1789,7 +1844,7 @@ footer {
       </div>
     </div>
   </div>
-
+ 
   <!-- BAROMETRIC PRESSURE -->
   <div class="weather-block">
     <div class="weather-block-title">BAROMETRIC PRESSURE</div>
@@ -1824,7 +1879,7 @@ footer {
       </div>
     </div>
   </div>
-
+ 
   <!-- WIND -->
   <div class="weather-block">
     <div class="weather-block-title">WIND</div>
@@ -1848,7 +1903,7 @@ footer {
       </div>
     </div>
   </div>
-
+ 
   <!-- TIME OF DAY -->
   <div class="weather-block">
     <div class="weather-block-title">TIME OF DAY</div>
@@ -1889,7 +1944,7 @@ footer {
       <strong>The Magic Hours:</strong> 60 minutes before sunrise to 90 minutes after. 90 minutes before sunset to 30 minutes after. Overcast days extend the bite all day.
     </div>
   </div>
-
+ 
   <!-- MOON -->
   <div class="weather-block">
     <div class="weather-block-title">MOON PHASE</div>
@@ -1920,7 +1975,7 @@ footer {
       <strong>Solunar windows:</strong> Major feeding 1-2 hrs around moonrise and moonset. Minor windows at moon overhead and underfoot. Strongest 3 days before to 3 days after new and full moons. Use Solunar.com or Fishbox app.
     </div>
   </div>
-
+ 
   <!-- WATER CLARITY -->
   <div class="weather-block">
     <div class="weather-block-title">WATER CLARITY</div>
@@ -1944,7 +1999,7 @@ footer {
       </div>
     </div>
   </div>
-
+ 
   <!-- SEASONAL CLOCK -->
   <div class="weather-block">
     <div class="weather-block-title">SEASONAL CLOCK · PNW</div>
@@ -1977,30 +2032,30 @@ footer {
     </div>
   </div>
 </section>
-
+ 
 <!-- ============================ SPECIES ============================ -->
 <section id="species">
   <div class="section-title">SPECIES GUIDE</div>
   <div class="section-subtitle">Tap any species to expand</div>
-
+ 
   <div class="type-toggle">
     <button class="type-btn active all" data-type="all">All</button>
     <button class="type-btn fresh" data-type="fresh">Freshwater</button>
     <button class="type-btn salt" data-type="salt">Saltwater</button>
   </div>
-
+ 
   <div class="search-bar">
     <input type="text" id="species-search" placeholder="Search species or bait...">
   </div>
-
+ 
   <div id="species-container"><!-- populated by JS --></div>
 </section>
-
+ 
 <!-- ============================ SPOTS ============================ -->
 <section id="spots">
   <div class="section-title">SPOTS BY REGION</div>
   <div class="section-subtitle">Tap a region to see locations</div>
-
+ 
   <div class="near-me-box" id="near-me-box">
     <div class="near-me-header">
       <div>
@@ -2025,12 +2080,12 @@ footer {
     </div>
   </div><div id="spots-container"><!-- populated by JS --></div>
 </section>
-
+ 
 <!-- ============================ RIGS ============================ -->
 <section id="rigs">
   <div class="section-title">RIG DIAGRAMS</div>
   <div class="section-subtitle">Top-down view · how to tie it</div>
-
+ 
   <!-- DROP SHOT -->
   <div class="rig-diagram">
     <div class="rig-title" onclick="toggleRig(this)">▸ Drop Shot</div>
@@ -2045,7 +2100,7 @@ footer {
     </div>
     </div>
   </div>
-
+ 
   <!-- TEXAS RIG -->
   <div class="rig-diagram">
     <div class="rig-title" onclick="toggleRig(this)">▸ Texas Rig</div>
@@ -2060,7 +2115,7 @@ footer {
     </div>
     </div>
   </div>
-
+ 
   <!-- NED RIG -->
   <div class="rig-diagram">
     <div class="rig-title" onclick="toggleRig(this)">▸ Ned Rig</div>
@@ -2074,7 +2129,7 @@ footer {
     </div>
     </div>
   </div>
-
+ 
   <!-- KOKANEE TROLL -->
   <div class="rig-diagram">
     <div class="rig-title" onclick="toggleRig(this)">▸ Kokanee Trolling Rig</div>
@@ -2089,7 +2144,7 @@ footer {
     </div>
     </div>
   </div>
-
+ 
   <!-- STEELHEAD FLOAT -->
   <div class="rig-diagram">
     <div class="rig-title" onclick="toggleRig(this)">▸ Float + Jig (Steelhead)</div>
@@ -2104,7 +2159,7 @@ footer {
     </div>
     </div>
   </div>
-
+ 
   <!-- SURF PERCH -->
   <div class="rig-diagram">
     <div class="rig-title" onclick="toggleRig(this)">▸ Surf Perch Rig</div>
@@ -2120,7 +2175,7 @@ footer {
     </div>
     </div>
   </div>
-
+ 
   <!-- SALMON MOOCHING -->
   <div class="rig-diagram">
     <div class="rig-title" onclick="toggleRig(this)">▸ Mooching Rig (Salt Salmon)</div>
@@ -2135,7 +2190,7 @@ footer {
     </div>
     </div>
   </div>
-
+ 
   <!-- HALIBUT -->
   <div class="rig-diagram">
     <div class="rig-title" onclick="toggleRig(this)">▸ Halibut Spreader</div>
@@ -2150,7 +2205,7 @@ footer {
     </div>
     </div>
   </div>
-
+ 
   <!-- ROCKFISH JIG -->
   <div class="rig-diagram">
     <div class="rig-title" onclick="toggleRig(this)">▸ Rockfish/Lingcod Jig</div>
@@ -2165,7 +2220,7 @@ footer {
     </div>
     </div>
   </div>
-
+ 
   <!-- STURGEON -->
   <div class="rig-diagram">
     <div class="rig-title" onclick="toggleRig(this)">▸ Sturgeon Anchor Rig</div>
@@ -2181,12 +2236,12 @@ footer {
     </div>
   </div>
 </section>
-
+ 
 <!-- ============================ HOOKS ============================ -->
 <section id="hooks">
   <div class="section-title">HOOK + TACKLE CHART</div>
   <div class="section-subtitle">Size by species · fresh + salt</div>
-
+ 
   <div class="rig-diagram" style="margin-bottom:18px;">
     <div class="rig-title">▸ Hook Size Reference</div>
     <div style="color:var(--text-dim);font-size:12px;margin-bottom:8px;">After #1, sizes count up with /0 suffix. Smaller numbers = larger hooks until you hit /0, then larger numbers = larger hooks.</div>
@@ -2194,7 +2249,7 @@ footer {
       <strong style="color:var(--accent);">SMALL →</strong> 18 · 14 · 10 · 8 · 6 · 4 · 2 · 1 · 1/0 · 2/0 · 3/0 · 4/0 · 5/0 · 6/0 · 8/0 · 10/0 · 16/0 <strong style="color:var(--accent);">→ LARGE</strong>
     </div>
   </div>
-
+ 
   <h3 style="font-family:'Bebas Neue';font-size:18px;color:var(--fresh-bright);letter-spacing:1px;margin:18px 0 8px;">FRESHWATER</h3>
   <table class="hook-table">
     <thead>
@@ -2220,7 +2275,7 @@ footer {
       <tr><td><strong>Tiger Muskie</strong></td><td>5/0-7/0</td><td>Single, barbless</td><td>50-80 lb braid + 80 lb leader</td></tr>
     </tbody>
   </table>
-
+ 
   <h3 style="font-family:'Bebas Neue';font-size:18px;color:var(--salt-bright);letter-spacing:1px;margin:18px 0 8px;">SALTWATER</h3>
   <table class="hook-table">
     <thead>
@@ -2241,7 +2296,7 @@ footer {
       <tr><td><strong>Dungeness Crab</strong></td><td>—</td><td>Crab pots / ring nets · chicken, fish carcass</td><td>—</td></tr>
     </tbody>
   </table>
-
+ 
   <div class="section-title" style="margin-top:24px;">SINKER GUIDE</div>
   <table class="hook-table">
     <thead><tr><th>Use</th><th>Type</th><th>Weight</th></tr></thead>
@@ -2261,12 +2316,12 @@ footer {
     </tbody>
   </table>
 </section>
-
+ 
 <!-- ============================ KNOTS ============================ -->
 <section id="knots">
   <div class="section-title">ESSENTIAL KNOTS</div>
   <div class="section-subtitle">These 6 cover 95% of fishing</div>
-
+ 
   <div class="knot-card">
     <div class="knot-name">Arbor Knot <span class="knot-strength">SPOOL ONLY</span></div>
     <div class="knot-use">Line to reel spool</div>
@@ -2278,7 +2333,7 @@ footer {
       <li>Trim tag end close.</li>
     </ol>
   </div>
-
+ 
   <div class="knot-card">
     <div class="knot-name">Improved Clinch <span class="knot-strength">85% STRENGTH</span></div>
     <div class="knot-use">Hook, lure, swivel to line · mono/fluoro</div>
@@ -2290,7 +2345,7 @@ footer {
       <li>Wet the knot. Pull main line slowly to tighten. Trim tag.</li>
     </ol>
   </div>
-
+ 
   <div class="knot-card">
     <div class="knot-name">Palomar Knot <span class="knot-strength">95% STRENGTH</span></div>
     <div class="knot-use">Strongest with braid · hooks and swivels</div>
@@ -2302,7 +2357,7 @@ footer {
       <li>Trim tag close.</li>
     </ol>
   </div>
-
+ 
   <div class="knot-card">
     <div class="knot-name">Double Uni <span class="knot-strength">90% STRENGTH</span></div>
     <div class="knot-use">Braid to mono/fluoro leader · easy braid-to-leader</div>
@@ -2314,7 +2369,7 @@ footer {
       <li>Pull both main lines apart slowly. The two knots slide together. Trim tags.</li>
     </ol>
   </div>
-
+ 
   <div class="knot-card">
     <div class="knot-name">FG Knot <span class="knot-strength">99% STRENGTH</span></div>
     <div class="knot-use">Slimmest braid-to-fluoro · passes through guides</div>
@@ -2326,7 +2381,7 @@ footer {
       <li>Pull everything tight. Trim leader close, leave tiny tag on braid.</li>
     </ol>
   </div>
-
+ 
   <div class="knot-card">
     <div class="knot-name">Snell Knot <span class="knot-strength">100% W/ CIRCLE</span></div>
     <div class="knot-use">Mandatory for sturgeon circle hooks · best for salmon eggs</div>
@@ -2338,19 +2393,19 @@ footer {
       <li>Wet and tighten fully. Trim tag.</li>
     </ol>
   </div>
-
+ 
   <div class="note" style="margin-top:18px;">
     <strong>Universal rule:</strong> Always wet your knots with spit or water before tightening. Friction from a dry knot weakens line by up to 50%. The pros lose more fish to bad knots than bad luck.
   </div>
 </section>
-
+ 
 <!-- ============================ TIPS ============================ -->
 <section id="tips">
   <div class="section-title">FIELD TIPS</div>
   <div class="section-subtitle">What the pros do that beginners miss</div>
-
+ 
   <h3 style="font-family:'Bebas Neue';font-size:18px;color:var(--accent);letter-spacing:1px;margin:18px 0 10px;">PRESENTATION</h3>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">🎯</div>
     <div class="tip-content">
@@ -2358,7 +2413,7 @@ footer {
       <div class="tip-text">Look at what's in the water. Baitfish color, crawfish shades, insect hatches. Match size first, then color. A 3" baitfish gets a 3" bait, not a 5".</div>
     </div>
   </div>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">🐌</div>
     <div class="tip-content">
@@ -2366,7 +2421,7 @@ footer {
       <div class="tip-text">Most anglers retrieve too fast. Cold water demands slower. If nothing bites, cut your speed in half and pause more. The bite often comes on the pause.</div>
     </div>
   </div>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">↗️</div>
     <div class="tip-content">
@@ -2374,9 +2429,9 @@ footer {
       <div class="tip-text">Cast past your target, retrieve through the strike zone. A bait appearing from nowhere is more convincing than one landing on a fish's head. Skipping baits under docks and overhangs unlocks fish nobody else reaches.</div>
     </div>
   </div>
-
+ 
   <h3 style="font-family:'Bebas Neue';font-size:18px;color:var(--accent);letter-spacing:1px;margin:22px 0 10px;">TACKLE</h3>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">🪢</div>
     <div class="tip-content">
@@ -2384,7 +2439,7 @@ footer {
       <div class="tip-text">Fluorocarbon for clear water finesse (invisible underwater). Braid for sensitivity and heavy cover (zero stretch). Mono for topwater (it floats). Most anglers run one type and lose fish to it.</div>
     </div>
   </div>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">🔍</div>
     <div class="tip-content">
@@ -2392,7 +2447,7 @@ footer {
       <div class="tip-text">A nick above the knot loses fish. Run your fingertips down the last 3 feet before every session. If anything feels rough, retie. Takes 30 seconds. Saves the trip.</div>
     </div>
   </div>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">🪝</div>
     <div class="tip-content">
@@ -2400,9 +2455,9 @@ footer {
       <div class="tip-text">New hooks out of the pack are often dull. Test with a fingernail: sharp drags, dull slides. Touch up with a file or replace after every solid fish. Steelhead and salmon anglers retie at every hookset.</div>
     </div>
   </div>
-
+ 
   <h3 style="font-family:'Bebas Neue';font-size:18px;color:var(--accent);letter-spacing:1px;margin:22px 0 10px;">ON THE WATER</h3>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">📍</div>
     <div class="tip-content">
@@ -2410,7 +2465,7 @@ footer {
       <div class="tip-text">If you're catching, stay. Even when the bite slows, work the area thoroughly. Most schools have a 15-30 minute window. Move only when a productive spot goes truly cold.</div>
     </div>
   </div>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">🤫</div>
     <div class="tip-content">
@@ -2418,7 +2473,7 @@ footer {
       <div class="tip-text">Footsteps on aluminum, gear banging the hull, slamming a tackle box. Fish feel vibration through water and ground. Approach banks slowly, especially in clear water. Wear neutral colors.</div>
     </div>
   </div>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">📓</div>
     <div class="tip-content">
@@ -2426,7 +2481,7 @@ footer {
       <div class="tip-text">Water temp, time of day, bait, depth, weather, what worked, what didn't. Patterns emerge over seasons. The best anglers on any water fish data as much as instinct. Apps: Fishidy, Fishbrain, Anglr.</div>
     </div>
   </div>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">👀</div>
     <div class="tip-content">
@@ -2434,9 +2489,9 @@ footer {
       <div class="tip-text">Diving birds = baitfish on surface. Nervous water with no wind = predators below. Bubble trails on still mornings = feeding fish. Color changes = depth or current breaks where fish stage.</div>
     </div>
   </div>
-
+ 
   <h3 style="font-family:'Bebas Neue';font-size:18px;color:var(--accent);letter-spacing:1px;margin:22px 0 10px;">BEGINNER WINS</h3>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">🎓</div>
     <div class="tip-content">
@@ -2444,7 +2499,7 @@ footer {
       <div class="tip-text">Master a worm-and-bobber for panfish before chasing salmon. Catching builds skill faster than learning rigs that haven't put fish in the boat yet.</div>
     </div>
   </div>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">📚</div>
     <div class="tip-content">
@@ -2452,7 +2507,7 @@ footer {
       <div class="tip-text">YouTube: TacticalBassin (bass), Jay Siemens (Canada/PNW), Addicted Fishing (PNW salmon/steelhead), Salt Strong (saltwater). WDFW stocking reports tell you exactly where trout were dumped. Fishbrain shows what's being caught near you.</div>
     </div>
   </div>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">🤝</div>
     <div class="tip-content">
@@ -2460,9 +2515,9 @@ footer {
       <div class="tip-text">$200-400 for a half-day puts you 2 years ahead. Guides show you spots, technique, gear, and timing in 6 hours that takes solo learners seasons to figure out. Tip well, ask questions, take notes.</div>
     </div>
   </div>
-
+ 
   <h3 style="font-family:'Bebas Neue';font-size:18px;color:var(--accent);letter-spacing:1px;margin:22px 0 10px;">CATCH & RELEASE</h3>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">💧</div>
     <div class="tip-content">
@@ -2470,7 +2525,7 @@ footer {
       <div class="tip-text">Wet your hands before touching any fish. Slime layer is their immune system. Keep them horizontal (dropping a bass with the jaw bent vertically can paralyze it). Out of water under 30 seconds when possible.</div>
     </div>
   </div>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">🌡️</div>
     <div class="tip-content">
@@ -2478,7 +2533,7 @@ footer {
       <div class="tip-text">When water hits 70°F+, even quick releases stress trout and salmon past survival. Target warm-water species (bass, panfish, catfish, walleye) and leave the cold-water fish until temps drop.</div>
     </div>
   </div>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">🔄</div>
     <div class="tip-content">
@@ -2486,9 +2541,9 @@ footer {
       <div class="tip-text">In moving water, face the fish upstream. In still water, gently move it side-to-side (never back and forth · gills only push one direction). Hold upright until it kicks free on its own.</div>
     </div>
   </div>
-
+ 
   <h3 style="font-family:'Bebas Neue';font-size:18px;color:var(--accent);letter-spacing:1px;margin:22px 0 10px;">SAFETY</h3>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">🦺</div>
     <div class="tip-content">
@@ -2496,7 +2551,7 @@ footer {
       <div class="tip-text">PNW water is cold year-round. Hypothermia kicks in fast even in summer. Inflatable PFDs are comfortable enough that there's no excuse. The Coast Guard requires one per person on every boat regardless.</div>
     </div>
   </div>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">📱</div>
     <div class="tip-content">
@@ -2504,7 +2559,7 @@ footer {
       <div class="tip-text">Text someone where you're going and when you'll be back. Carry a fully charged phone or VHF for saltwater. Garmin inReach for remote rivers. Cell service is spotty across most of the PNW backcountry.</div>
     </div>
   </div>
-
+ 
   <div class="tip-card">
     <div class="tip-icon">🌊</div>
     <div class="tip-content">
@@ -2513,12 +2568,12 @@ footer {
     </div>
   </div>
 </section>
-
+ 
 <!-- ============================ TRIP LOG ============================ -->
 <section id="log">
   <div class="section-title">TRIP LOG</div>
   <div class="section-subtitle">Your personal catch history</div>
-
+ 
   <!-- STATS -->
   <div class="log-stats">
     <div class="log-stat">
@@ -2534,7 +2589,7 @@ footer {
       <div class="log-stat-label">Species</div>
     </div>
   </div>
-
+ 
   <!-- LOG FORM -->
   <div class="log-form">
     <div class="log-form-title">Log a Trip</div>
@@ -2603,7 +2658,7 @@ footer {
     </div>
     <button class="log-btn" onclick="saveLogEntry()">Save Entry</button>
   </div>
-
+ 
   <!-- FILTER + EXPORT -->
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
     <div class="section-subtitle" style="margin:0;" id="log-count-label">No entries yet</div>
@@ -2612,13 +2667,13 @@ footer {
   <div class="log-filter-bar" id="log-filter-bar">
     <button class="log-filter-pill active" data-filter="all" onclick="filterLog('all', this)">All</button>
   </div>
-
+ 
   <!-- ENTRIES -->
   <div id="log-entries"></div>
 </section>
-
+ 
 </main>
-
+ 
 <footer>
   <div class="footer-text">
     ALWAYS VERIFY CURRENT REGULATIONS<br>
@@ -2646,7 +2701,7 @@ footer {
     </button>
   </div>
 </footer>
-
+ 
 <script>
 // ============ SPECIES DATA ============
 const speciesData = [
@@ -2663,7 +2718,7 @@ const speciesData = [
     bait: 'PowerBait (rainbow, chartreuse), Trout Nuggets, nightcrawlers, salmon eggs',
     regs: { limit: '5/day · possession 10 (WA) · 5/day OR (varies by water)', size: 'None statewide; some waters 8" min', gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/rainbow-trout' },
     img: 'Images/rainbow-trout.jpg' },
-
+ 
   { type: 'fresh', name: 'Cutthroat Trout', sci: 'O. clarkii · Coastal/Sea-run',
     status: 'open', statusText: 'Open',
     tags: ['Native', 'Streams'],
@@ -2677,7 +2732,7 @@ const speciesData = [
     bait: 'Worms, eggs, small spinners',
     regs: { limit: 'Varies · many waters C&R · 2/day where open', size: '14" min on most rivers', gear: 'Single barbless required on selective gear waters', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/rainbow-trout' },
     img: 'Images/cutthroat-trout.jpg' },
-
+ 
   { type: 'fresh', name: 'Steelhead', sci: 'O. mykiss · sea-run rainbow',
     status: 'partial', statusText: 'Partial',
     tags: ['Trophy', 'Hatchery only'],
@@ -2691,7 +2746,7 @@ const speciesData = [
     bait: 'Cured eggs, sand shrimp, prawn tails, jigs, beads',
     regs: { limit: '2 hatchery/day · wild release required', size: 'No min on hatchery fish', gear: 'Single barbless hook required', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/steelhead' },
     img: 'Images/steelhead.jpg' },
-
+ 
   { type: 'fresh', name: 'Spring Chinook', sci: 'O. tshawytscha',
     status: 'partial', statusText: 'Short Windows',
     tags: ['Trophy', 'Premium table'],
@@ -2705,7 +2760,7 @@ const speciesData = [
     bait: 'Cured eggs, sand shrimp, herring, prawn tails, Kwikfish',
     regs: { limit: '1-2 hatchery/day · Columbia River Endorsement required', size: 'No statewide min; varies by fishery', gear: 'Single barbless hook required', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/chinook-salmon' },
     img: 'Images/spring-chinook.jpg' },
-
+ 
   { type: 'fresh', name: 'Fall Chinook', sci: 'O. tshawytscha',
     status: 'open', statusText: 'Sept Peak',
     tags: ['Bigger fish', 'Heavier gear'],
@@ -2719,7 +2774,7 @@ const speciesData = [
     bait: 'Cured roe, herring, sand shrimp',
     regs: { limit: 'Varies by river · hatchery only most waters', size: 'No statewide min', gear: 'Single barbless hook required', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/chinook-salmon' },
     img: 'Images/fall-chinook.jpg' },
-
+ 
   { type: 'fresh', name: 'Coho Salmon', sci: 'O. kisutch · Silver',
     status: 'open', statusText: 'Sept-Nov',
     tags: ['Aggressive', 'Light gear OK'],
@@ -2733,7 +2788,7 @@ const speciesData = [
     bait: 'Cured eggs, sand shrimp, jigs, spinners',
     regs: { limit: 'Varies by river · hatchery only most waters', size: 'No statewide min', gear: 'Single barbless hook required', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/coho-salmon' },
     img: 'Images/coho-salmon.jpg' },
-
+ 
   { type: 'fresh', name: 'Sockeye', sci: 'O. nerka',
     status: 'partial', statusText: 'Summer',
     tags: ['Targeted run', 'Specialty'],
@@ -2747,7 +2802,7 @@ const speciesData = [
     bait: 'Pink, red, UV hoochies. Sometimes scent-tipped.',
     regs: { limit: 'Set annually when run exceeds escapement · watch WDFW announcements', size: null, gear: 'Verify before fishing · changes in-season', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: null },
     img: 'Images/sockeye.jpg' },
-
+ 
   { type: 'fresh', name: 'Kokanee', sci: 'O. nerka · landlocked sockeye',
     status: 'open', statusText: 'Peak Now',
     tags: ['Trolling', 'Family-friendly boat'],
@@ -2761,7 +2816,7 @@ const speciesData = [
     bait: 'White shoepeg corn (cured in scent), small pieces of worm',
     regs: { limit: '10/day Merwin · 16/day Chelan', size: 'None at Chelan · verify per water', gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: null },
     img: 'Images/kokanee.jpg' },
-
+ 
   { type: 'fresh', name: 'Shad', sci: 'Alosa sapidissima',
     status: 'open', statusText: 'Open Now',
     tags: ['Beginner', 'No limit', 'Hard fight'],
@@ -2773,7 +2828,7 @@ const speciesData = [
     bait: 'None. Shad darts in white, chartreuse, pink. Curly tail grubs on jig heads.',
     regs: { limit: 'No daily limit · no minimum size', size: null, gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/shad.jpg' },
-
+ 
   { type: 'fresh', name: 'White Sturgeon', sci: 'Acipenser transmontanus',
     status: 'cr', statusText: 'C&R Below Bonneville',
     tags: ['Heavy gear', 'Trophy'],
@@ -2787,7 +2842,7 @@ const speciesData = [
     bait: 'Sand shrimp, smelt, lamprey, salmon parts (legal in season), squid',
     regs: { limit: 'C&R only below Bonneville · 2 white sturgeon annual limit WA where open', size: 'Size slot applies in open areas (verify per section)', gear: 'Single barbless hook required', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/white-sturgeon' },
     img: 'Images/white-sturgeon.jpg' },
-
+ 
   { type: 'fresh', name: 'Largemouth Bass', sci: 'Micropterus salmoides',
     status: 'open', statusText: 'Open',
     tags: ['Year-round', 'Spawn now'],
@@ -2799,7 +2854,7 @@ const speciesData = [
     bait: 'Senkos, creature baits, crankbaits, spinnerbaits, live nightcrawlers',
     regs: { limit: '5/day statewide WA', size: 'No minimum size', gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/bass' },
     img: 'Images/largemouth-bass.jpg' },
-
+ 
   { type: 'fresh', name: 'Smallmouth Bass', sci: 'Micropterus dolomieu',
     status: 'open', statusText: 'Open',
     tags: ['Hard fight', 'No limit Columbia'],
@@ -2811,7 +2866,7 @@ const speciesData = [
     bait: 'Soft plastics in green pumpkin, smoke, crawfish. Live crayfish where legal.',
     regs: { limit: 'Columbia mainstem: no limit (invasive) · Lakes: 5/day', size: 'No minimum size Columbia · varies by lake', gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/bass' },
     img: 'Images/smallmouth-bass.jpg' },
-
+ 
   { type: 'fresh', name: 'Walleye', sci: 'Sander vitreus',
     status: 'open', statusText: 'Open',
     tags: ['Eating fish', 'No limit Columbia'],
@@ -2823,7 +2878,7 @@ const speciesData = [
     bait: 'Nightcrawlers, leeches, plastics in fire tiger/perch',
     regs: { limit: 'Columbia mainstem: no limit (invasive) · Other waters: 8/day', size: 'No minimum size', gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/walleye.jpg' },
-
+ 
   { type: 'fresh', name: 'Bluegill / Sunfish', sci: 'Lepomis spp.',
     status: 'open', statusText: 'Open',
     tags: ['Beginner', 'Kid-friendly'],
@@ -2835,7 +2890,7 @@ const speciesData = [
     bait: 'Worm pieces, mealworms, crickets, crappie tubes, small jigs',
     regs: { limit: 'No limit on most waters', size: null, gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/bluegill-sunfish.jpg' },
-
+ 
   { type: 'fresh', name: 'Crappie', sci: 'Pomoxis spp.',
     status: 'open', statusText: 'Open',
     tags: ['Eating fish', 'Schools tight'],
@@ -2847,7 +2902,7 @@ const speciesData = [
     bait: 'Curly tail grubs (white, chartreuse, pink), live minnows',
     regs: { limit: '10/day typical WA · verify per water', size: null, gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/crappie.jpg' },
-
+ 
   { type: 'fresh', name: 'Yellow Perch', sci: 'Perca flavescens',
     status: 'open', statusText: 'Open',
     tags: ['Eating fish', 'Ice fishing'],
@@ -2859,7 +2914,7 @@ const speciesData = [
     bait: 'Small minnows, worm pieces, jigs in perch colors',
     regs: { limit: '25/day E. WA typical', size: null, gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/yellow-perch.jpg' },
-
+ 
   { type: 'fresh', name: 'Channel Catfish', sci: 'Ictalurus punctatus',
     status: 'open', statusText: 'Heating up',
     tags: ['Night bite', 'Heavy gear'],
@@ -2871,7 +2926,7 @@ const speciesData = [
     bait: 'Chicken liver, cut bait, stink bait, nightcrawlers, hot dogs',
     regs: { limit: '5/day WA', size: null, gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/channel-catfish.jpg' },
-
+ 
   { type: 'fresh', name: 'Tiger Muskie', sci: 'Esox masquinongy × E. lucius',
     status: 'open', statusText: 'Trophy',
     tags: ['50" min', 'Trophy only'],
@@ -2883,7 +2938,7 @@ const speciesData = [
     bait: 'Large bucktails (Cowgirl, Bull Dawg), jerkbaits, swimbaits',
     regs: { limit: '1/day', size: '50" minimum · anything under released', gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: null },
     img: 'Images/tiger-muskie.jpg' },
-
+ 
   { type: 'fresh', name: 'Carp', sci: 'Cyprinus carpio',
     status: 'open', statusText: 'Open',
     tags: ['Strong fight', 'No limit'],
@@ -2895,7 +2950,7 @@ const speciesData = [
     bait: 'Sweet corn, bread, boilies, dough balls',
     regs: { limit: 'No limit (non-native invasive)', size: null, gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: null },
     img: 'Images/carp.jpg' },
-
+ 
   // ===== SALTWATER =====
   { type: 'salt', name: 'Coho Salmon (salt)', sci: 'O. kisutch',
     status: 'open', statusText: 'Summer Peak',
@@ -2910,7 +2965,7 @@ const speciesData = [
     bait: 'Cut-plug herring, anchovies, hoochies, spoons',
     regs: { limit: 'Varies by MA · often 2/day hatchery marked only', size: null, gear: 'Single barbless hook required · CRC required', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/coho-salmon' },
     img: 'Images/coho-salmon-salt.jpg' },
-
+ 
   { type: 'salt', name: 'Chinook Salmon (salt)', sci: 'O. tshawytscha',
     status: 'partial', statusText: 'Open w/ Quotas',
     tags: ['King', 'Downrigger'],
@@ -2924,7 +2979,7 @@ const speciesData = [
     bait: 'Whole herring, anchovies, hoochies, spoons (Coyote, Kingfisher)',
     regs: { limit: 'Varies by MA · check quota before heading out', size: null, gear: 'Single barbless hook required · CRC required', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/chinook-salmon' },
     img: 'Images/chinook-salmon-salt.jpg' },
-
+ 
   { type: 'salt', name: 'Pink Salmon', sci: 'O. gorbuscha',
     status: 'partial', statusText: 'Odd Years Only',
     tags: ['Odd years', 'Easy bite'],
@@ -2938,7 +2993,7 @@ const speciesData = [
     bait: 'Pink everything. Small spoons. Pink hoochies.',
     regs: { limit: '4/day typical (odd years only)', size: null, gear: 'Single barbless hook required', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/pink-salmon.jpg' },
-
+ 
   { type: 'salt', name: 'Lingcod', sci: 'Ophiodon elongatus',
     status: 'open', statusText: 'Mid-Mar to Oct',
     tags: ['Eating fish', 'Bottom'],
@@ -2950,7 +3005,7 @@ const speciesData = [
     bait: 'Live small rockfish/greenling, large swimbaits, herring, squid',
     regs: { limit: '2/day WA · 2/day OR', size: '22" minimum both states', gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/lingcod' },
     img: 'Images/lingcod.jpg' },
-
+ 
   { type: 'salt', name: 'Rockfish', sci: 'Sebastes spp.',
     status: 'open', statusText: 'Varies by Depth',
     tags: ['Bottom', 'Multiple species'],
@@ -2962,7 +3017,7 @@ const speciesData = [
     bait: 'Squid strips, herring chunks, swimbaits, shrimp flies',
     regs: { limit: '7/day OR · varies by MA in WA', size: 'Varies · quillback rockfish C&R only', gear: 'Many depth restrictions · verify current MA rules', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/rockfish' },
     img: 'Images/rock-fish.jpg' },
-
+ 
   { type: 'salt', name: 'Pacific Halibut', sci: 'Hippoglossus stenolepis',
     status: 'partial', statusText: 'Limited Openers',
     tags: ['Trophy', 'Quota-driven'],
@@ -2974,7 +3029,7 @@ const speciesData = [
     bait: 'Whole herring, salmon belly, octopus, squid',
     regs: { limit: '1/day on open days', size: 'Size/weight slot may apply · verify at season open', gear: 'CRC required · IPHC quota sets season length', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/pacific-halibut' },
     img: 'Images/pacific-halibut.jpg' },
-
+ 
   { type: 'salt', name: 'Albacore Tuna', sci: 'Thunnus alalunga',
     status: 'open', statusText: 'Jul-Oct',
     tags: ['Offshore', 'Boat needed'],
@@ -2986,7 +3041,7 @@ const speciesData = [
     bait: 'Live sardines, cedar plugs, feathers, daisy chains',
     regs: { limit: '25/day · no minimum size', size: null, gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/albacore-tuna.jpg' },
-
+ 
   { type: 'salt', name: 'Surf Perch', sci: 'Embiotocidae spp.',
     status: 'open', statusText: 'Year-Round',
     tags: ['Beginner', 'Beach', 'No boat'],
@@ -2998,7 +3053,7 @@ const speciesData = [
     bait: 'Sand crabs, mussels, raw shrimp, Berkley Gulp! sandworm/camo',
     regs: { limit: '15/day WA · 15/day OR', size: null, gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/surf-perch.jpg' },
-
+ 
   { type: 'salt', name: 'Cabezon', sci: 'Scorpaenichthys marmoratus',
     status: 'open', statusText: 'Open',
     tags: ['Bottom', 'Eat the white meat'],
@@ -3010,7 +3065,7 @@ const speciesData = [
     bait: 'Squid, herring, crab',
     regs: { limit: '1/day WA · 1/day OR', size: '16" minimum both states', gear: null, waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/rockfish' },
     img: 'Images/cabezon.jpg' },
-
+ 
   { type: 'salt', name: 'Dungeness Crab', sci: 'Metacarcinus magister',
     status: 'partial', statusText: 'Varies by Area',
     tags: ['Pots', 'Eating'],
@@ -3022,7 +3077,7 @@ const speciesData = [
     bait: 'Chicken parts, fish carcass (salmon heads especially), squid',
     regs: { limit: '5/day WA · 12/day OR · male only', size: '6.25" carapace WA · 5.75" carapace OR', gear: 'CRC required WA · shellfish/seaweed license OR', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/fishing/species/dungeness-crab' },
     img: 'Images/dungeness-crab.jpg' },
-
+ 
   { type: 'salt', name: 'Razor Clams', sci: 'Siliqua patula',
     status: 'partial', statusText: 'Dig Openers',
     tags: ['Beach dig', 'WDFW announce'],
@@ -3035,7 +3090,7 @@ const speciesData = [
     regs: { limit: '15/day · first 15 dug count (cannot release and re-dig)', size: null, gear: 'Shellfish license required · dig only on open beaches', waUrl: 'https://wdfw.wa.gov/fishing/regulations', orUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     img: 'Images/razor-clams.jpg' },
 ];
-
+ 
 // ============ SPOTS DATA ============
 const spotsData = [
   // ===== SW WA / VANCOUVER =====
@@ -3087,7 +3142,7 @@ const spotsData = [
         note: 'Trophy largemouth bass fishery. Excellent crappie. Shallow weedy lake near Mt. St. Helens.',
         regsUrl: 'https://wdfw.wa.gov/fishing/regulations' },
     ]},
-
+ 
   // ===== PORTLAND METRO =====
   { region: 'Portland Metro · NW Oregon', type: 'fresh', group: 'local',
     spots: [
@@ -3116,7 +3171,7 @@ const spotsData = [
         note: 'Stocked trout. Small impoundments on the Clackamas. Bank-friendly.',
         regsUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     ]},
-
+ 
   // ===== PUGET SOUND / SEATTLE =====
   { region: 'Puget Sound · Seattle Metro', type: 'fresh', group: 'local',
     spots: [
@@ -3175,7 +3230,7 @@ const spotsData = [
         regsNote: 'Halibut quota-driven · CRC required',
         tideUrl: 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9443090' },
     ]},
-
+ 
   // ===== WA COAST =====
   { region: 'Washington Coast', type: 'salt', group: 'local',
     spots: [
@@ -3210,7 +3265,7 @@ const spotsData = [
         regsNote: 'Razor clam digs announced by WDFW · shellfish license required',
         tideUrl: 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9441102' },
     ]},
-
+ 
   // ===== OREGON COAST =====
   { region: 'Oregon Coast', type: 'salt', group: 'oregon-coast',
     spots: [
@@ -3263,8 +3318,8 @@ const spotsData = [
         regsNote: 'OR license · hatchery only salmon retention',
         tideUrl: 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9431647' },
     ]},
-
-
+ 
+ 
   // ===== CALIFORNIA COAST =====
   { region: 'California Coast', type: 'salt', group: 'ca-coast',
     spots: [
@@ -3298,7 +3353,7 @@ const spotsData = [
         note: 'Big browns in Wickiup. Crane Prairie famous for rainbow. High elevation summer fishery.',
         regsUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     ]},
-
+ 
   // ===== EAST WA =====
   { region: 'Eastern Washington', type: 'fresh', group: 'inland',
     spots: [
@@ -3329,7 +3384,7 @@ const spotsData = [
         regsUrl: 'https://wdfw.wa.gov/fishing/regulations',
         regsNote: 'Sturgeon C&R · steelhead single barbless required' },
     ]},
-
+ 
   // ===== OLYMPIC PENINSULA =====
   { region: 'Olympic Peninsula', type: 'fresh', group: 'inland',
     spots: [
@@ -3354,7 +3409,7 @@ const spotsData = [
         regsUrl: 'https://wdfw.wa.gov/fishing/regulations',
         regsNote: 'Hatchery only retention · single barbless required' },
     ]},
-
+ 
   // ===== CENTRAL OR INLAND / SE =====
   { region: 'Southern Oregon · Inland', type: 'fresh', group: 'inland',
     spots: [
@@ -3378,7 +3433,7 @@ const spotsData = [
         regsUrl: 'https://myodfw.com/articles/oregon-fishing-hunting-regulations-and-updates' },
     ]},
 ];
-
+ 
 // ============ RENDER SPECIES ============
 function renderSpecies(filter = 'all', search = '') {
   const container = document.getElementById('species-container');
@@ -3445,7 +3500,7 @@ function renderSpecies(filter = 'all', search = '') {
   });
   container.innerHTML = html;
 }
-
+ 
 // ============ RENDER SPOTS ============
 function renderSpots() {
   const container = document.getElementById('spots-container');
@@ -3482,7 +3537,7 @@ function renderSpots() {
   });
   container.innerHTML = html;
 }
-
+ 
 // ============ INTERACTIONS ============
 function toggleRig(el) {
   const body = el.nextElementSibling.nextElementSibling;
@@ -3495,13 +3550,13 @@ function toggleSpecies(header) {
   body.classList.toggle('expanded');
   header.classList.toggle('expanded');
 }
-
+ 
 function toggleRegion(header) {
   const body = header.nextElementSibling;
   body.classList.toggle('expanded');
   header.classList.toggle('expanded');
 }
-
+ 
 // Tab switching
 document.querySelectorAll('.nav-tab').forEach(tab => {
   tab.addEventListener('click', () => {
@@ -3514,7 +3569,7 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
     if (target === 'log') initLogForm();
   });
 });
-
+ 
 // Type filter
 document.querySelectorAll('.type-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -3524,7 +3579,7 @@ document.querySelectorAll('.type-btn').forEach(btn => {
     renderSpecies(btn.dataset.type, search);
   });
 });
-
+ 
 // Search
 document.getElementById('species-search').addEventListener('input', e => {
   const activeBtn = document.querySelector('.type-btn.active');
@@ -3593,7 +3648,7 @@ const SPOTS_DB = [
   { name: "Diamond Lake", meta: "4.5 hr · Boat + Bank", tags: ["Rainbow","Brown Trout"], note: "Stocked rainbow averaging 14–18\". Brown trout present. Boat trolling most effective.", type: "fresh", lat: 43.1720, lon: -122.1580, maps: "https://maps.google.com/?q=43.1720,-122.1580" },
   { name: "Umpqua River (North Fork)", meta: "3.5 hr · River · Fly only sections", tags: ["Steelhead","Salmon","Cutthroat"], note: "Famous fly-only steelhead river. Summer steelhead Jun–Oct. Glide, Rock Creek access.", type: "fresh", lat: 43.2690, lon: -122.9840, maps: "https://maps.google.com/?q=43.2690,-122.9840" }
 ];
-
+ 
 function haversineDistance(lat1, lon1, lat2, lon2) {
   const R = 3958.8;
   const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -3601,9 +3656,9 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
   const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLon/2)**2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
-
+ 
 let nearMeLat = null, nearMeLon = null, nearMeRadius = 5;
-
+ 
 function initNearMe() {
   const btn = document.getElementById('near-me-trigger');
   const status = document.getElementById('near-me-status');
@@ -3631,14 +3686,14 @@ function initNearMe() {
     { timeout: 10000, maximumAge: 60000 }
   );
 }
-
+ 
 function setRadius(miles, el) {
   nearMeRadius = miles;
   document.querySelectorAll('.radius-pill').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   if (nearMeLat !== null) renderNearMe();
 }
-
+ 
 function renderNearMe() {
   const status = document.getElementById('near-me-status');
   const results = document.getElementById('near-me-results');
@@ -3681,7 +3736,7 @@ const seasonalData = {
   11: { label: 'November · What\'s Running', text: '<strong>Winter steelhead</strong> beginning — Cowlitz, Lewis, Sandy, Wilson. <strong>Late coho</strong> still in some rivers. <strong>Brown trout</strong> spawning on Wickiup and Paulina. <strong>Walleye</strong> fall bite on Columbia. <strong>Sturgeon</strong> C&R year-round. <strong>Razor clams</strong> evening digs on WA coast.' },
   12: { label: 'December · What\'s Running', text: '<strong>Winter steelhead</strong> prime start — Cowlitz, Kalama, Lewis, Sandy, Siletz. <strong>Sturgeon</strong> C&R on Columbia. <strong>Burbot</strong> season opens on Banks Lake. <strong>Kokanee</strong> deep trolling on Chelan. Bundle up — best winter steelhead is worth it.' },
 };
-
+ 
 function renderSeasonalContent() {
   const month = new Date().getMonth() + 1;
   const data = seasonalData[month];
@@ -3691,7 +3746,7 @@ function renderSeasonalContent() {
 }
 // ============ STOCKING REPORT ============
 let stockingShowAll = false;
-
+ 
 async function fetchStockingReport() {
 const url = `https://pnwfg-stocking.yab-account.workers.dev`;
   const controller = new AbortController();
@@ -3710,7 +3765,7 @@ const url = `https://pnwfg-stocking.yab-account.workers.dev`;
     document.getElementById('stocking-updated').textContent = 'Could not load · tap link below';
   }
 }
-
+ 
 function renderStockingTable(data) {
   const table = document.getElementById('stocking-table');
   const updated = document.getElementById('stocking-updated');
@@ -3743,7 +3798,7 @@ function renderStockingTable(data) {
   html += '</tbody></table>';
   table.innerHTML = html;
 }
-
+ 
 function toggleStockingScope() {
   stockingShowAll = !stockingShowAll;
   const btn = document.getElementById('stocking-toggle');
@@ -3755,11 +3810,79 @@ renderSeasonalContent();
 renderSpecies();
 renderSpots();
 fetchStockingReport();
-
+ 
+// ============ THEME (light/dark) ============
+function updateThemeIcon() {
+  const btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+  const current = document.documentElement.getAttribute('data-theme');
+  btn.textContent = current === 'light' ? '☀️' : '🌙';
+}
+ 
+function updateThemeColorMeta() {
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (!meta) return;
+  const current = document.documentElement.getAttribute('data-theme');
+  meta.setAttribute('content', current === 'light' ? '#f7f3ec' : '#0f1310');
+}
+ 
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('pnwfg-theme-override', next);
+  updateThemeIcon();
+  updateThemeColorMeta();
+}
+ 
+function initThemeSystem() {
+  updateThemeIcon();
+  updateThemeColorMeta();
+ 
+  // If the person already has an override, or we've already cached sun
+  // times once before, there's nothing to fetch — skip geolocation entirely.
+  if (localStorage.getItem('pnwfg-theme-override')) return;
+  if (localStorage.getItem('pnwfg-sun-cache')) return;
+  if (!navigator.geolocation) return;
+ 
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      fetch(`https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`)
+        .then(res => res.json())
+        .then(data => {
+          if (!data || data.status !== 'OK') return;
+          const sunrise = new Date(data.results.sunrise);
+          const sunset = new Date(data.results.sunset);
+          localStorage.setItem('pnwfg-sun-cache', JSON.stringify({
+            sunrise: sunrise.toISOString(),
+            sunset: sunset.toISOString(),
+            lat, lng
+          }));
+          // Correct the theme now if the clock-guess used at load was wrong.
+          // No override exists at this point (checked above), so this is safe.
+          const now = new Date();
+          const correctTheme = (now < sunrise || now > sunset) ? 'dark' : 'light';
+          if (document.documentElement.getAttribute('data-theme') !== correctTheme) {
+            document.documentElement.setAttribute('data-theme', correctTheme);
+            updateThemeIcon();
+            updateThemeColorMeta();
+          }
+        })
+        .catch(() => {});
+    },
+    () => { /* permission denied or unavailable — keep the clock-guess theme, no error shown */ },
+    { timeout: 8000, maximumAge: 86400000 }
+  );
+}
+ 
+document.addEventListener('DOMContentLoaded', initThemeSystem);
+ 
 // ============ LIVE WEATHER (Open-Meteo, no API key) ============
 const DEFAULT_LOCATION = { lat: 45.6387, lng: -122.6615, name: 'Vancouver, WA' };
 let currentLocation = DEFAULT_LOCATION;
-
+ 
 // NOAA CO-OPS tide station IDs for coastal PNW locations
 // Source: tidesandcurrents.noaa.gov station listings
 const TIDE_STATIONS = {
@@ -3768,7 +3891,7 @@ const TIDE_STATIONS = {
   'Neah Bay, WA': { id: '9443090', name: 'Neah Bay, WA' },
   'Astoria, OR':  { id: '9439040', name: 'Astoria, OR' },
 };
-
+ 
 async function fetchWeather(lat, lng) {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}` +
     `&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,` +
@@ -3777,7 +3900,7 @@ async function fetchWeather(lat, lng) {
     `wind_speed_10m_max,precipitation_sum,pressure_msl_mean,cloud_cover_mean` +
     `&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch` +
     `&timezone=auto&forecast_days=7`;
-
+ 
   try {
     const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) throw new Error('Weather API failed');
@@ -3787,19 +3910,19 @@ async function fetchWeather(lat, lng) {
     return null;
   }
 }
-
+ 
 async function fetchTides(stationId) {
   // NOAA CO-OPS predictions, next 24 hours of high/low tides
   const today = new Date();
   const tomorrow = new Date(today.getTime() + 36 * 60 * 60 * 1000);
   const fmt = (d) => d.toISOString().slice(0, 10).replace(/-/g, '');
-
+ 
   const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?` +
     `product=predictions&application=PNWAnglerGuide` +
     `&begin_date=${fmt(today)}&end_date=${fmt(tomorrow)}` +
     `&datum=MLLW&station=${stationId}&time_zone=lst_ldt` +
     `&units=english&interval=hilo&format=json`;
-
+ 
   try {
     const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) throw new Error('NOAA tide API failed');
@@ -3810,7 +3933,7 @@ async function fetchTides(stationId) {
     return null;
   }
 }
-
+ 
 function pressureStatus(hpa) {
   // Convert hPa to inHg and assess
   const inHg = (hpa * 0.02953).toFixed(2);
@@ -3834,7 +3957,7 @@ function pressureStatus(hpa) {
   }
   return { status, detail, cls };
 }
-
+ 
 function windStatus(mph, gusts, dirDeg) {
   // Convert degrees to cardinal
   const dirs = ['N','NE','E','SE','S','SW','W','NW'];
@@ -3855,7 +3978,7 @@ function windStatus(mph, gusts, dirDeg) {
   }
   return { value: `${Math.round(mph)} mph`, detail, cls };
 }
-
+ 
 function skyStatus(cloudPct, weatherCode) {
   // Weather codes: 0=clear, 1-3=partial, 45-48=fog, 51-67=drizzle/rain, 71-77=snow, 80-82=showers, 95-99=thunder
   let label, detail, cls;
@@ -3890,47 +4013,47 @@ function skyStatus(cloudPct, weatherCode) {
   }
   return { label, detail, cls };
 }
-
+ 
 function calculateBiteScore(data) {
   const c = data.current;
   let score = 50;
-
+ 
   // Pressure (most important)
   const hpa = c.pressure_msl;
   if (hpa >= 1013 && hpa < 1020) score += 20;
   else if (hpa >= 1005) score += 10;
   else if (hpa < 1005) score -= 10;
-
+ 
   // Wind
   const w = c.wind_speed_10m;
   if (w >= 5 && w <= 12) score += 15;
   else if (w > 20) score -= 15;
   else if (w < 3) score -= 5;
-
+ 
   // Sky / clouds
   const cloud = c.cloud_cover;
   if (cloud > 70) score += 15;
   else if (cloud > 30) score += 5;
   else score -= 5;
-
+ 
   // Weather code adjustments
   const wc = c.weather_code;
   if (wc >= 95) score -= 30;
   else if (wc >= 51 && wc <= 67) score += 10;
   else if (wc >= 45 && wc <= 48) score += 8;
-
+ 
   // Clamp
   score = Math.max(0, Math.min(100, score));
   return score;
 }
-
+ 
 function biteLabel(score) {
   if (score >= 75) return { label: 'EXCELLENT', cls: 'bite-good', detail: 'Drop everything and go.' };
   if (score >= 55) return { label: 'GOOD', cls: 'bite-good', detail: 'Solid window today.' };
   if (score >= 35) return { label: 'FAIR', cls: 'bite-fair', detail: 'Workable. Pick best hours.' };
   return { label: 'SLOW', cls: 'bite-poor', detail: 'Tough conditions. Wait it out.' };
 }
-
+ 
 function formatWindow(sunrise, sunset) {
   // Best window: -30 min before sunrise to +90 min after, and -90 min before sunset to +30 min after
   const sr = new Date(sunrise);
@@ -3943,7 +4066,7 @@ function formatWindow(sunrise, sunset) {
     detail: `Sunrise ${fmt(sr)} · Sunset ${fmt(ss)}`
   };
 }
-
+ 
 async function updateLiveWeather(location) {
   // Mark loading state
   ['live-temp', 'live-pressure', 'live-wind', 'live-sky', 'live-window', 'live-score'].forEach(id => {
@@ -3951,45 +4074,45 @@ async function updateLiveWeather(location) {
     if (el) el.textContent = '...';
   });
   document.getElementById('live-location-label').textContent = `Loading ${location.name}...`;
-
+ 
   const data = await fetchWeather(location.lat, location.lng);
   if (!data || !data.current) {
     document.getElementById('live-location-label').textContent = `Offline · last known for ${location.name}`;
     return;
   }
-
+ 
   const c = data.current;
   const d = data.daily;
-
+ 
   // Temp
   document.getElementById('live-temp').textContent = `${Math.round(c.temperature_2m)}°F`;
   document.getElementById('live-temp-detail').textContent =
     `Feels ${Math.round(c.apparent_temperature)}°F. High ${Math.round(d.temperature_2m_max[0])}°F, low ${Math.round(d.temperature_2m_min[0])}°F.`;
-
+ 
   // Pressure
   const p = pressureStatus(c.pressure_msl);
   document.getElementById('live-pressure').textContent = p.status;
   document.getElementById('live-pressure-detail').textContent = p.detail;
   document.getElementById('live-pressure').className = 'info-card-value ' + p.cls;
-
+ 
   // Wind
   const w = windStatus(c.wind_speed_10m, c.wind_gusts_10m, c.wind_direction_10m);
   document.getElementById('live-wind').textContent = w.value;
   document.getElementById('live-wind-detail').textContent =
     w.detail + (c.wind_gusts_10m > c.wind_speed_10m + 5 ? ` Gusts ${Math.round(c.wind_gusts_10m)}.` : '');
   document.getElementById('live-wind').className = 'info-card-value ' + w.cls;
-
+ 
   // Sky
   const s = skyStatus(c.cloud_cover, c.weather_code);
   document.getElementById('live-sky').textContent = s.label;
   document.getElementById('live-sky-detail').textContent = `${Math.round(c.cloud_cover)}% clouds. ${s.detail}`;
   document.getElementById('live-sky').className = 'info-card-value ' + s.cls;
-
+ 
   // Best window
   const win = formatWindow(d.sunrise[0], d.sunset[0]);
   document.getElementById('live-window').textContent = win.primary;
   document.getElementById('live-window-detail').textContent = win.detail;
-
+ 
   // Bite score
   const score = calculateBiteScore(data);
   const bl = biteLabel(score);
@@ -3998,48 +4121,48 @@ async function updateLiveWeather(location) {
   const airTemp = c.temperature_2m;
 const warmWaterWarning = airTemp >= 75 ? ' ⚠️ Air temp suggests warm water — avoid targeting trout/steelhead.' : '';
 document.getElementById('live-score-detail').textContent = `${bl.label} · ${bl.detail}${warmWaterWarning}`;
-
+ 
   // Update label with timestamp
   const updated = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
   document.getElementById('live-location-label').textContent =
     `${location.name} · updated ${updated}`;
-
+ 
   // 7-day forecast
   renderForecast(data);
-
+ 
   // Tides (only for coastal locations)
   renderTides(location);
 }
-
+ 
 // ============ 7-DAY FORECAST ============
 function calculateDailyBiteScore(daily, dayIdx) {
   // Estimate a daily score from daily aggregates
   let score = 50;
-
+ 
   const pressureMean = daily.pressure_msl_mean ? daily.pressure_msl_mean[dayIdx] : 1013;
   if (pressureMean >= 1013 && pressureMean < 1020) score += 20;
   else if (pressureMean >= 1005) score += 10;
   else if (pressureMean < 1005) score -= 10;
-
+ 
   const wMax = daily.wind_speed_10m_max[dayIdx];
   if (wMax >= 5 && wMax <= 15) score += 10;
   else if (wMax > 25) score -= 15;
-
+ 
   const cloud = daily.cloud_cover_mean ? daily.cloud_cover_mean[dayIdx] : 50;
   if (cloud > 70) score += 15;
   else if (cloud > 30) score += 5;
   else score -= 5;
-
+ 
   const wc = daily.weather_code[dayIdx];
   if (wc >= 95) score -= 30;
   else if (wc >= 51 && wc <= 67) score += 8;
-
+ 
   const precip = daily.precipitation_sum[dayIdx];
   if (precip > 1.0) score -= 10;
-
+ 
   return Math.max(0, Math.min(100, score));
 }
-
+ 
 function weatherIcon(code) {
   if (code === 0) return '☀️';
   if (code <= 3) return '⛅';
@@ -4051,17 +4174,17 @@ function weatherIcon(code) {
   if (code >= 95) return '⛈️';
   return '🌤️';
 }
-
+ 
 function renderForecast(data) {
   const d = data.daily;
   const container = document.getElementById('forecast-grid');
   if (!container || !d || !d.time) return;
-
+ 
   // Calculate scores for all 7 days
   const scores = d.time.map((_, i) => calculateDailyBiteScore(d, i));
   const maxScore = Math.max(...scores);
   const minScore = Math.min(...scores);
-
+ 
   let html = '';
   d.time.forEach((dateStr, i) => {
     const date = new Date(dateStr + 'T12:00:00');
@@ -4070,15 +4193,15 @@ function renderForecast(data) {
     const low = Math.round(d.temperature_2m_min[i]);
     const icon = weatherIcon(d.weather_code[i]);
     const score = scores[i];
-
+ 
     let scoreClass = 'bite-fair';
     if (score >= 60) scoreClass = 'bite-good';
     else if (score < 35) scoreClass = 'bite-poor';
-
+ 
     let dayClass = 'forecast-day';
     if (score === maxScore && score >= 55) dayClass += ' best';
     if (score === minScore && score < 35) dayClass += ' worst';
-
+ 
     html += `
       <div class="${dayClass}">
         <div class="forecast-day-name">${dayName}</div>
@@ -4090,29 +4213,29 @@ function renderForecast(data) {
   });
   container.innerHTML = html;
 }
-
+ 
 // ============ TIDES ============
 async function renderTides(location) {
   const section = document.getElementById('tides-section');
   const stationInfo = TIDE_STATIONS[location.name];
-
+ 
   if (!stationInfo) {
     section.style.display = 'none';
     return;
   }
-
+ 
   section.style.display = 'block';
   document.getElementById('tides-station-label').textContent = `Loading ${stationInfo.name}...`;
-
+ 
   const tides = await fetchTides(stationInfo.id);
   if (!tides || tides.length === 0) {
     document.getElementById('tides-station-label').textContent = `Tide data offline · ${stationInfo.name}`;
     document.getElementById('tides-grid').innerHTML = '';
     return;
   }
-
+ 
   document.getElementById('tides-station-label').textContent = `${stationInfo.name} · NOAA station ${stationInfo.id}`;
-
+ 
   // Show next 4 tides
   const now = new Date();
   const upcoming = tides
@@ -4123,12 +4246,12 @@ async function renderTides(location) {
     }))
     .filter(t => t.time > now)
     .slice(0, 4);
-
+ 
   if (upcoming.length === 0) {
     document.getElementById('tides-grid').innerHTML = '<div class="note">No upcoming tide predictions available.</div>';
     return;
   }
-
+ 
   let html = '';
   upcoming.forEach(t => {
     const isHigh = t.type === 'H';
@@ -4138,7 +4261,7 @@ async function renderTides(location) {
     const dateLabel = t.time.toDateString() === now.toDateString() ? 'Today' :
                       t.time.toDateString() === new Date(now.getTime() + 86400000).toDateString() ? 'Tomorrow' :
                       t.time.toLocaleDateString('en-US', { weekday: 'short' });
-
+ 
     html += `
       <div class="tide-card ${cls}">
         <div class="tide-card-type">${typeLabel}</div>
@@ -4149,7 +4272,7 @@ async function renderTides(location) {
   });
   document.getElementById('tides-grid').innerHTML = html;
 }
-
+ 
 // Wire up location buttons
 document.querySelectorAll('.loc-btn').forEach(btn => {
   if (btn.id === 'use-my-location') {
@@ -4194,20 +4317,20 @@ document.querySelectorAll('.loc-btn').forEach(btn => {
     });
   }
 });
-
+ 
 // Initial weather load
 updateLiveWeather(currentLocation);
-
+ 
 // Refresh weather every 15 minutes if tab is visible
 setInterval(() => {
   if (!document.hidden) updateLiveWeather(currentLocation);
 }, 15 * 60 * 1000);
-
+ 
 // Refresh on visibility (e.g. user opens app from background)
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden) updateLiveWeather(currentLocation);
 });
-
+ 
 // ============ NEWSLETTER (Beehiiv) ============
 // CONFIGURATION: Two ways to wire this up after creating your Beehiiv account.
 //
@@ -4222,47 +4345,47 @@ document.addEventListener('visibilitychange', () => {
 //
 // UNTIL EITHER IS CONFIGURED: emails queue in browser localStorage.
 // Run window.exportNewsletterQueue() in console to extract them as CSV.
-
+ 
 const BEEHIIV_ARCHIVE_URL = 'https://yab.beehiiv.com';  // <-- replace with your archive URL
-
+ 
 // Check on load: if a Beehiiv iframe is present, hide the native form
 document.addEventListener('DOMContentLoaded', () => {
   const embedContainer = document.getElementById('beehiiv-embed-container');
   const nativeForm = document.getElementById('newsletter-form');
   const statusEl = document.getElementById('newsletter-status');
-
+ 
   if (embedContainer && embedContainer.querySelector('iframe')) {
     // Iframe is present, use that and hide native form
     embedContainer.style.display = 'block';
     if (nativeForm) nativeForm.style.display = 'none';
     if (statusEl) statusEl.style.display = 'none';
   }
-
+ 
   // Wire archive link
   const archiveLink = document.getElementById('newsletter-archive-link');
   if (archiveLink && BEEHIIV_ARCHIVE_URL) {
     archiveLink.href = BEEHIIV_ARCHIVE_URL;
   }
 });
-
+ 
 async function submitNewsletter(event) {
   event.preventDefault();
   const emailInput = document.getElementById('newsletter-email');
   const submitBtn = document.getElementById('newsletter-submit');
   const statusEl = document.getElementById('newsletter-status');
   const email = emailInput.value.trim().toLowerCase();
-
+ 
   if (!email || !email.includes('@') || !email.includes('.')) {
     statusEl.className = 'newsletter-status error';
     statusEl.textContent = 'Please enter a valid email.';
     return false;
   }
-
+ 
   submitBtn.disabled = true;
   submitBtn.textContent = 'Saving...';
   statusEl.className = 'newsletter-status pending';
   statusEl.textContent = 'Subscribing...';
-
+ 
 try {
       const response = await fetch(
         'https://beehiiv-subscribe.yab-account.workers.dev',
@@ -4291,7 +4414,7 @@ try {
       statusEl.className = 'newsletter-status error';
       statusEl.textContent = 'Something went wrong. Try again.';
     }
-
+ 
     submitBtn.disabled = false;
     submitBtn.textContent = 'Subscribe';
     return false;
@@ -4306,7 +4429,7 @@ function showNewsletterSuccess() {
     statusEl.className = 'newsletter-status';
   }, 8000);
 }
-
+ 
 // Utility: log queued subscribers to console (for manual export during pre-launch)
 window.exportNewsletterQueue = function() {
   const queue = JSON.parse(localStorage.getItem('newsletter-queue') || '[]');
@@ -4321,7 +4444,7 @@ window.exportNewsletterQueue = function() {
   console.log(csv);
   return queue;
 };
-
+ 
 // Utility: clear the queue after you've imported to Beehiiv
 window.clearNewsletterQueue = function() {
   if (confirm('Clear all queued signups? (Only do this after importing to Beehiiv)')) {
@@ -4329,18 +4452,18 @@ window.clearNewsletterQueue = function() {
     console.log('Queue cleared.');
   }
 };
-
+ 
 // ============ TRIP LOG ============
 const LOG_KEY = 'pnwfg-trip-log';
-
+ 
 function getLogEntries() {
   try { return JSON.parse(localStorage.getItem(LOG_KEY) || '[]'); } catch(e) { return []; }
 }
-
+ 
 function saveLogEntries(entries) {
   localStorage.setItem(LOG_KEY, JSON.stringify(entries));
 }
-
+ 
 function saveLogEntry() {
   const date = document.getElementById('log-date').value;
   const location = document.getElementById('log-location').value.trim();
@@ -4348,11 +4471,11 @@ function saveLogEntry() {
   const count = parseInt(document.getElementById('log-count').value) || 0;
   const notes = document.getElementById('log-notes').value.trim();
   const conditions = document.getElementById('log-conditions').value.trim();
-
+ 
   if (!date) { alert('Please select a date.'); return; }
   if (!location) { alert('Please enter a location.'); return; }
   if (!species) { alert('Please select a species.'); return; }
-
+ 
   const entry = {
     id: Date.now(),
     date,
@@ -4363,58 +4486,58 @@ function saveLogEntry() {
     conditions,
     type: getSaltFreshType(species)
   };
-
+ 
   const entries = getLogEntries();
   entries.unshift(entry);
   saveLogEntries(entries);
-
+ 
   // Reset form (keep date)
   document.getElementById('log-location').value = '';
   document.getElementById('log-species').value = '';
   document.getElementById('log-count').value = '';
   document.getElementById('log-notes').value = '';
-
+ 
   renderLogEntries();
   renderLogStats();
 }
-
+ 
 function getSaltFreshType(species) {
   const saltSpecies = ['Coho Salmon (salt)', 'Chinook Salmon (salt)', 'Pink Salmon',
     'Lingcod', 'Rockfish', 'Pacific Halibut', 'Albacore Tuna', 'Surf Perch',
     'Cabezon', 'Dungeness Crab', 'Razor Clams'];
   return saltSpecies.includes(species) ? 'salt' : 'fresh';
 }
-
+ 
 let logActiveFilter = 'all';
-
+ 
 function filterLog(filter, el) {
   logActiveFilter = filter;
   document.querySelectorAll('.log-filter-pill').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   renderLogEntries();
 }
-
+ 
 function renderLogEntries() {
   const container = document.getElementById('log-entries');
   const countLabel = document.getElementById('log-count-label');
   let entries = getLogEntries();
-
+ 
   // Filter
   if (logActiveFilter !== 'all') {
     entries = entries.filter(e => e.species === logActiveFilter);
   }
-
+ 
   // Update filter pills with counts
   updateFilterPills();
-
+ 
   if (entries.length === 0) {
     countLabel.textContent = logActiveFilter === 'all' ? 'No entries yet' : `No ${logActiveFilter} entries`;
     container.innerHTML = `<div class="log-empty">${logActiveFilter === 'all' ? 'Log your first trip above.' : 'No entries for this species yet.'}</div>`;
     return;
   }
-
+ 
   countLabel.textContent = `${entries.length} entr${entries.length === 1 ? 'y' : 'ies'}`;
-
+ 
   container.innerHTML = entries.map(e => `
     <div class="log-entry-card ${e.type || 'fresh'}">
       <div class="log-entry-top">
@@ -4434,17 +4557,17 @@ function renderLogEntries() {
     </div>
   `).join('');
 }
-
+ 
 function updateFilterPills() {
   const entries = getLogEntries();
   const bar = document.getElementById('log-filter-bar');
   if (!bar) return;
-
+ 
   // Count by species
   const counts = {};
   entries.forEach(e => { counts[e.species] = (counts[e.species] || 0) + 1; });
   const species = Object.keys(counts).sort();
-
+ 
   let html = `<button class="log-filter-pill ${logActiveFilter === 'all' ? 'active' : ''}" data-filter="all" onclick="filterLog('all', this)">All (${entries.length})</button>`;
   species.forEach(s => {
     const active = logActiveFilter === s ? 'active' : '';
@@ -4452,7 +4575,7 @@ function updateFilterPills() {
   });
   bar.innerHTML = html;
 }
-
+ 
 function renderLogStats() {
   const entries = getLogEntries();
   const totalFish = entries.reduce((sum, e) => sum + (e.count || 0), 0);
@@ -4461,7 +4584,7 @@ function renderLogStats() {
   document.getElementById('log-stat-fish').textContent = totalFish;
   document.getElementById('log-stat-species').textContent = uniqueSpecies;
 }
-
+ 
 function deleteLogEntry(id) {
   if (!confirm('Delete this entry?')) return;
   const entries = getLogEntries().filter(e => e.id !== id);
@@ -4469,17 +4592,17 @@ function deleteLogEntry(id) {
   renderLogEntries();
   renderLogStats();
 }
-
+ 
 function formatLogDate(dateStr) {
   if (!dateStr) return '–';
   const d = new Date(dateStr + 'T12:00:00');
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
-
+ 
 function exportLogCSV() {
   const entries = getLogEntries();
   if (entries.length === 0) { alert('No entries to export.'); return; }
-
+ 
   const headers = ['Date', 'Location', 'Species', 'Count', 'Conditions', 'Notes'];
   const rows = entries.map(e => [
     e.date,
@@ -4489,7 +4612,7 @@ function exportLogCSV() {
     `"${(e.conditions || '').replace(/"/g, '""')}"`,
     `"${(e.notes || '').replace(/"/g, '""')}"`
   ]);
-
+ 
   const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
   const blob = new Blob([csv], { type: 'text/csv' });
   const url = URL.createObjectURL(blob);
@@ -4499,7 +4622,7 @@ function exportLogCSV() {
   a.click();
   URL.revokeObjectURL(url);
 }
-
+ 
 // Auto-populate conditions from live weather when log tab is opened
 function populateLogConditions() {
   const tempEl = document.getElementById('live-temp');
@@ -4507,7 +4630,7 @@ function populateLogConditions() {
   const skyEl = document.getElementById('live-sky');
   const condField = document.getElementById('log-conditions-field');
   const condInput = document.getElementById('log-conditions');
-
+ 
   if (tempEl && tempEl.textContent !== '--' && tempEl.textContent !== '...') {
     const temp = tempEl.textContent;
     const wind = windEl ? windEl.textContent : '';
@@ -4516,7 +4639,7 @@ function populateLogConditions() {
     condField.style.display = 'block';
   }
 }
-
+ 
 // Set today's date as default
 function initLogForm() {
   const dateInput = document.getElementById('log-date');
@@ -4527,7 +4650,7 @@ function initLogForm() {
   renderLogEntries();
   renderLogStats();
 }
-
+ 
 // ============ PWA: SERVICE WORKER REGISTRATION ============
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -4536,7 +4659,7 @@ if ('serviceWorker' in navigator) {
         console.log('[PWA] Service worker registered:', reg.scope);
         // Check for updates every time the page loads
         reg.update();
-
+ 
         // Listen for new service worker waiting to activate
         reg.addEventListener('updatefound', () => {
           const newWorker = reg.installing;
@@ -4549,7 +4672,7 @@ if ('serviceWorker' in navigator) {
         });
       })
       .catch((err) => console.log('[PWA] Service worker registration failed:', err));
-
+ 
     // Reload page when new service worker takes control
     let refreshing = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
@@ -4559,50 +4682,50 @@ if ('serviceWorker' in navigator) {
     });
   });
 }
-
+ 
 // ============ PWA: INSTALL PROMPT ============
 let deferredPrompt = null;
-
+ 
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
   showInstallBanner();
 });
-
+ 
 window.addEventListener('appinstalled', () => {
   console.log('[PWA] App installed');
   hideInstallBanner();
   deferredPrompt = null;
 });
-
+ 
 function showInstallBanner() {
   // Don't show if user dismissed within the last 7 days
   const dismissed = localStorage.getItem('install-dismissed');
   if (dismissed && (Date.now() - parseInt(dismissed)) < 7 * 24 * 60 * 60 * 1000) return;
-
+ 
   const banner = document.createElement('div');
   banner.id = 'install-banner';
   banner.innerHTML = `
     <div style="
       position: fixed; bottom: 16px; left: 16px; right: 16px;
-      background: #1a2118; border: 1px solid #d4a574; border-radius: 10px;
+      background: var(--bg-card); border: 1px solid var(--accent); border-radius: 10px;
       padding: 14px 16px; display: flex; align-items: center; gap: 12px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.5); z-index: 1000;
       font-family: 'Inter', sans-serif; max-width: 500px; margin: 0 auto;
       animation: slideUp 0.3s ease-out;
     ">
       <div style="font-size: 28px;">📲</div>
-      <div style="flex: 1; font-size: 13px; color: #e8e4dc; line-height: 1.4;">
-        <strong style="color: #f4c79b; display: block; margin-bottom: 2px;">Install PNW Angler</strong>
-        <span style="color: #9a9489;">Add to home screen for offline access</span>
+      <div style="flex: 1; font-size: 13px; color: var(--text); line-height: 1.4;">
+        <strong style="color: var(--accent-bright); display: block; margin-bottom: 2px;">Install PNW Angler</strong>
+        <span style="color: var(--text-dim);">Add to home screen for offline access</span>
       </div>
       <button onclick="installApp()" style="
-        background: #d4a574; color: #0f1310; border: none; border-radius: 6px;
+        background: var(--accent); color: var(--bg); border: none; border-radius: 6px;
         padding: 8px 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px;
         font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
       ">Install</button>
       <button onclick="dismissInstall()" style="
-        background: transparent; color: #5e5a52; border: none; font-size: 20px;
+        background: transparent; color: var(--text-faint); border: none; font-size: 20px;
         cursor: pointer; padding: 0 4px; line-height: 1;
       ">×</button>
     </div>
@@ -4615,12 +4738,12 @@ function showInstallBanner() {
   `;
   document.body.appendChild(banner);
 }
-
+ 
 function hideInstallBanner() {
   const banner = document.getElementById('install-banner');
   if (banner) banner.remove();
 }
-
+ 
 function installApp() {
   if (!deferredPrompt) return;
   deferredPrompt.prompt();
@@ -4632,12 +4755,12 @@ function installApp() {
     hideInstallBanner();
   });
 }
-
+ 
 function dismissInstall() {
   localStorage.setItem('install-dismissed', Date.now().toString());
   hideInstallBanner();
 }
-
+ 
 // ============ PWA: UPDATE BANNER ============
 function showUpdateBanner(newWorker) {
   const banner = document.createElement('div');
@@ -4645,17 +4768,17 @@ function showUpdateBanner(newWorker) {
   banner.innerHTML = `
     <div style="
       position: fixed; top: 16px; left: 16px; right: 16px;
-      background: #1a2118; border: 1px solid #7a9b5d; border-radius: 10px;
+      background: var(--bg-card); border: 1px solid var(--fresh); border-radius: 10px;
       padding: 12px 14px; display: flex; align-items: center; gap: 10px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.5); z-index: 1001;
       font-family: 'Inter', sans-serif; max-width: 500px; margin: 0 auto;
     ">
       <div style="font-size: 22px;">🔄</div>
-      <div style="flex: 1; font-size: 13px; color: #e8e4dc;">
-        <strong style="color: #9bc176;">New version available</strong>
+      <div style="flex: 1; font-size: 13px; color: var(--text);">
+        <strong style="color: var(--fresh-bright);">New version available</strong>
       </div>
       <button onclick="applyUpdate()" style="
-        background: #7a9b5d; color: #0f1310; border: none; border-radius: 6px;
+        background: var(--fresh); color: var(--bg); border: none; border-radius: 6px;
         padding: 7px 12px; font-family: 'JetBrains Mono', monospace; font-size: 10px;
         font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
       ">Update</button>
@@ -4665,7 +4788,7 @@ function showUpdateBanner(newWorker) {
   window.__pendingWorker = newWorker;
   document.body.appendChild(banner);
 }
-
+ 
 function applyUpdate() {
   if (window.__pendingWorker) {
     window.__pendingWorker.postMessage({ type: 'SKIP_WAITING' });
@@ -4674,16 +4797,17 @@ function applyUpdate() {
 }
 </script>
 <script type="text/javascript" async src="https://subscribe-forms.beehiiv.com/attribution.js"></script>
-
+ 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
