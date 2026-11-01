@@ -2,7 +2,7 @@
   "name": "PNW Angler Field Guide",
   "short_name": "PNW Angler",
   "description": "Pacific Northwest fishing field guide by Yassir Baza (YAB Official). Species, spots, rigs, knots, weather, and pro tips for freshwater and saltwater anglers across Washington and Oregon. Works offline.",
-  "start_url": "./index.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
@@ -41,25 +41,25 @@
       "name": "Right Now",
       "short_name": "Now",
       "description": "What's biting today",
-      "url": "./index.html#now"
+      "url": "./#now"
     },
     {
       "name": "Species",
       "short_name": "Species",
       "description": "Browse fish species",
-      "url": "./index.html#species"
+      "url": "./#species"
     },
     {
       "name": "Spots",
       "short_name": "Spots",
       "description": "Find fishing locations",
-      "url": "./index.html#spots"
+      "url": "./#spots"
     },
     {
       "name": "Knots",
       "short_name": "Knots",
       "description": "Essential knots",
-      "url": "./index.html#knots"
+      "url": "./#knots"
     }
   ]
 }

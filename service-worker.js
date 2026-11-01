@@ -1,13 +1,12 @@
 // PNW Angler Field Guide - Service Worker
 // Cache-first with background update (stale-while-revalidate)
 
-const VERSION = 'v2.9';
+const VERSION = 'v2.9.1';
 const CACHE_NAME = `pnw-angler-${VERSION}`;
 
 // Assets to cache on install (the app shell)
 const PRECACHE_URLS = [
   './',
-  './index.html',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
@@ -86,28 +85,44 @@ self.addEventListener('fetch', (event) => {
 
   if (!isOrigin && !isFont) return;
 
+  // Page loads always use the app shell stored at './' so a request for
+  // /index.html (which Cloudflare Pages redirects to /) never hits a redirect.
+  const isNavigation = event.request.mode === 'navigate';
+  const cacheKey = isNavigation && isOrigin ? './' : event.request;
+
   event.respondWith(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.match(event.request).then((cachedResponse) => {
+      return cache.match(cacheKey).then((cachedResponse) => {
         const fetchPromise = fetch(event.request)
           .then((networkResponse) => {
-            // Update cache with fresh response
-            if (networkResponse && networkResponse.status === 200) {
-              cache.put(event.request, networkResponse.clone());
+            // Update cache with fresh response (never store a redirected one)
+            if (networkResponse && networkResponse.status === 200 && !networkResponse.redirected) {
+              cache.put(cacheKey, networkResponse.clone());
             }
-            return networkResponse;
+            return cleanResponse(networkResponse);
           })
           .catch(() => {
-            // Network failed; cached version (if any) was already served below
-            return cachedResponse;
+            // Network failed; fall back to cached version (if any)
+            return cleanResponse(cachedResponse);
           });
 
         // Return cached immediately if available, else wait for network
-        return cachedResponse || fetchPromise;
+        return cachedResponse ? cleanResponse(cachedResponse) : fetchPromise;
       });
     })
   );
 });
+
+// Safari refuses to load a page from a service worker response that went
+// through a redirect. Rebuild any such response as a plain one.
+function cleanResponse(response) {
+  if (!response || !response.redirected) return response;
+  return response.blob().then((body) => new Response(body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: response.headers,
+  }));
+}
 
 // ============ MESSAGES (for manual update prompts) ============
 self.addEventListener('message', (event) => {
