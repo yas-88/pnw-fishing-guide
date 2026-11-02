@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <script>
 (function() {
+  // Season palette: spring/summer runs ~Mar 20 (spring equinox) to ~Sep 21; fall/winter the rest
+  try {
+    var so = localStorage.getItem('pnwfg-season-override');
+    var season;
+    if (so === 'summer' || so === 'warm') { season = so; }
+    else {
+      var d = new Date(), md = (d.getMonth() + 1) * 100 + d.getDate();
+      season = (md >= 320 && md <= 921) ? 'summer' : 'warm';
+    }
+    document.documentElement.setAttribute('data-season', season);
+  } catch (e) { document.documentElement.setAttribute('data-season', 'warm'); }
+})();
+(function() {
   function setTheme(t) {
     document.documentElement.setAttribute('data-theme', t);
   }
@@ -71,6 +84,8 @@ html[data-theme="dark"], html:not([data-theme]) {
   --text-faint: #5e5a52;
   --border: #2d3527;
   --line: rgba(212, 165, 116, 0.15);
+  --accent-rgb: 212, 165, 116;
+  --header-bg: rgba(15, 19, 16, 0.96);
 }
  
 html[data-theme="light"] {
@@ -92,7 +107,61 @@ html[data-theme="light"] {
   --text-faint: #8a8270;
   --border: #d8cfb8;
   --line: rgba(156, 115, 65, 0.18);
+  --accent-rgb: 212, 165, 116;
+  --header-bg: rgba(15, 19, 16, 0.96);
 }
+
+/* Spring/summer palette (bright aqua), night */
+html[data-season="summer"][data-theme="dark"],
+html[data-season="summer"]:not([data-theme]) {
+  --bg: #071a1f;
+  --bg-card: #0e2a31;
+  --bg-elev: #133640;
+  --bg-deep: #04121a;
+  --accent: #ffd34d;
+  --accent-bright: #ffe48a;
+  --salt: #6cc6ff;
+  --salt-bright: #9ad8ff;
+  --fresh: #5fcf73;
+  --fresh-bright: #7ee08a;
+  --danger: #ff6b5e;
+  --warn: #ffb547;
+  --info: #6cb8ff;
+  --text: #eef9f8;
+  --text-dim: #9fbcbd;
+  --text-faint: #5f7f82;
+  --border: #1d4049;
+  --line: rgba(255, 211, 77, 0.15);
+  --accent-rgb: 255, 211, 77;
+  --header-bg: rgba(7, 26, 31, 0.96);
+}
+
+/* Spring/summer palette (bright aqua), day */
+html[data-season="summer"][data-theme="light"] {
+  --bg: #eefbf7;
+  --bg-card: #ffffff;
+  --bg-elev: #dcf3ec;
+  --bg-deep: #cdebe2;
+  --accent: #00796d;
+  --accent-bright: #005c53;
+  --salt: #1f6fa8;
+  --salt-bright: #175684;
+  --fresh: #2e8b3a;
+  --fresh-bright: #23702d;
+  --danger: #c0392b;
+  --warn: #a86f00;
+  --info: #1f6fa8;
+  --text: #10302b;
+  --text-dim: #44625c;
+  --text-faint: #7a9993;
+  --border: #bfe8dc;
+  --line: rgba(0, 121, 109, 0.16);
+  --accent-rgb: 0, 121, 109;
+  --header-bg: rgba(238, 251, 247, 0.96);
+}
+html[data-season="summer"] .mini-tag.hatchery { color: var(--accent-bright); border-color: rgba(var(--accent-rgb), 0.4); background: rgba(var(--accent-rgb), 0.08); }
+html[data-season="summer"] .mini-tag.wild { color: var(--fresh-bright); border-color: var(--fresh); background: rgba(var(--accent-rgb), 0.04); }
+html[data-season="summer"] .temp-ideal { background: var(--fresh-bright); }
  
 html, body {
   background: var(--bg);
@@ -105,7 +174,7 @@ html, body {
  
 body {
   background-image:
-    radial-gradient(at 20% 10%, rgba(212, 165, 116, 0.04) 0%, transparent 50%),
+    radial-gradient(at 20% 10%, rgba(var(--accent-rgb), 0.04) 0%, transparent 50%),
     radial-gradient(at 80% 90%, rgba(107, 168, 184, 0.03) 0%, transparent 50%);
   min-height: 100vh;
   padding-bottom: 80px;
@@ -117,7 +186,7 @@ header {
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
-  background: rgba(15, 19, 16, 0.96);
+  background: var(--header-bg);
   backdrop-filter: blur(12px);
   z-index: 100;
 }
@@ -341,7 +410,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
  
 /* NEWSLETTER */
 .newsletter-box {
-  background: linear-gradient(135deg, rgba(212, 165, 116, 0.08) 0%, rgba(107, 168, 184, 0.06) 100%);
+  background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.08) 0%, rgba(107, 168, 184, 0.06) 100%);
   border: 1px solid var(--accent);
   border-radius: 10px;
   padding: 20px 18px;
@@ -668,7 +737,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   background: var(--bg-elev);
 }
 .time-block.prime { background: rgba(155, 193, 118, 0.15); border-color: var(--fresh); }
-.time-block.good { background: rgba(212, 165, 116, 0.1); border-color: var(--accent); }
+.time-block.good { background: rgba(var(--accent-rgb), 0.1); border-color: var(--accent); }
 .time-block.slow { opacity: 0.5; }
 .time-icon { font-size: 18px; margin-bottom: 2px; display: block; }
 .time-label {
@@ -701,7 +770,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
   padding: 10px 6px;
   text-align: center;
 }
-.moon-cell.peak { background: rgba(212, 165, 116, 0.1); border-color: var(--accent); }
+.moon-cell.peak { background: rgba(var(--accent-rgb), 0.1); border-color: var(--accent); }
 .moon-icon { font-size: 18px; margin-bottom: 4px; display: block; }
 .moon-name {
   font-family: 'JetBrains Mono', monospace;
@@ -740,7 +809,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 }
 .type-btn.active.fresh { background: rgba(122, 155, 93, 0.18); border-color: var(--fresh); color: var(--fresh-bright); }
 .type-btn.active.salt { background: rgba(107, 168, 184, 0.18); border-color: var(--salt); color: var(--salt-bright); }
-.type-btn.active.all { background: rgba(212, 165, 116, 0.15); border-color: var(--accent); color: var(--accent-bright); }
+.type-btn.active.all { background: rgba(var(--accent-rgb), 0.15); border-color: var(--accent); color: var(--accent-bright); }
  
 /* SEARCH */
 .search-bar {
@@ -838,7 +907,7 @@ section.active { display: block; animation: fadeIn 0.25s; }
 .status-open { background: rgba(122, 155, 93, 0.15); color: var(--fresh-bright); border: 1px solid rgba(122, 155, 93, 0.4); }
 .status-closed { background: rgba(200, 90, 74, 0.15); color: var(--danger); border: 1px solid rgba(200, 90, 74, 0.4); }
 .status-cr { background: rgba(212, 160, 23, 0.15); color: var(--warn); border: 1px solid rgba(212, 160, 23, 0.4); }
-.status-partial { background: rgba(212, 165, 116, 0.15); color: var(--accent); border: 1px solid rgba(212, 165, 116, 0.4); }
+.status-partial { background: rgba(var(--accent-rgb), 0.15); color: var(--accent); border: 1px solid rgba(var(--accent-rgb), 0.4); }
  
 .species-photo {
   width: 100%;
@@ -1568,6 +1637,17 @@ footer {
 }
 </style>
 <style>
+#appearance-menu {
+  position: absolute; right: 0; top: 100%; margin-top: 8px; z-index: 200;
+  width: 260px; background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+#appearance-menu[hidden] { display: none; }
+.am-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); margin: 0 0 6px; }
+.am-row { display: flex; gap: 4px; margin-bottom: 12px; }
+.am-row:last-child { margin-bottom: 0; }
+.am-opt { flex: 1; padding: 8px 4px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text-dim); font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; line-height: 1.2; }
+.am-opt.active { border-color: var(--accent); color: var(--accent); background: rgba(var(--accent-rgb), 0.12); }
 @keyframes pnw-spin { to { transform: rotate(360deg); } }
 .spinning { animation: pnw-spin 0.8s linear infinite; }
 #ptr-indicator {
@@ -1592,9 +1672,23 @@ footer {
       <div class="subtitle">Pacific Northwest · Fresh + Salt · Est. 2026</div>
       <div class="header-meta">BY YASSIR BAZA · @YAB.OFFICIAL · v2.9</div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;">
-      <button id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme" style="flex-shrink:0;width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--bg-card);color:var(--accent);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color 0.2s;"></button>
+    <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;position:relative;">
+      <button id="theme-toggle" onclick="toggleAppearanceMenu(event)" aria-label="Appearance and season" aria-haspopup="true" aria-expanded="false" style="flex-shrink:0;width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--bg-card);color:var(--accent);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color 0.2s;"></button>
       <button id="refresh-btn" onclick="refreshApp()" aria-label="Refresh live data" style="flex-shrink:0;width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--bg-card);color:var(--accent);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color 0.2s;font-weight:700;"><span id="refresh-icon" style="display:inline-block;line-height:1;">↻</span></button>
+    <div id="appearance-menu" role="dialog" aria-label="Appearance" hidden>
+      <div class="am-label">Day / Night</div>
+      <div class="am-row">
+        <button class="am-opt" data-theme-opt="auto" onclick="setThemeChoice('auto')">Auto</button>
+        <button class="am-opt" data-theme-opt="light" onclick="setThemeChoice('light')">☀️ Day</button>
+        <button class="am-opt" data-theme-opt="dark" onclick="setThemeChoice('dark')">🌙 Night</button>
+      </div>
+      <div class="am-label">Season colors</div>
+      <div class="am-row">
+        <button class="am-opt" data-season-opt="auto" onclick="setSeasonChoice('auto')">Auto</button>
+        <button class="am-opt" data-season-opt="summer" onclick="setSeasonChoice('summer')">Spring / Summer</button>
+        <button class="am-opt" data-season-opt="warm" onclick="setSeasonChoice('warm')">Fall / Winter</button>
+      </div>
+    </div>
     </div>
     <script>document.getElementById('theme-toggle').textContent = document.documentElement.getAttribute('data-theme') === 'light' ? '☀️' : '🌙';</script>
   </div>
@@ -3910,8 +4004,86 @@ function updateThemeColorMeta() {
   const meta = document.querySelector('meta[name="theme-color"]');
   if (!meta) return;
   const current = document.documentElement.getAttribute('data-theme');
-  meta.setAttribute('content', current === 'light' ? '#f7f3ec' : '#0f1310');
+  const summer = document.documentElement.getAttribute('data-season') === 'summer';
+  const colors = summer ? { light: '#eefbf7', dark: '#071a1f' } : { light: '#f7f3ec', dark: '#0f1310' };
+  meta.setAttribute('content', current === 'light' ? colors.light : colors.dark);
 }
+
+// ============ APPEARANCE MENU (day/night + season colors) ============
+function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+function lsDel(k) { try { localStorage.removeItem(k); } catch (e) {} }
+
+function autoSeason() {
+  const d = new Date(), md = (d.getMonth() + 1) * 100 + d.getDate();
+  return (md >= 320 && md <= 921) ? 'summer' : 'warm';
+}
+
+function autoTheme() {
+  const cached = lsGet('pnwfg-sun-cache');
+  if (cached) {
+    try {
+      const c = JSON.parse(cached), now = new Date();
+      const sunrise = new Date(c.sunrise), sunset = new Date(c.sunset);
+      sunrise.setFullYear(now.getFullYear(), now.getMonth(), now.getDate());
+      sunset.setFullYear(now.getFullYear(), now.getMonth(), now.getDate());
+      return (now < sunrise || now > sunset) ? 'dark' : 'light';
+    } catch (e) {}
+  }
+  const h = new Date().getHours();
+  return (h < 6 || h >= 20) ? 'dark' : 'light';
+}
+
+function setThemeChoice(choice) {
+  if (choice === 'auto') {
+    lsDel('pnwfg-theme-override');
+    document.documentElement.setAttribute('data-theme', autoTheme());
+    initThemeSystem(); // fetches sunrise/sunset once if not cached yet
+  } else {
+    lsSet('pnwfg-theme-override', choice);
+    document.documentElement.setAttribute('data-theme', choice);
+  }
+  updateThemeIcon();
+  updateThemeColorMeta();
+  updateAppearanceMenu();
+}
+
+function setSeasonChoice(choice) {
+  if (choice === 'auto') lsDel('pnwfg-season-override');
+  else lsSet('pnwfg-season-override', choice);
+  document.documentElement.setAttribute('data-season', choice === 'auto' ? autoSeason() : choice);
+  updateThemeColorMeta();
+  updateAppearanceMenu();
+}
+
+function updateAppearanceMenu() {
+  const t = lsGet('pnwfg-theme-override') || 'auto';
+  const se = lsGet('pnwfg-season-override') || 'auto';
+  document.querySelectorAll('[data-theme-opt]').forEach(b => b.classList.toggle('active', b.dataset.themeOpt === t));
+  document.querySelectorAll('[data-season-opt]').forEach(b => b.classList.toggle('active', b.dataset.seasonOpt === se));
+}
+
+function toggleAppearanceMenu(e) {
+  if (e) e.stopPropagation();
+  const menu = document.getElementById('appearance-menu');
+  const open = menu.hasAttribute('hidden');
+  if (open) { updateAppearanceMenu(); menu.removeAttribute('hidden'); }
+  else menu.setAttribute('hidden', '');
+  document.getElementById('theme-toggle').setAttribute('aria-expanded', String(open));
+}
+
+function closeAppearanceMenu() {
+  const menu = document.getElementById('appearance-menu');
+  if (menu && !menu.hasAttribute('hidden')) {
+    menu.setAttribute('hidden', '');
+    document.getElementById('theme-toggle').setAttribute('aria-expanded', 'false');
+  }
+}
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('appearance-menu');
+  if (menu && !menu.contains(e.target)) closeAppearanceMenu();
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAppearanceMenu(); });
  
 function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme');
