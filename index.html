@@ -1800,6 +1800,26 @@ footer {
   <div class="today-text" id="seasonal-text"></div>
 </div>
  
+<div class="section-title">BEFORE YOU LAUNCH</div>
+<div class="section-subtitle">Catch card check · 30 seconds at home</div>
+
+<div class="weather-block" style="margin-bottom:18px;">
+  <div class="weather-block-title">HAVE YOUR CATCH CARD ON YOU</div>
+  <div style="font-size:13px;line-height:1.6;color:var(--text);margin-top:8px;">
+    Washington requires a catch record card for <strong>salmon, steelhead, sturgeon, halibut, and Puget Sound Dungeness crab</strong>. Record a fish you keep right away, before you fish again.
+  </div>
+  <div style="font-size:13px;line-height:1.6;color:var(--text-dim);margin-top:8px;">
+    I found that out the hard way: my paper card never showed up. Digital cards now live in the <strong style="color:var(--text);">MyWDFW</strong> and <strong style="color:var(--text);">Fish Washington</strong> apps and work without cell service, but only if you're set up as a mobile licensing customer. Open the app tonight and make sure the card is there, not at the ramp.
+  </div>
+  <div style="font-size:13px;line-height:1.6;color:var(--text-dim);margin-top:8px;">
+    Fishing Oregon? Adult salmon, steelhead, legal sturgeon, and halibut go on the Combined Angling Tag, paper or in the MyODFW app.
+  </div>
+  <div style="margin-top:10px;font-size:12px;">
+    <a href="https://wdfw.wa.gov/licenses/fishing/catch-record-card" target="_blank" rel="noopener" style="color:var(--accent);">WDFW catch cards ↗</a> ·
+    <a href="https://myodfw.com/combined-angling-tag-instructions-and-location-codes" target="_blank" rel="noopener" style="color:var(--accent);">ODFW angling tag ↗</a>
+  </div>
+</div>
+
 <div class="section-title">STOCKING REPORT</div>
 <div class="section-subtitle" id="stocking-subtitle">Recent plants · SW Washington focus</div>
  
@@ -3645,6 +3665,7 @@ function renderSpots() {
               <div class="location-meta">${spot.meta}</div>
               <div class="location-tags">${spot.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
               <div class="location-note">${spot.note}</div>
+              ${stockSlot(spot.name)}
               ${(spot.regsUrl || spot.tideUrl) ? `<div style="margin-top:6px;font-size:12px;">${spot.regsNote ? `<span style="color:var(--text-dim);">${spot.regsNote} · </span>` : ''}${spot.regsUrl ? `<a href="${spot.regsUrl}" target="_blank" rel="noopener" style="color:var(--accent);">Regs ↗</a>` : ''}${spot.tideUrl ? `${spot.regsUrl ? ' · ' : ''}<a href="${spot.tideUrl}" target="_blank" rel="noopener" style="color:var(--salt);">Tides ↗</a>` : ''}</div>` : ''}
             </div>
           `).join('')}
@@ -3653,6 +3674,67 @@ function renderSpots() {
     `;
   });
   container.innerHTML = html;
+  updateSpotStocking();
+}
+
+// ============ STOCKING ON SPOT CARDS ============
+// Exact water names as WDFW lists them (verified on wdfw.wa.gov trout plant reports)
+const SPOT_STOCK_KEYS = [
+  { match: /klineline/i, key: 'KLINELINE PD' },
+  { match: /battle ground lake/i, key: 'BATTLE GROUND LK' },
+  { match: /lacamas/i, key: 'LACAMAS LK' },
+];
+const spotStockLatest = {}; // key -> latest WDFW row
+
+function stockKeyFor(name) {
+  const hit = SPOT_STOCK_KEYS.find(k => k.match.test(name || ''));
+  return hit ? hit.key : null;
+}
+
+function stockSlot(name) {
+  const key = stockKeyFor(name);
+  return key ? `<div class="spot-stock" data-stock-key="${key}" style="display:none;margin-top:6px;font-size:12px;color:var(--fresh-bright);"></div>` : '';
+}
+
+function noteStockRows(rows) {
+  (rows || []).forEach(r => {
+    const loc = String(r.release_location || '').toUpperCase();
+    SPOT_STOCK_KEYS.forEach(({ key }) => {
+      if (!loc.includes(key) || !r.release_start_date) return;
+      const cur = spotStockLatest[key];
+      if (!cur || new Date(r.release_start_date) > new Date(cur.release_start_date)) spotStockLatest[key] = r;
+    });
+  });
+}
+
+function updateSpotStocking() {
+  document.querySelectorAll('.spot-stock[data-stock-key]').forEach(el => {
+    const r = spotStockLatest[el.dataset.stockKey];
+    if (!r) { el.style.display = 'none'; return; }
+    const d = new Date(r.release_start_date);
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const day = new Date(d); day.setHours(0, 0, 0, 0);
+    const ago = Math.round((today - day) / 86400000);
+    const when = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const agoTxt = ago <= 0 ? 'today' : ago === 1 ? 'yesterday' : `${ago} days ago`;
+    const count = r.number_released ? parseInt(r.number_released, 10).toLocaleString() + ' ' : '';
+    const sp = r.species_type ? escHtml(String(r.species_type).toLowerCase()) : 'trout';
+    el.innerHTML = `🐟 <strong>Last stocked ${when}</strong> (${agoTxt}) · ${count}${sp} <span style="color:var(--text-faint);">· WDFW</span>`;
+    el.style.display = 'block';
+  });
+}
+
+// Look each tracked water up by name so older plants still show
+async function fetchSpotStocking() {
+  await Promise.allSettled(SPOT_STOCK_KEYS.map(async ({ key }) => {
+    try {
+      const res = await fetch(`${STOCKING_API}?q=${encodeURIComponent(key)}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      if (Array.isArray(data)) noteStockRows(data);
+    } catch (e) {}
+  }));
+  updateSpotStocking();
 }
  
 // ============ INTERACTIONS ============
@@ -3833,9 +3915,11 @@ function renderNearMe() {
       <div class="near-me-meta">${spot.meta}</div>
       <div class="near-me-tags">${spot.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
       <div class="near-me-note">${spot.note}</div>
+      ${stockSlot(spot.name)}
       <a class="near-me-maps-link" href="${spot.maps}" target="_blank" rel="noopener">📍 Open in Maps</a>
     </div>
   `).join('');
+  updateSpotStocking();
 }
 // Initial render
 // ============ SEASONAL CONTENT ============
@@ -3850,8 +3934,8 @@ const seasonalData = {
   8:  { label: 'August · What\'s Running', text: '<strong>Buoy 10 fall Chinook</strong> opens — Columbia mouth, world-class fishery. <strong>Albacore tuna</strong> 30-60 miles offshore from Westport and Newport. <strong>Coho</strong> building in Puget Sound. <strong>Summer steelhead</strong> on Deschutes and Sandy. <strong>Kokanee</strong> deep on Chelan and Merwin.' },
   9:  { label: 'September · What\'s Running', text: '<strong>Fall Chinook</strong> peak — Buoy 10, Cowlitz, Lewis, Tillamook. <strong>Coho</strong> entering rivers — Washougal, Sandy, Wilson, Nestucca. <strong>Bass</strong> fall transition — crankbaits and swimbaits. <strong>Albacore</strong> still running offshore. <strong>Razor clam</strong> digs starting on WA coast.' },
   10: { label: 'October · What\'s Running', text: '<strong>Coho</strong> peak in rivers — Sandy, Clackamas, Wilson, Trask. <strong>Fall Chinook</strong> tail end on Columbia. <strong>Sea-run cutthroat</strong> in tidewater. <strong>Bass</strong> feeding hard before cold. <strong>Dungeness crab</strong> season opening in Puget Sound. <strong>Razor clams</strong> on WA coast.' },
-  11: { label: 'November · What\'s Running', text: '<strong>Winter steelhead</strong> beginning — Cowlitz, Lewis, Sandy, Wilson. <strong>Late coho</strong> still in some rivers. <strong>Brown trout</strong> spawning on Wickiup and Paulina. <strong>Walleye</strong> fall bite on Columbia. <strong>Sturgeon</strong> C&R year-round. <strong>Razor clams</strong> evening digs on WA coast.' },
-  12: { label: 'December · What\'s Running', text: '<strong>Winter steelhead</strong> prime start — Cowlitz, Kalama, Lewis, Sandy, Siletz. <strong>Sturgeon</strong> C&R on Columbia. <strong>Burbot</strong> season opens on Banks Lake. <strong>Kokanee</strong> deep trolling on Chelan. Bundle up — best winter steelhead is worth it.' },
+  11: { label: 'November · What\'s Running', text: '<strong>Fresh trout plants</strong>: WDFW stocked rainbows in Klineline, Battle Ground, and Lacamas Oct 26–27. <strong>Coho</strong> winding down on the lower Columbia, a few still near Longview and the Sandy mouth. <strong>Walleye</strong> biting from Bonneville to McNary. <strong>Winter steelhead</strong>: first hatchery fish typically show late in the month. <strong>Razor clams</strong>: tentative evening digs Nov 7–12 and 22–28 at Long Beach and Twin Harbors, pending toxin tests (Kalaloch closed this season). Check current rules before keeping sturgeon.' },
+  12: { label: 'December · What\'s Running', text: '<strong>Winter steelhead</strong> building on the Cowlitz, Kalama, Lewis, and Sandy. <strong>Stocked lakes</strong> from the fall plants keep fishing on cold, calm days. <strong>Razor clams</strong>: tentative evening digs Dec 5–11 and 21–27 at Long Beach and Twin Harbors, pending toxin tests. Check current rules before keeping sturgeon. Bundle up: winter steelhead is worth it.' },
 };
  
 function renderSeasonalContent() {
@@ -3928,6 +4012,8 @@ const url = STOCKING_API;
     if (!res.ok) throw new Error(`API error ${res.status}`);
     const data = await res.json();
     stockingRows = Array.isArray(data) ? data : [];
+    noteStockRows(stockingRows);
+    updateSpotStocking();
     const q = (document.getElementById('stocking-search') || {}).value || '';
     if (q.trim()) onStockingSearch(q); else renderStockingTable(stockingRows);
   } catch(e) {
@@ -3993,6 +4079,7 @@ renderSeasonalContent();
 renderSpecies();
 renderSpots();
 fetchStockingReport();
+fetchSpotStocking();
  
 // ============ THEME (light/dark) ============
 function updateThemeIcon() {
@@ -4302,6 +4389,18 @@ function calculateBiteScore(data) {
   if (wc >= 95) score -= 30;
   else if (wc >= 51 && wc <= 67) score += 10;
   else if (wc >= 45 && wc <= 48) score += 8;
+
+  // Air temperature (°F). Heat pushes fish deep and slows the bite;
+  // hard cold slows it too. Mild air gets a small bump.
+  const t = c.temperature_2m;
+  if (typeof t === 'number') {
+    if (t >= 90) score -= 25;
+    else if (t >= 85) score -= 15;
+    else if (t >= 80) score -= 8;
+    else if (t <= 32) score -= 15;
+    else if (t <= 40) score -= 5;
+    else if (t >= 50 && t <= 72) score += 5;
+  }
  
   // Clamp
   score = Math.max(0, Math.min(100, score));
@@ -4420,6 +4519,16 @@ function calculateDailyBiteScore(daily, dayIdx) {
  
   const precip = daily.precipitation_sum[dayIdx];
   if (precip > 1.0) score -= 10;
+
+  // Air temperature (daily high, °F), same logic as the live score
+  const hi = daily.temperature_2m_max ? daily.temperature_2m_max[dayIdx] : null;
+  if (typeof hi === 'number') {
+    if (hi >= 90) score -= 25;
+    else if (hi >= 85) score -= 15;
+    else if (hi >= 80) score -= 8;
+    else if (hi <= 35) score -= 10;
+    else if (hi >= 50 && hi <= 72) score += 5;
+  }
  
   return Math.max(0, Math.min(100, score));
 }
@@ -4606,6 +4715,7 @@ async function refreshApp() {
     await Promise.allSettled([
       updateLiveWeather(currentLocation),
       fetchStockingReport(),
+      fetchSpotStocking(),
       new Promise(r => setTimeout(r, 600)), // keep the spinner visible long enough to see
     ]);
     // Also check for a new app version; the update banner handles the rest
