@@ -1698,8 +1698,12 @@ footer {
     </div>
     <button id="stocking-toggle" onclick="toggleStockingScope()" style="padding:6px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);cursor:pointer;">Show All WA</button>
   </div>
+  <div style="position:relative;margin-bottom:12px;">
+    <input id="stocking-search" type="search" inputmode="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Search a lake, pond, or river" oninput="onStockingSearch(this.value)" aria-label="Search stocking report by body of water" style="width:100%;box-sizing:border-box;padding:10px 34px 10px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'Inter',sans-serif;font-size:16px;outline:none;-webkit-appearance:none;">
+    <button id="stocking-search-clear" onclick="clearStockingSearch()" aria-label="Clear search" style="display:none;position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-dim);font-size:18px;line-height:1;padding:4px 6px;cursor:pointer;">×</button>
+  </div>
   <div id="stocking-table">
-    <div id="stocking-table"><div class="note info">Tap below to view current stocking data directly from WDFW. <a href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants" target="_blank" style="color:var(--accent);">View WDFW Fish Plants →</a></div></div>
+    <div class="note info">Tap below to view current stocking data directly from WDFW. <a href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants" target="_blank" style="color:var(--accent);">View WDFW Fish Plants →</a></div>
   </div>
   <div class="note info" style="margin-top:10px;">
     <strong>Source:</strong> WDFW Fish Plants dataset · data.wa.gov · Updated weekly. Catchable trout only.
@@ -3746,9 +3750,63 @@ function renderSeasonalContent() {
 }
 // ============ STOCKING REPORT ============
 let stockingShowAll = false;
- 
+let stockingRows = [];          // latest plants, used for instant search
+let stockingSearchTimer = null;
+let stockingSearchSeq = 0;
+const STOCKING_API = 'https://pnwfg-stocking.yab-account.workers.dev';
+
+function escHtml(v) {
+  return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function filterStockingRows(rows, q) {
+  const needle = q.trim().toLowerCase();
+  if (!needle) return rows;
+  return rows.filter(r => String(r.release_location || '').toLowerCase().includes(needle));
+}
+
+function onStockingSearch(value) {
+  const q = value.trim();
+  document.getElementById('stocking-search-clear').style.display = value ? 'block' : 'none';
+  clearTimeout(stockingSearchTimer);
+  if (!q) { renderStockingTable(stockingRows); return; }
+  // Instant results from what is already loaded
+  renderStockingTable(filterStockingRows(stockingRows, q), q, true);
+  // Then ask WDFW for the full history of that water
+  stockingSearchTimer = setTimeout(() => searchStockingRemote(q), 400);
+}
+
+function clearStockingSearch() {
+  const input = document.getElementById('stocking-search');
+  input.value = '';
+  onStockingSearch('');
+  input.focus();
+}
+
+async function searchStockingRemote(q) {
+  const seq = ++stockingSearchSeq;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+  try {
+    const res = await fetch(`${STOCKING_API}?q=${encodeURIComponent(q)}`, { signal: controller.signal });
+    clearTimeout(timeout);
+    if (!res.ok) throw new Error(`API error ${res.status}`);
+    const data = await res.json();
+    if (seq !== stockingSearchSeq) return; // a newer search is running
+    if (document.getElementById('stocking-search').value.trim() !== q) return;
+    // Filter again so results stay correct even if the worker ignores ?q=
+    const rows = Array.isArray(data) ? filterStockingRows(data, q) : [];
+    const local = filterStockingRows(stockingRows, q);
+    renderStockingTable(rows.length ? rows : local, q, false);
+  } catch (e) {
+    clearTimeout(timeout);
+    if (seq !== stockingSearchSeq) return;
+    renderStockingTable(filterStockingRows(stockingRows, q), q, false);
+  }
+}
+
 async function fetchStockingReport() {
-const url = `https://pnwfg-stocking.yab-account.workers.dev`;
+const url = STOCKING_API;
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 8000);
   try {
@@ -3756,7 +3814,9 @@ const url = `https://pnwfg-stocking.yab-account.workers.dev`;
     clearTimeout(timeout);
     if (!res.ok) throw new Error(`API error ${res.status}`);
     const data = await res.json();
-    renderStockingTable(data);
+    stockingRows = Array.isArray(data) ? data : [];
+    const q = (document.getElementById('stocking-search') || {}).value || '';
+    if (q.trim()) onStockingSearch(q); else renderStockingTable(stockingRows);
   } catch(e) {
     clearTimeout(timeout);
     console.error('Stocking error:', e.name, e.message);
@@ -3766,16 +3826,26 @@ const url = `https://pnwfg-stocking.yab-account.workers.dev`;
   }
 }
  
-function renderStockingTable(data) {
+function renderStockingTable(data, query, searching) {
   const table = document.getElementById('stocking-table');
   const updated = document.getElementById('stocking-updated');
+  const q = (query || '').trim();
   if (!data || data.length === 0) {
-    table.innerHTML = '<div style="font-size:13px;color:var(--text-dim);font-style:italic;">No plants found in the last 14 days for this area.</div>';
+    if (q) {
+      table.innerHTML = searching
+        ? '<div style="font-size:13px;color:var(--text-dim);font-style:italic;">Searching WDFW records…</div>'
+        : `<div style="font-size:13px;color:var(--text-dim);font-style:italic;">No plants found for “${escHtml(q)}”. Try a shorter name (e.g. “Klineline” instead of “Klineline Pond”). <a href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants" target="_blank" style="color:var(--accent);font-style:normal;">Check WDFW →</a></div>`;
+      updated.textContent = searching ? 'Searching…' : 'No matches';
+      return;
+    }
+    table.innerHTML = '<div style="font-size:13px;color:var(--text-dim);font-style:italic;">No recent plants found.</div>';
     updated.textContent = 'No recent plants';
     return;
   }
   const now = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-  updated.textContent = `${data.length} plants · updated ${now}`;
+  updated.textContent = q
+    ? `${data.length} plant${data.length === 1 ? '' : 's'} matching “${q}”${searching ? ' · searching…' : ''}`
+    : `${data.length} plants · updated ${now}`;
   let html = `<table style="width:100%;border-collapse:collapse;font-size:12px;">
     <thead><tr>
       <th style="text-align:left;padding:6px 4px;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);letter-spacing:1px;text-transform:uppercase;">Water</th>
@@ -3789,8 +3859,8 @@ function renderStockingTable(data) {
     const water = r.release_location || '–';
     const species = r.species_type || r.species || '–';
     html += `<tr>
-      <td style="padding:7px 4px;border-bottom:1px solid var(--line);color:var(--text);">${water}</td>
-      <td style="padding:7px 4px;border-bottom:1px solid var(--line);color:var(--fresh-bright);">${species}</td>
+      <td style="padding:7px 4px;border-bottom:1px solid var(--line);color:var(--text);">${escHtml(water)}</td>
+      <td style="padding:7px 4px;border-bottom:1px solid var(--line);color:var(--fresh-bright);">${escHtml(species)}</td>
       <td style="padding:7px 4px;border-bottom:1px solid var(--line);color:var(--text-dim);text-align:right;">${count}</td>
       <td style="padding:7px 4px;border-bottom:1px solid var(--line);color:var(--text-dim);text-align:right;">${date}</td>
     </tr>`;
