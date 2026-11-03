@@ -337,6 +337,38 @@ section.active { display: block; animation: fadeIn 0.25s; }
   opacity: 0.6;
 }
 #location-selector::-webkit-scrollbar { display: none; }
+.loc-scroller { position: relative; }
+.loc-chev {
+  position: absolute;
+  top: 0;
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 2px;
+  box-shadow: 0 0 10px 6px var(--bg);
+}
+.loc-chev:hover { border-color: var(--accent); color: var(--accent-bright); }
+.loc-chev-left { left: 0; }
+.loc-chev-right { right: 0; }
+.loc-chev.show { display: flex; }
+/* Live conditions: 6 across on wide screens, 3 + 3 mid, 2 per row on phones */
+@media (min-width: 760px) {
+  .info-grid.live-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+  .live-grid .info-card { padding: 12px 10px; }
+}
+@media (min-width: 481px) and (max-width: 759px) {
+  .info-grid.live-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
  
 .bite-good { color: var(--fresh-bright) !important; }
 .bite-fair { color: var(--warn) !important; }
@@ -1727,7 +1759,9 @@ footer {
   <div class="section-title">LIVE CONDITIONS</div>
   <div class="section-subtitle" id="live-location-label">Loading your location...</div>
  
-  <div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;" id="location-selector">
+  <div class="loc-scroller">
+  <button type="button" class="loc-chev loc-chev-left" id="loc-chev-left" aria-label="Scroll locations left">&#8249;</button>
+  <div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;scroll-behavior:smooth;" id="location-selector">
     <button class="loc-btn active" data-lat="45.6387" data-lng="-122.6615" data-name="Vancouver, WA">Vancouver WA</button>
     <button class="loc-btn" data-lat="45.5152" data-lng="-122.6784" data-name="Portland, OR">Portland</button>
     <button class="loc-btn" data-lat="47.6062" data-lng="-122.3321" data-name="Seattle">Seattle</button>
@@ -1739,8 +1773,10 @@ footer {
     <button class="loc-btn" data-lat="48.0419" data-lng="-122.1817" data-name="Everett, WA">Everett</button>
     <button class="loc-btn" id="use-my-location">📍 My Location</button>
   </div>
+  <button type="button" class="loc-chev loc-chev-right" id="loc-chev-right" aria-label="Scroll locations right">&#8250;</button>
+  </div>
  
-  <div class="info-grid">
+  <div class="info-grid live-grid">
     <div class="info-card">
       <span class="info-card-icon">🌡️</span>
       <div class="info-card-label">Air Temp</div>
@@ -4651,6 +4687,35 @@ async function renderTides(location) {
   document.getElementById('tides-grid').innerHTML = html;
 }
  
+// Location bar chevrons (desktop: no swipe, so give arrows + wheel scroll)
+(function () {
+  const bar = document.getElementById('location-selector');
+  const left = document.getElementById('loc-chev-left');
+  const right = document.getElementById('loc-chev-right');
+  if (!bar || !left || !right) return;
+  const update = () => {
+    const max = bar.scrollWidth - bar.clientWidth;
+    left.classList.toggle('show', bar.scrollLeft > 4);
+    right.classList.toggle('show', bar.scrollLeft < max - 4);
+  };
+  const step = () => Math.max(160, bar.clientWidth * 0.7);
+  left.addEventListener('click', () => bar.scrollBy({ left: -step(), behavior: 'smooth' }));
+  right.addEventListener('click', () => bar.scrollBy({ left: step(), behavior: 'smooth' }));
+  bar.addEventListener('scroll', update, { passive: true });
+  bar.addEventListener('wheel', (e) => {
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && bar.scrollWidth > bar.clientWidth) {
+      const max = bar.scrollWidth - bar.clientWidth;
+      if ((e.deltaY > 0 && bar.scrollLeft < max) || (e.deltaY < 0 && bar.scrollLeft > 0)) {
+        e.preventDefault();
+        bar.scrollLeft += e.deltaY;
+      }
+    }
+  }, { passive: false });
+  window.addEventListener('resize', update);
+  update();
+  setTimeout(update, 300);
+})();
+
 // Wire up location buttons
 document.querySelectorAll('.loc-btn').forEach(btn => {
   if (btn.id === 'use-my-location') {
